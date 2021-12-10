@@ -1,0 +1,14 @@
+@article{10.2307/3003143,
+ ISSN = {00058556},
+ URL = {http://www.jstor.org/stable/3003143},
+ abstract = {The long history of the theory of option pricing began in 1900 when the French mathematician Louis Bachelier deduced an option pricing formula based on the assumption that stock prices follow a Brownian motion with zero drift. Since that time, numerous researchers have contributed to the theory. The present paper begins by deducing a set of restrictions on option pricing formulas from the assumption that investors prefer more to less. These restrictions are necessary conditions for a formula to be consistent with a rational pricing theory. Attention is given to the problems created when dividends are paid on the underlying common stock and when the terms of the option contract can be changed explicitly by a change in exercise price or implicitly by a shift in the investment or capital structure policy of the firm. Since the deduced restrictions are not sufficient to uniquely determine an option pricing formula, additional assumptions are introduced to examine and extend the seminal Black-Scholes theory of option pricing. Explicit formulas for pricing both call and put options as well as for warrants and the new "down-and-out" option are derived. The effects of dividends and call provisions on the warrant price are examined. The possibilities for further extension of the theory to the pricing of corporate liabilities are discussed.},
+ author = {Robert C. Merton},
+ journal = {The Bell Journal of Economics and Management Science},
+ number = {1},
+ pages = {141--183},
+ publisher = {[Wiley, RAND Corporation]},
+ title = {Theory of Rational Option Pricing},
+ volume = {4},
+ year = {1973}
+}
+

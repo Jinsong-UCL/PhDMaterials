@@ -1,0 +1,14 @@
+@article{10.2307/1911242,
+ ISSN = {00129682, 14680262},
+ URL = {http://www.jstor.org/stable/1911242},
+ abstract = {This paper uses an intertemporal general equilibrium asset pricing model to study the term structure of interest rates. In this model, anticipations, risk aversion, investment alternatives, and preferences about the timing of consumption all play a role in determining bond prices. Many of the factors traditionally mentioned as influencing the term structure are thus included in a way which is fully consistent with maximizing behavior and rational expectations. The model leads to specific formulas for bond prices which are well suited for empirical testing.},
+ author = {John C. Cox and Jonathan E. Ingersoll and Stephen A. Ross},
+ journal = {Econometrica},
+ number = {2},
+ pages = {385--407},
+ publisher = {[Wiley, Econometric Society]},
+ title = {A Theory of the Term Structure of Interest Rates},
+ volume = {53},
+ year = {1985}
+}
+
