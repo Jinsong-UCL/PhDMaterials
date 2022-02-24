@@ -84,5 +84,46 @@ a_i_j = a_i - a_j;
 a_i_j_tilde = a_i + a_j;
 rho_v_tilde = rho_v .* a_i_j;
 
-mu_q_v = -0.5.*(chi + )
+% \varphi_{q}^{v_{n}}(k)=\frac{k^{2}}{2}-\frac{1}{2}\left[\left(q^{2}+q \frac{\tilde{a}_{n}^{i, j}}{a_{n}^{i, j}}\right)-\imath k\left(2 q+\frac{\tilde{a}_{n}^{i, j}}{a_{n}^{i, j}}\right)\right]\\
+phi_v_q = 0.5*xi^2 - 0.5 * ((q^2+ q * tilde_a_i_j./a_i_j)- 1i * xi *(2*q + tilde_a_i_j/a_i_j));
+
+% \mu_{q, v_{n}}=-\frac{1}{2}\left(\chi_{n}+(\imath k-q) \gamma_{n} \tilde{\rho}_{n, v}\right)\\
+mu_q_v = -0.5.*(chi + (1i* xi -q) * gamma * rho_v_tilde);
+
+% \zeta_{q, v_{n}}=\frac{1}{2}\left[4 \mu_{q,v_{n}}^{2}+2 \gamma_{n}^{2} \varphi_{q}^{v_{n}}(k)\left(a_{n}^{i, j}\right)^{2}\right]^{1 / 2}\\
+zeta_q_v = 0.5 * (4 * mu_q_v * mu_q_v + 2 * gamma* gamma * phi_v_q * a_i_j^2)^0.5;
+
+
+tau = T - 0;
+%s_{q, v_{n}, g} &=1-e^{-2 \zeta_{q, v_{n}} \tau} \\
+s_q_v_g = 1 - exp(-2 * zeta_q_v * tau);
+
+%s_{q, v_{n}, b} &=\left(\zeta_{q, v_{n}}+\mu_{q, v_{n}}\right) e^{-2 \zeta_{q, v_{n}} \tau}+\left(\zeta_{q, v_{n}}-\mu_{q, v_{n}}\right)
+s_q_v_b = (zeta_q_v+ mu_q_v) * exp(-2 * zeta_q_v * tau) + zeta_q_v - mu_q_v;
+
+%%%%%%%%%%%%%%%%% W_v_q^0 page 27 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+sum_1 = (2 * chi_1 * v_1_0 / (gamma_1^2)) * log(s_q_v_b / (2 * zeta_q_v)) + (2 * chi_2 * v_2_0 / (gamma_2^2)) * log(s_q_v_b / (2 * zeta_q_v));
+sum_2 = (2 * chi_1 * v_1_0 / (gamma_1^2)) * (mu_q_v+ zeta_q_v) * T + (2 * chi_2 * v_2_0 / (gamma_2^2)) * (mu_q_v+ zeta_q_v) * T;
+sum_3 = (2 * v_1_0 / (gamma_1^2)) * (zeta_q_v^2 - mu_q_v^2) * s_q_v_g / s_q_v_b + (2 * v_2_0 / (gamma_2^2)) * (zeta_q_v^2 - mu_q_v^2) * s_q_v_g / s_q_v_b;
+underline_W_q_v = exp(-sum_1) * exp(-sum_2) * exp(-sum_3);
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%% call options page 30 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+call_option_multiplier = exp(-r_i_0 * T) * exp(2 * r_i_0 * T) * S_0 / (2 * pi);
+call_option_integrand = ((S_0/ K)^(1 - 1i*xi)*exp(-1i*xi*r_i_0*T)) * underline_W_q_v / (-xi^2 -3*xi *1i + 2);
+call_option_integration = quad(call_option_integrand,-inf,inf); %%%%%%% neeeeeeed to change
+call_option = call_option_multiplier * call_option_integration; 
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%% put options page 30 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+put_option_multiplier = exp(-r_i_0 * T) * exp(2 * r_i_0 * T) * S_0 / (2 * pi);
+put_option_integrand = ((S_0/ K)^(-3 - 1i*xi) * exp(-1i*xi*r_i_0*T)) * underline_W_q_v / (-xi^2 -5*xi *1i + 6);
+put_option_integration = quad(put_option_integrand,-inf,inf); %%%%%%% neeeeeeed to change
+put_option = put_option_multiplier * put_option_integration; 
 
