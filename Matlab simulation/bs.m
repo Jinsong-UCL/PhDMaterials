@@ -1,23 +1,22 @@
-%% Compute the Black-Scholes-Merton price of European and lookback options
+%% Compute the Black-Scholes-Merton price of European options
 % The model for the underlying is geometric Brownian motion
 % dS = mu*S*dt + sigma*S*dW
 
 % Contract parameters
-T = 0.5; % maturity
-K = 1; % strike price
-ndates = 1; % monitoring dates
+T = 1; % maturity
+K = 1.1; % strike price
 
 % Market parameters
 S0 = 1; % spot price
-r = 0.1; % risk-free interest rate
-q = 0; % dividend rate
+r = 0.05; % risk-free interest rate
+q = 0.02; % dividend rate
 
 % Model parameter
-sigma = 0.3; % volatility
+sigma = 0.4; % volatility
 
 % Monte Carlo parameters; npaths = nblocks*nsample
-nblocks = 5000; % number of blocks
-nsample = 2000; % number of paths per block
+nblocks = 2000; % number of blocks
+nsample = 10000; % number of samples per block
 
 % Fourier parameters
 xwidth = 6; % width of the support in real space
@@ -25,17 +24,16 @@ ngrid = 2^8; % number of grid points
 alpha = -10; % damping factor for a call
 
 % Controls
-figures = 1;
+figures = 0;
 
 %% Analytical solution
 tic
 muABM = r-q-0.5*sigma^2; % drift coefficient of the arithmetic Brownian motion
-d1 = (log(S0/K)+(r-q+0.5*sigma^2)*T)/(sigma*sqrt(T));
-% d2 = d1 - sigma*sqrt(T);
-d2 = (log(S0/K)+(r-q-0.5*sigma^2)*T)/(sigma*sqrt(T));
+d2 = (log(S0/K)+muABM*T)/(sigma*sqrt(T));
+d1 = d2 + sigma*sqrt(T);
 Vca = S0*exp(-q*T)*cdf('Normal',d1,0,1) - K*exp(-r*T)*cdf('Normal',d2,0,1);
 Vpa = K*exp(-r*T)*cdf('Normal',-d2,0,1) - S0*exp(-q*T)*cdf('Normal',-d1,0,1);
-% Put-call parity: Vp = Vc + Kexp(-rT) - S0exp(-q*T)
+% Put-call parity: Vp = Vc + K*exp(-(r-q)*T) + S0
 cputime_a = toc;
 
 % Analytical solution provided by Matlab's Financial Toolbox
@@ -52,8 +50,8 @@ if figures ~= 0
 
     % Plot the analytical solution
     [St,t] = meshgrid(0:.05:2,0:0.025:T);
-    d1 = (log(St/K)+(r-q+0.5*sigma^2)*(T-t))./(sigma*sqrt(T-t));
-    d2 = (log(St/K)+(r-q-0.5*sigma^2)*(T-t))./(sigma*sqrt(T-t));
+    d2 = (log(St/K)+muABM*(T-t))./(sigma*sqrt(T-t));
+    d1 = d2 + sigma*sqrt(T-t);
 
     close all
     figure(1)
@@ -81,8 +79,8 @@ if figures ~= 0
     % Plot the analytical solution as a function of the log price
     k = log(K/S0);
     [xt,t] = meshgrid(-1:.05:1,0:0.025:T);
-    d1 = (xt-k+(r-q+0.5*sigma^2)*(T-t))./(sigma*sqrt(T-t));
-    d2 = (xt-k+(r-q-0.5*sigma^2)*(T-t))./(sigma*sqrt(T-t));
+    d2 = (xt-k+muABM*(T-t))./(sigma*sqrt(T-t));
+    d1 = d2 + sigma*sqrt(T-t);
     
     figure(3)
     Vc = S0*(exp(xt-q*(T-t)).*cdf('Normal',d1,0,1) - exp(k-r*(T-t)).*cdf('Normal',d2,0,1));
@@ -154,24 +152,19 @@ fprintf('%20s%14.10f%14.10f%14.10f\n','Fourier',VcF,VpF,cputime_F)
 %% Monte Carlo
 
 tic;
-dt = T/ndates; % monitoring interval
 VcMCb = zeros(nblocks,1);
 VpMCb = zeros(nblocks,1);
 for i = 1:nblocks
-    
-    % Increments of the arithmetic Brownian motion X(t) = log(S(t)/S(0))
-    dX = muABM*dt + sigma*sqrt(dt)*randn(ndates,nsample);
 
-    % Accumulate the increments
-    X = cumsum(dX,1);
+    % Arithmetic Brownian motion X(T) = log(S(T)/S(0)) at time T
+    X = muABM*T + sigma*randn(1,nsample)*sqrt(T);
 
-    % Transform extrema to geometric Brownian motion S(t)
-    Smax = S0*exp(max(X,[],1));
-    Smin = S0*exp(min(X,[],1));
+    % Transform to geometric Brownian motion S(T) at time T
+    S = S0*exp(X);
 
     % Discounted expected payoff
-    VcMCb(i) = exp(-r*T)*mean(max(Smax-K,0));
-    VpMCb(i) = exp(-r*T)*mean(max(K-Smin,0));
+    VcMCb(i) = exp(-r*T)*mean(max(S-K,0));
+    VpMCb(i) = exp(-r*T)*mean(max(K-S,0));
 
 end
 VcMC = mean(VcMCb);

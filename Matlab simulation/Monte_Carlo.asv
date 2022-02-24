@@ -38,7 +38,7 @@ eta_j = 0.0098;
 % Contract parameters
 T = 1; % maturity
 K = 1; % strike price
-nsteps = 50; % monitoring dates
+nsteps = 5000; % monitoring dates
 dt = T/nsteps;
 
 % Market parameters
@@ -57,7 +57,7 @@ rho_r_j = -0.81;
 
 
 % Monte Carlo parameters; 
-nblocks = 2000;
+nblocks = 200;
 npaths = 2000;
 MC_result = zeros(nsteps+1,npaths);
 Smaxs = zeros(1,npaths);
@@ -200,7 +200,7 @@ fprintf('%20s%14.10f%14.10f\n','Monte Carlo stdev',scMC,spMC)
 %%%%%%%%%%%%%%%%%%% Calculation without blocks %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%% Calculation without blocks %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%% Calculation without blocks %%%%%%%%%%%%%%%%%%%%%%%%%%%
-tic;
+
 for i = 1:npaths    
     % Increments of the arithmetic Brownian motion X(t) = log(S(t)/S(0))
     % dX = muABM*dt + sigma*sqrt(dt)*randn(ndates,nsample);
