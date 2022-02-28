@@ -5,72 +5,9 @@
 % dv_n = chi_n * (v_n_bar - v_n) * dt + gamma_n * v_n^0.5 * dZ_v_n
 % dr_m = lambda_m * (r_m_bar - r_m) * dt + eta_m * r_m^alpha * dZ_r_m
 
-% Model parameter
-param_alpha = 0; % or param_alpha = 0.5
-d = 2; % dimention of n, need to be decided
-% seed = 100090;
-% rng(seed);
-
-% parameters provided by Guido
-a_i = [0.02 0.09];
-a_j = [0.03 0.07];
-b_i = 0.4;
-b_j = 0.6;
-
-% Data below are from Recchioni_2016
-r_bar_i = 0.02;
-r_bar_j = 0.00044;
-r_bar = [r_bar_i,r_bar_j];
-
-v_bar_1 = 0.05;
-v_bar_2 = 0.0345;
-v_bar = [v_bar_1,v_bar_2];
-
-chi_1 = 0.3;
-chi_2 = 0.65;
-chi = [chi_1,chi_2];
-
-gamma_1 = 0.6;
-gamma_2 = 0.018;
-gamma = [gamma_1,gamma_2];
-
-lambda_i = 0.001;
-lambda_j = 0.062;
-lambda = [lambda_i,lambda_j];
-
-eta_i = 0.001;
-eta_j = 0.0098;
-eta = [eta_i,eta_j];
-
-
-
-% Contract parameters
-T = 1; % maturity
-K = 1; % strike price
-nsteps = 50; % monitoring dates
-dt = T/nsteps;
-
-% Market parameters
-S0 = 1; % spot price
-v_1_0 = 0.05;
-v_2_0 = 0.089;
-v_0 = [v_1_0,v_2_0];
-r_i_0 = 0.09; % interest rate
-r_j_0 = 0.07; % interest rate
-r_0 = [r_i_0,r_j_0];
-
-
- % Random numbers
-rho_v_1 = -0.3;
-rho_v_2 = -0.97;
-rho_v = [rho_v_1,rho_v_2];
-rho_r_i = -0.23;
-rho_r_j = -0.81;
-rho_r = [rho_r_i,rho_r_j];
-
 
 % Monte Carlo parameters; 
-nblocks = 40;
+nblocks = 400;
 npaths = 2000;
 
 
@@ -176,8 +113,8 @@ for block = 1:nblocks
         payoffs_call = max(S_end - K,0);
         payoffs_put = max(K - S_end,0);
     
-        VcMCb(1,path) = exp(-r_diff_bar*T)*payoffs_call;
-        VpMCb(1,path) = exp(-r_diff_bar*T)*payoffs_put;
+        VcMCb(1,path) = exp(-r_bar_i*T)*payoffs_call;
+        VpMCb(1,path) = exp(-r_bar_i*T)*payoffs_put;
 
         MC_result(1:nsteps+1,path) = S0*exp(x_i_j);    
     end
@@ -191,8 +128,8 @@ spMC = sqrt(var(VpMC)/nblocks);
 
 cputime_MC = toc;
 
-fprintf('%22s%14.10f%14.10f\n','Monte Carlo 1st block',VcMC(1),VpMC(1))
-fprintf('%22s%14.10f%14.10f\n','Monte Carlo last block',VcMC(end),VpMC(end))
+%fprintf('%22s%14.10f%14.10f\n','Monte Carlo 1st block',VcMC(1),VpMC(1))
+%fprintf('%22s%14.10f%14.10f\n','Monte Carlo last block',VcMC(end),VpMC(end))
 fprintf('%22s%14.10f%14.10f%14.3f\n','Monte Carlo',VcMC_result,VpMC_result,cputime_MC)
 fprintf('%22s%14.10f%14.10f\n','Monte Carlo stdev',scMC,spMC)
 
