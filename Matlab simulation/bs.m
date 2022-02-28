@@ -160,7 +160,7 @@ for i = 1:nblocks
     X = muABM*T + sigma*randn(1,nsample)*sqrt(T);
 
     % Transform to geometric Brownian motion S(T) at time T
-    S = S0*exp(X);
+    S = S0*exp(X(end));
 
     % Discounted expected payoff
     VcMCb(i) = exp(-r*T)*mean(max(S-K,0));
