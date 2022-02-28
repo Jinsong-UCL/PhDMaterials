@@ -5,8 +5,8 @@ d = 2; % dimention of n, need to be decided
 % rng(seed);
 
 % parameters provided by Guido
-a_i = [0.02 0.09];
-a_j = [0.03 0.07];
+a_i = [0.002 0.009];
+a_j = [0.003 0.007];
 b_i = 0.4;
 b_j = 0.6;
 
@@ -27,12 +27,12 @@ gamma_1 = 0.6;
 gamma_2 = 0.018;
 gamma = [gamma_1,gamma_2];
 
-lambda_i = 0.001;
-lambda_j = 0.062;
+lambda_i = 0.0001;
+lambda_j = 0.0062;
 lambda = [lambda_i,lambda_j];
 
-eta_i = 0.001;
-eta_j = 0.0098;
+eta_i = 0.0001;
+eta_j = 0.00098;
 eta = [eta_i,eta_j];
 
 % Contract parameters

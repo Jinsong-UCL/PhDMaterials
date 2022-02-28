@@ -6,11 +6,8 @@ npaths = 2000;
 %% Monte Carlo
 
 tic;
-VcMC = zeros(nblocks,1);
-VpMC = zeros(nblocks,1);
+
 for block = 1:nblocks
-    VcMCb = zeros(1,npaths);
-    VpMCb = zeros(1,npaths);
     for path = 1:npaths
         v_1 = zeros(nsteps,1);
         v_1 = [v_1_0;v_1]; 
@@ -37,23 +34,14 @@ for block = 1:nblocks
         
         x = zeros(nsteps+1,1);
         for steps = 1:nsteps
-            x(steps+1) = x(steps) + dt * (r_i_0 - r_j_0 + 0.5 * v_1(steps) * (a_i(1)^2-a_j(1)^2) + + 0.5 * v_2(steps) * (a_i(2)^2-a_j(2)^2)) + sqrt(v_1(steps))*(a_i(1)-a_j(1)) * dW_v_1(steps) +  sqrt(v_2(steps))*(a_i(2)-a_j(2)) * dW_v_2(steps);
+        x(steps+1) = x(steps) + dt * (r_i_0 - r_j_0 + 0.5 * v_1(steps) * (a_i(1)^2-a_j(1)^2) + + 0.5 * v_2(steps) * (a_i(2)^2-a_j(2)^2)) + sqrt(v_1(steps))*(a_i(1)-a_j(1)) * dW_v_1(steps) + ;
         end
-        S_end = S0*exp(x(nsteps+1));
-    
-        payoffs_call = max(S_end - K,0);
-        payoffs_put = max(K - S_end,0);
-    
-        VcMCb(1,path) = exp(-r_i_0*T)*payoffs_call;
-        VpMCb(1,path) = exp(-r_i_0*T)*payoffs_put;
     end
-    VcMC(block) = mean(VcMCb);
-    VpMC(block) = mean(VpMCb);
-end
-VcMC_result = mean(VcMC);
-VpMC_result = mean(VpMC);
-scMC = sqrt(var(VcMC)/nblocks);
-spMC = sqrt(var(VpMC)/nblocks);
 
-fprintf('%22s%14.10f%14.10f%14.3f\n','Monte Carlo',VcMC_result,VpMC_result,cputime_MC)
-fprintf('%22s%14.10f%14.10f\n','Monte Carlo stdev',scMC,spMC)
+
+
+
+
+
+
+end
