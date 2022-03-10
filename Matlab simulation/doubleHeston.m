@@ -1,6 +1,6 @@
 % Monte Carlo parameters; 
-nblocks = 400;
-npaths = 2000;
+nblocks = 1000;
+npaths = 1000;
 
 
 %% Monte Carlo
@@ -34,13 +34,11 @@ for block = 1:nblocks
             v_1(steps+1) = max(real(v_1(steps) + chi_1 * (v_bar_1 - v_1(steps)) * dt + gamma_1 * sqrt(v_1(steps)) * dZ_v_1(steps)),0);
             v_2(steps+1) = max(real(v_2(steps) + chi_2 * (v_bar_2 - v_2(steps)) * dt + gamma_2 * sqrt(v_2(steps)) * dZ_v_2(steps)),0);
         end
-        
         x = zeros(nsteps+1,1);
+
         for steps = 1:nsteps
-            mu_yu = (r_i_0 - r_j_0 + 0.5 * v_1(steps) * (a_i(1)^2-a_j(1)^2) + 0.5 * v_2(steps) * (a_i(2)^2-a_j(2)^2));
-%            mu_yu = r_i_0 - r_j_0 - 0.5 * v_1(steps) * (a_i(1)^2-a_j(1)^2) ;
-            x(steps+1) = x(steps) + dt * mu_yu + v_1(steps)^0.5*(a_i(1)-a_j(1)) * dW_v_1(steps) +  v_2(steps)^0.5*(a_i(2)-a_j(2)) * dW_v_2(steps);%
-%            x(steps+1) = x(steps) + dt * mu_yu + v_1(steps)^0.5*(a_i(1)-a_j(1)) * dW_v_1(steps);
+            mu_yu = (r_i_0 - r_j_0 - 0.5 * v_1(steps) * (a_i(1)^2-a_j(1)^2) + 0.5 * v_2(steps) * (a_i(2)^2-a_j(2)^2));
+             x(steps+1) = x(steps) + dt * mu_yu + v_1(steps)^0.5*(a_i(1)-a_j(1)) * dW_v_1(steps) +  v_2(steps)^0.5*(a_i(2)-a_j(2)) * dW_v_2(steps);%
         end
         S_end = S0*exp(x(end));
     

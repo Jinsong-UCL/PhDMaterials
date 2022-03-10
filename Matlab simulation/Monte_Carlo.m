@@ -88,7 +88,7 @@ for block = 1:nblocks
             % Block for MuYu
             sum_v_1(steps,1) = (a_i(1)^2 - a_j(1)^2) * v_1(steps,1) + (a_i(2)^2 - a_j(2)^2) * v_2(steps,1);
             sum_r_1(steps,1) = b_i^2 * r_i(steps,1)^(2*param_alpha) - b_j^2 * r_j(steps,1)^(2*param_alpha);
-            muYu(steps,1) = r_i(steps,1) - r_j(steps,1) + 0.5 * (sum_v_1(steps) + sum_r_1(steps));
+            muYu(steps,1) = r_i(steps,1) - r_j(steps,1) - 0.5 * (sum_v_1(steps) + sum_r_1(steps));
             % muYu(steps,1) = r_i(steps,1) - r_j(steps,1) - 0.5 * (sum_v_1(steps) + sum_r_1(steps));
             
             % Block for v

@@ -9,7 +9,7 @@ K = 1.1; % strike price
 % Market parameters
 S0 = 1; % spot price
 r = 0.05; % risk-free interest rate
-q = 0.02; % dividend rate
+q = 0.0; % dividend rate
 
 % Model parameter
 sigma = 0.4; % volatility

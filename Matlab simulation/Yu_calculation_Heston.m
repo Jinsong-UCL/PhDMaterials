@@ -59,9 +59,10 @@ underline_W_q_v = exp(-sum_1) .* exp(-sum_2) .* exp(-sum_3);
 
 %%%%%%%%%%%%%%%%%%%%%%% call options page 30 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-call_option_multiplier = exp(-r_i_0 * T) * exp(2 * r_i_0 * T) * S0 / (2 * pi);
+% call_option_multiplier = exp(-r_i_0 * T) * exp(2 * r_i_0 * T) * S0 / (2 * pi);
+call_option_multiplier = exp(-r_i_0 * T) * S0 / (2 * pi) ;
 call_option_integrand = ((S0/ K).^(1 - 1i*xi).* exp(-1i*xi*r_i_0*T)) .* underline_W_q_v ./ (-xi.^2 -3*xi *1i + 2) .* dxi;
-call_option_integration = sum(call_option_integrand); %%%%%%% neeeeeeed to change
+call_option_integration = sum(call_option_integrand); 
 call_option = call_option_multiplier * call_option_integration; 
 
 
@@ -69,9 +70,9 @@ call_option = call_option_multiplier * call_option_integration;
 
 %%%%%%%%%%%%%%%%%%%%%%% put options page 30 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-put_option_multiplier = exp(-r_i_0 * T)  * S0 / (2 * pi);
+put_option_multiplier = exp(-r_i_0 * T)  * S0 / (2 * pi) ;
 put_option_integrand = ((S0/ K).^(-3 - 1i*xi) .* exp(-1i*xi*r_i_0*T)) .* underline_W_q_v ./ (-xi.^2 -5*xi *1i + 6) .* dxi;
-put_option_integration = sum(put_option_integrand); %%%%%%% neeeeeeed to change
+put_option_integration = sum(put_option_integrand); 
 put_option = put_option_multiplier * put_option_integration; 
 
 cputime = toc;
