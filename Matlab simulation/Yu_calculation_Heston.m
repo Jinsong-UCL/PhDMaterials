@@ -49,7 +49,7 @@ s_q_v_b(1,1:ngrid) = (zeta_q_v(1,1:ngrid)+ mu_q_v(1,1:ngrid)) .* exp(-2 * zeta_q
 s_q_v_b(2,1:ngrid) = (zeta_q_v(2,1:ngrid)+ mu_q_v(2,1:ngrid)) .* exp(-2 * zeta_q_v(2,1:ngrid) * tau) + zeta_q_v(2,1:ngrid) - mu_q_v(2,1:ngrid);
 
 %%%%%%%%%%%%%%%%% W_v_q^0 page 27 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-sum_1 = (2 * chi_1 * v_1_0 / (gamma_1^2)) .* log(s_q_v_b(1,1:ngrid) / (2 * zeta_q_v(1,1:ngrid))) + (2 * chi_2 * v_2_0 ./ (gamma_2^2)) .* log(s_q_v_b(2,1:ngrid) ./ (2 * zeta_q_v(2,1:ngrid)));
+sum_1 = (2 * chi_1 * v_1_0 / (gamma_1^2)) .* log(s_q_v_b(1,1:ngrid) / (2 * zeta_q_v(1,1:ngrid))) + (2 * chi_2 * v_2_0 ./ (gamma_2^2)) .* log(s_q_v_b(2,1:ngrid) ./ (2 * zeta_q_v(2,1:ngrid))); 
 sum_2 = (2 * chi_1 * v_1_0 / (gamma_1^2)) .* (mu_q_v(1,1:ngrid)+ zeta_q_v(1,1:ngrid)) .* T + (2 * chi_2 * v_2_0 / (gamma_2^2)) .* (mu_q_v(2,1:ngrid)+ zeta_q_v(2,1:ngrid)) * T;
 sum_3 = (2 * v_1_0 / (gamma_1^2)) * (zeta_q_v(1,1:ngrid).^2 - mu_q_v(1,1:ngrid).^2) .* s_q_v_g(1,1:ngrid) ./ s_q_v_b(1,1:ngrid) + (2 * v_2_0 / (gamma_2^2)) * (zeta_q_v(2,1:ngrid).^2 - mu_q_v(2,1:ngrid).^2) .* s_q_v_g(2,1:ngrid) ./ s_q_v_b(2,1:ngrid);
 underline_W_q_v = exp(-sum_1) .* exp(-sum_2) .* exp(-sum_3);
@@ -61,7 +61,7 @@ underline_W_q_v = exp(-sum_1) .* exp(-sum_2) .* exp(-sum_3);
 
 % call_option_multiplier = exp(-r_i_0 * T) * exp(2 * r_i_0 * T) * S0 / (2 * pi);
 call_option_multiplier = exp(-r_i_0 * T) * S0 / (2 * pi) ;
-call_option_integrand = ((S0/ K).^(1 - 1i*xi).* exp(-1i*xi*r_i_0*T)) .* underline_W_q_v ./ (-xi.^2 -3*xi *1i + 2) .* dxi;
+call_option_integrand = ((S0/ K).^(1 - 1i*xi).* exp(-1i*xi*r_i_0*T)) .* underline_W_q_v .* dxi ./ (-xi.^2 -3*xi *1i + 2);
 call_option_integration = sum(call_option_integrand); 
 call_option = call_option_multiplier * call_option_integration; 
 
@@ -71,7 +71,7 @@ call_option = call_option_multiplier * call_option_integration;
 %%%%%%%%%%%%%%%%%%%%%%% put options page 30 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 put_option_multiplier = exp(-r_i_0 * T)  * S0 / (2 * pi) ;
-put_option_integrand = ((S0/ K).^(-3 - 1i*xi) .* exp(-1i*xi*r_i_0*T)) .* underline_W_q_v ./ (-xi.^2 -5*xi *1i + 6) .* dxi;
+put_option_integrand = ((S0/ K).^(-3 - 1i*xi) .* exp(-1i*xi*r_i_0*T)) .* underline_W_q_v  .* dxi./ (-xi.^2 -5*xi *1i + 6);
 put_option_integration = sum(put_option_integrand); 
 put_option = put_option_multiplier * put_option_integration; 
 
@@ -83,7 +83,6 @@ plot(xi,real(call_option_integrand),xi,imag(call_option_integrand))
 title('Call option integrand')
 xlabel('\xi')
 legend('Real part','Imaginary part')
-
 figure(2)
 plot(xi,real(put_option_integrand),xi,imag(put_option_integrand))
 title('Put option integrand')
