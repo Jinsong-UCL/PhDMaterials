@@ -5,7 +5,6 @@ tic;
 % Fourier parameters
 xwidth = 20; % width of the support in real space
 ngrid = 2^10; % number of grid points
-q =2; % damping factor for a call
 % Grids in real and Fourier space
 tic
 N = ngrid/2;
@@ -15,18 +14,21 @@ x = dx*(-N:N-1); % grid in real space
 dxi = pi/b; % Nyquist relation: grid step in Fourier space
 xi = dxi*(-N:N-1); % grid in Fourier space
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Calculation starts here %%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Call option %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-q =2; % damping factor for a call
 % operation of parameters 
 a_i_j = a_i - a_j;
 a_i_j_tilde = a_i + a_j;
 rho_v_tilde = rho_v .* a_i_j;
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Calculation starts here %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Call option %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+q =2; % damping factor for a call
 % \varphi_{q}^{v_{n}}(k)=\frac{k^{2}}{2}-\frac{1}{2}\left[\left(q^{2}+q \frac{\tilde{a}_{n}^{i, j}}{a_{n}^{i, j}}\right)-\imath k\left(2 q+\frac{\tilde{a}_{n}^{i, j}}{a_{n}^{i, j}}\right)\right]\\
 phi_v_q = zeros(d,ngrid);
-phi_v_q(1,1:ngrid) = 0.5*xi.^2 - 0.5 * ((q^2+ q * a_i_j_tilde(1)/a_i_j(1))- 1i * xi *(2*q + a_i_j_tilde(1)/a_i_j(1)));
-phi_v_q(2,1:ngrid) = 0.5*xi.^2 - 0.5 * ((q^2+ q * a_i_j_tilde(2)/a_i_j(2))- 1i * xi *(2*q + a_i_j_tilde(2)/a_i_j(2)));
+% phi_v_q(1,1:ngrid) = 0.5*xi.^2 - 0.5 * ((q^2+ q * a_i_j_tilde(1)/a_i_j(1))- 1i * xi *(2*q + a_i_j_tilde(1)/a_i_j(1)));
+% phi_v_q(2,1:ngrid) = 0.5*xi.^2 - 0.5 * ((q^2+ q * a_i_j_tilde(2)/a_i_j(2))- 1i * xi *(2*q + a_i_j_tilde(2)/a_i_j(2)));
+
+phi_v_q(1,1:ngrid) = 0.5*xi.^2 - 0.5 * 1i * (2*q+1) * xi - 0.5*(q+1)*q;
+phi_v_q(2,1:ngrid) = 0.5*xi.^2 - 0.5 * 1i * (2*q-1) * xi - 0.5*(q-1)*q;
 
 % \mu_{q, v_{n}}=-\frac{1}{2}\left(\chi_{n}+(\imath k-q) \gamma_{n} \tilde{\rho}_{n, v}\right)\\
 mu_q_v = zeros(d,ngrid);
@@ -67,12 +69,7 @@ call_option = call_option_multiplier * call_option_integration;
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% put option %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-q =-2; % damping factor for a call
-% operation of parameters 
-a_i_j = a_i - a_j;
-a_i_j_tilde = a_i + a_j;
-rho_v_tilde = rho_v .* a_i_j;
-
+q =-2; % damping factor for a put
 % \varphi_{q}^{v_{n}}(k)=\frac{k^{2}}{2}-\frac{1}{2}\left[\left(q^{2}+q \frac{\tilde{a}_{n}^{i, j}}{a_{n}^{i, j}}\right)-\imath k\left(2 q+\frac{\tilde{a}_{n}^{i, j}}{a_{n}^{i, j}}\right)\right]\\
 phi_v_q = zeros(d,ngrid);
 phi_v_q(1,1:ngrid) = 0.5*xi.^2 - 0.5 * ((q^2+ q * a_i_j_tilde(1)/a_i_j(1))- 1i * xi *(2*q + a_i_j_tilde(1)/a_i_j(1)));
