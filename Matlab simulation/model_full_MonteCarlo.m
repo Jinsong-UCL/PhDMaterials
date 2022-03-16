@@ -88,7 +88,7 @@ for block = 1:nblocks
             % Block for MuYu
             sum_v_1(steps,1) = (a_i(1)^2 - a_j(1)^2) * v_1(steps,1) + (a_i(2)^2 - a_j(2)^2) * v_2(steps,1);
             sum_r_1(steps,1) = b_i^2 * r_i(steps,1)^(2*param_alpha) - b_j^2 * r_j(steps,1)^(2*param_alpha);
-            muYu(steps,1) = r_i(steps,1) - r_j(steps,1) - 0.5 * (sum_v_1(steps) + sum_r_1(steps));
+            muYu(steps,1) = r_i(steps,1) - r_j(steps,1) - 0.5 * (sum_v_1(steps) - sum_r_1(steps));
             % muYu(steps,1) = r_i(steps,1) - r_j(steps,1) - 0.5 * (sum_v_1(steps) + sum_r_1(steps));
             
             % Block for v
@@ -107,15 +107,15 @@ for block = 1:nblocks
     
         % Calculate the Smax and Smin
     
-        S_end = S0*exp(x_i_j(nsteps+1,1));
+        S_end = S0*exp(x_i_j(end));
     
         payoffs_call = max(S_end - K,0);
         payoffs_put = max(K - S_end,0);
     
-        VcMCb(1,path) = exp(-r_bar_i*T)*payoffs_call;
-        VpMCb(1,path) = exp(-r_bar_i*T)*payoffs_put;
+        VcMCb(1,path) = exp(-r_i_0*T)*payoffs_call;
+        VpMCb(1,path) = exp(-r_i_0*T)*payoffs_put;
 
-        MC_result(1:nsteps+1,path) = S0*exp(x_i_j);    
+       % MC_result(1:nsteps+1,path) = S0*exp(x_i_j);    
     end
     VcMC(block) = mean(VcMCb);
     VpMC(block) = mean(VpMCb);
