@@ -2,6 +2,10 @@
 % Gauthier and Possamai, Efficient simulation of the double Heston model,
 % IUP Journal of Computational Mathematics 4 (3), 23-73, 2011
 
+% Model parameters
+param_alpha = 0.5; % exponent of the interest rate
+d = 2; % number of volatility factors
+
 % Contract parameters
 T = 1; % maturity
 K = 61.90*0.7; % strike price
@@ -9,18 +13,12 @@ K = 61.90*0.7; % strike price
 % Algorithm parameters
 nsteps = 24;
 dt = T/nsteps;
-% seed = 100090;
-% rng(seed);
 
 % Market parameters
 S0 = 61.90; % spot price
 r_i_0 = 0.03; % interest rate
 r_j_0 = 0.0; % interest rate
 r_0 = [r_i_0,r_j_0];
-
-% Model parameters
-param_alpha = 0.5; % exponent of the interest rate
-d = 2; % number of volatility factors
 
 % Volatility coefficient
 a_i = [1 1];
