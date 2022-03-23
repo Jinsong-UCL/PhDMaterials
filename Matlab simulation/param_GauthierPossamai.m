@@ -35,8 +35,8 @@ v_2_0 = 0.7;
 v_0 = [v_1_0,v_2_0];
 
 % Long-term average of the volatility
-v_bar_1 = 0.1;
-v_bar_2 = 0.15;
+v_bar_1 = 0.1;%%% Problem!!!
+v_bar_2 = 0.15;%%% Problem
 v_bar = [v_bar_1,v_bar_2];
 
 % Volatility of volatility
@@ -60,7 +60,7 @@ r_bar = [r_bar_i,r_bar_j];
 
 % Volatility of the interest rate
 eta_i = 0.000; %
-eta_j = 0.000; %
+eta_j = 0.0001; %
 eta = [eta_i,eta_j];
 
 % Correlations

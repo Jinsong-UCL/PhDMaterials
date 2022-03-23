@@ -2,6 +2,10 @@
 % Recchioni, Sun, An explicitly solvable Heston model with stochastic interest rate,
 % European Journal of operational research 249.1 (2016): 359-377.
 
+% Model parameters
+param_alpha = 0.5; % or param_alpha = 0.5
+d = 2; % dimention of n, need to be decided
+
 % Contract parameters
 T = 1; % maturity
 K = 1; % strike price
@@ -15,10 +19,6 @@ S0 = 1; % spot price
 r_i_0 = 0.02; % interest rate
 r_j_0 = 0.0; % interest rate
 r_0 = [r_i_0,r_j_0];
-
-% Model parameters
-param_alpha = 0.5; % or param_alpha = 0.5
-d = 2; % dimention of n, need to be decided
 
 % Volatility coefficient
 a_i = [1 1];

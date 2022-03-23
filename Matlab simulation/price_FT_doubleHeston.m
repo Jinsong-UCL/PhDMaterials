@@ -27,7 +27,7 @@ phi_v_q = zeros(d,ngrid);
 % phi_v_q(1,1:ngrid) = 0.5*xi.^2 - 0.5 * ((q^2+ q * a_i_j_tilde(1)/a_i_j(1))- 1i * xi *(2*q + a_i_j_tilde(1)/a_i_j(1)));
 % phi_v_q(2,1:ngrid) = 0.5*xi.^2 - 0.5 * ((q^2+ q * a_i_j_tilde(2)/a_i_j(2))- 1i * xi *(2*q + a_i_j_tilde(2)/a_i_j(2)));
 
-phi_v_q(1,1:ngrid) = 0.5*xi.^2 - 0.5 * 1i * (2*q+1) * xi - 0.5*(q+1)*q;
+phi_v_q(1,1:ngrid) = 0.5*xi.^2 - 0.5 * 1i * (2*q-1) * xi - 0.5*(q-1)*q;
 phi_v_q(2,1:ngrid) = 0.5*xi.^2 - 0.5 * 1i * (2*q-1) * xi - 0.5*(q-1)*q;
 
 % \mu_{q, v_{n}}=-\frac{1}{2}\left(\chi_{n}+(\imath k-q) \gamma_{n} \tilde{\rho}_{n, v}\right)\\
