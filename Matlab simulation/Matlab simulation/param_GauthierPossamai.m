@@ -29,26 +29,15 @@ chi_1 = 0.9;
 chi_2 = 1.2;
 chi = [chi_1,chi_2];
 
-% % Initial volatility
-% v_1_0 = 0.6;
-% v_2_0 = 0.7;
-% v_0 = [v_1_0,v_2_0];
-% 
-% % Long-term average of the volatility
-% v_bar_1 = 0.1;%%% Problem!!!
-% v_bar_2 = 0.15;%%% Problem
-% v_bar = [v_bar_1,v_bar_2];
-
 % Initial volatility
-v_1_0 = 0.06;
-v_2_0 = 0.07;
+v_1_0 = 0.6;
+v_2_0 = 0.7;
 v_0 = [v_1_0,v_2_0];
 
 % Long-term average of the volatility
-v_bar_1 = 0.01;%%% Problem!!!
-v_bar_2 = 0.015;%%% Problem
+v_bar_1 = 0.1;%%% Problem!!!
+v_bar_2 = 0.15;%%% Problem
 v_bar = [v_bar_1,v_bar_2];
-
 
 % Volatility of volatility
 gamma_1 = 0.1;

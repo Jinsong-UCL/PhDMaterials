@@ -8,14 +8,14 @@ d = 2; % number of volatility factors
 
 % Contract parameters
 T = 1; % maturity
-K = 61.90*0.7; % strike price
+K = 1.1; % strike price
 
 % Algorithm parameters
-nsteps = 24;
+nsteps = 50;
 dt = T/nsteps;
 
 % Market parameters
-S0 = 61.90; % spot price
+S0 = 1; % spot price
 r_i_0 = 0.03; % interest rate
 r_j_0 = 0.0; % interest rate
 r_0 = [r_i_0,r_j_0];
@@ -29,30 +29,19 @@ chi_1 = 0.9;
 chi_2 = 1.2;
 chi = [chi_1,chi_2];
 
-% % Initial volatility
-% v_1_0 = 0.6;
-% v_2_0 = 0.7;
-% v_0 = [v_1_0,v_2_0];
-% 
-% % Long-term average of the volatility
-% v_bar_1 = 0.1;%%% Problem!!!
-% v_bar_2 = 0.15;%%% Problem
-% v_bar = [v_bar_1,v_bar_2];
-
 % Initial volatility
-v_1_0 = 0.06;
-v_2_0 = 0.07;
+v_1_0 = 0.03;
+v_2_0 = 0.09;
 v_0 = [v_1_0,v_2_0];
 
 % Long-term average of the volatility
-v_bar_1 = 0.01;%%% Problem!!!
-v_bar_2 = 0.015;%%% Problem
+v_bar_1 = 0.03;%%% Problem!!!
+v_bar_2 = 0.09;%%% Problem
 v_bar = [v_bar_1,v_bar_2];
 
-
 % Volatility of volatility
-gamma_1 = 0.1;
-gamma_2 = 0.2;
+gamma_1 = 0.65;
+gamma_2 = 0.8;
 gamma = [gamma_1,gamma_2];
 
 % Interest rate coefficient
