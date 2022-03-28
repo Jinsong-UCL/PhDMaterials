@@ -26,31 +26,31 @@ a_j = [0.000 0.000];
 
 % Mean-reversion rate/strength of the volatility
 chi_1 = 0.3;
-chi_2 = 0.65;
+chi_2 = 0;
 chi = [chi_1,chi_2];
 
 % Initial volatility
 v_1_0 = 0.05;
-v_2_0 = 0.0345;
+v_2_0 = 0.0;
 v_0 = [v_1_0,v_2_0];
 
 % Long-term average of the volatility
 v_bar_1 = 0.05;
-v_bar_2 = 0.0345;
+v_bar_2 = 0.0;
 v_bar = [v_bar_1,v_bar_2];
 
 % Volatility of volatility
 gamma_1 = 0.6;
-gamma_2 = 0.018;
+gamma_2 = 0.;
 gamma = [gamma_1,gamma_2];
 
 % Interest rate coefficient
-b_i = 0.0000004;
-b_j = 0.0000006;
+b_i = 0.000000;
+b_j = 0.000000;
 
 % Mean-reversion rate/strength of the interest rate 
-lambda_i = 0.01;
-lambda_j = 0.02;
+lambda_i = 0.0;
+lambda_j = 0.0;
 lambda = [lambda_i,lambda_j];
 
 % Long-term average of the interest rate
@@ -59,14 +59,14 @@ r_bar_j = 0.000;
 r_bar = [r_bar_i,r_bar_j];
 
 % Volatility of the interest rate
-eta_i = 0.001;
-eta_j = 0.002;
+eta_i = 0.00;
+eta_j = 0.00;
 eta = [eta_i,eta_j];
 
 % Correlations
 rho_v_1 = -0.3;
-rho_v_2 = -0.97;
+rho_v_2 = -0.0;
 rho_v = [rho_v_1,rho_v_2];
-rho_r_i = -0.23;
-rho_r_j = -0.81;
+rho_r_i = -0.0;
+rho_r_j = -0.0;
 rho_r = [rho_r_i,rho_r_j];
