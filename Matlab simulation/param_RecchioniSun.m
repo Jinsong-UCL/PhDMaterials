@@ -21,7 +21,7 @@ r_j_0 = 0.0; % interest rate
 r_0 = [r_i_0,r_j_0];
 
 % Volatility coefficient
-a_i = [-1 0];
+a_i = [-1 -1];
 a_j = [0.000 0.000];
 
 % Mean-reversion rate/strength of the volatility

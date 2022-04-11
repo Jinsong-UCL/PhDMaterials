@@ -30,8 +30,8 @@ rho_v_tilde = rho_v + delta;
 
 
 % Monte Carlo parameters; 
-nblocks = 2000;
-npaths = 1000;
+nblocks = 10000;
+npaths = 2000;
 
 
 %% Monte Carlo
