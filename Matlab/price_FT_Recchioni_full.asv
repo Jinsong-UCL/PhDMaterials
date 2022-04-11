@@ -24,7 +24,7 @@ v_bar = 0.05;
 gamma = 0.6;
 
 % Initial interest rate
-r_0 = 0.02; 
+r_i_0 = 0.02; 
 
 % Mean-reversion rate/strength of the volatility
 lambda = 0.3;
@@ -33,13 +33,13 @@ lambda = 0.3;
 r_bar = 0.05;
 
 % Volatility of interest rate
-eta = 0.01;
+eta = 0.6;
 
 % Relative weight of W^v in SDE of the underlying
 delta = 0.0;
 
 % Relative weight of W^r in SDE of the underlying
-omega = 1;
+omega = 0.0;
 
 % Correlations
 rho_v = -0.3;
@@ -106,16 +106,16 @@ s_qrb = (zeta_qr+mu_qr).*exp(-2*zeta_qr*T)+zeta_qr-mu_qr;
 
 % Recchioni and Sun page 18 eq. (83)
 % W_vq^0 
-sum_v1 = 2*chi*v_bar/gamma^2*log(s_qvb./(2*zeta_qv));
+sum_v1 = 2*chi*v_bar/gamma^2*log(s_qvb/(2*zeta_qv));
 sum_v2 = 2*chi*v_bar/gamma^2*(mu_qv+zeta_qv)*T;
 sum_v3 = 2*v_0/gamma^2*(zeta_qv.^2-mu_qv.^2).*s_qvg./s_qvb;
 underline_W_vq = exp(-sum_v1-sum_v2-sum_v3);
 
 % Recchioni and Sun page 18 eq. (84)
 % W_rq^0 
-sum_r1 = 2*lambda*r_bar/eta^2*log(s_qrb./(2*zeta_qr));
+sum_r1 = 2*lambda*r_bar/eta^2*log(s_qrb/(2*zeta_qr));
 sum_r2 = 2*lambda*r_bar/eta^2*(mu_qr+zeta_qr)*T;
-sum_r3 = 2*r_0/eta^2*(zeta_qr.^2-mu_qr.^2).*s_qrg./s_qrb;
+sum_r3 = 2*r_i_0/eta^2*(zeta_qr.^2-mu_qr.^2).*s_qrg./s_qrb;
 underline_W_rq = exp(-sum_r1-sum_r2-sum_r3);
 
 % Recchioni and Sun page 18 eq. (80)
@@ -126,13 +126,13 @@ nu_r = 2*lambda*r_bar/eta^2 - 1;
 m_qr = 2/eta^2*s_qrb./s_qrg;
 
 % \tilde{r}_{q}=\frac{4 \zeta_{q, r}^{2} r e^{-2 \zeta_{q, r} \tau}}{s_{q, r, b}^{2}}$
-tilde_r = 4 * zeta_qr.^2 * r_0 .* exp(-2* zeta_qr *T)./s_qrb.^2;
+tilde_r = 4 * zeta_qr.^2 * r_i_0 .* exp(-2* zeta_qr *T)./s_qrb.^2;
 
 % Recchioni Page 6 eq. (34)
 time_factor = T * exp(lambda*T) / (1+ exp(lambda*T));
-factor = S0*exp(-r_0*T/(1+exp(lambda*T))); % mixes discount and damping
-tail = (m_qr/(m_qr+time_factor))^(nu_r+1).* exp(-time_factor*m_qr.*tilde_r./(m_qr+time_factor));
-call_integrand = ((S0/K).^(q-1-1i*xi).*exp(-1i*xi*r_0*T)).*underline_W_vq.*underline_W_rq.*tail./(-xi.^2-(2*q-1)*xi*1i+q*(q-1));
+factor = S0*exp(-r_i_0*T/(1+exp(lambda*T))); % mixes discount and damping
+tail = (m_qr/m_qr+time_factor)^(nu_r+1).* exp(-time_factor)
+call_integrand = ((S0/K).^(q-1-1i*xi).*exp(-1i*xi*r_i_0*T)).*underline_W_vq.*underline_W_rq./(-xi.^2-(2*q-1)*xi*1i+q*(q-1));
 call_price = factor*sum(call_integrand)*dxi/(2*pi); 
 
 % 
