@@ -62,8 +62,8 @@ for block = 1:nblocks
     VcMCb = zeros(1,npaths);
     VpMCb = zeros(1,npaths);
     for path = 1:npaths
-        v_1 = zeros(nsteps,1);
-        v_1 = [v_0;v_1]; 
+        v_1 = zeros(nsteps+1,1);
+        v_1(1) = v_0;
         % corr (dW_v_1, dZ_v_1) = rho_v_1
         dW_v_1_1 = randn(nsteps,1);
         dW_v_1_help_1 = randn(nsteps,1);
@@ -76,8 +76,8 @@ for block = 1:nblocks
             v_1(steps+1) = max(real(v_1(steps) + chi * (v_bar - v_1(steps)) * dt + gamma * sqrt(v_1(steps)) * dZ_v_1(steps)),0);
         end
         
-        r_1 = zeros(nsteps,1);
-        r_1 = [r_0;r_1]; 
+        r_1 = zeros(nsteps+1,1);
+        r_1(1) = r_0; 
         % corr (dW_v_1, dZ_v_1) = rho_v_1
         dW_r_1_1 = randn(nsteps,1);
         dW_r_1_help_1 = randn(nsteps,1);

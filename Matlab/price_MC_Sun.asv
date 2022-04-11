@@ -67,27 +67,26 @@ for block = 1:nblocks
         sum_v_2 = zeros(nsteps,1);
         sum_r_1 = zeros(nsteps,1);
         sum_r_2 = zeros(nsteps,1);
-        mu = zeros(nsteps,1);
+        muYu = zeros(nsteps,1);
         x = zeros(nsteps+1,1);
         % Valuation for dx
         for steps = 1:nsteps
             % Block for MuYu
             % sum_v_1(steps) = (a_i(1)^2 - a_j(1)^2) * v_1(steps) + (a_i(2)^2 - a_j(2)^2) * v_2(steps);
-            sum_v_1(steps) = v(steps,:) * (a_i' - a_j').^2;
+            sum_v_1() = v * (a_i - a_j).^2;
             % sum_r_1(steps) = b_i^2 * r_i(steps)^(2*param_alpha) - b_j^2 * r_j(steps)^(2*param_alpha);
-            sum_r_1(steps) = r(steps,:) * (b_i' - b_j').^2;
-
-            mu(steps) = r(steps,1) - r(steps,2) - 0.5 * (sum_v_1(steps) + sum_r_1(steps));
+            sum_r_1 = r * (b_i - b_j).^2;
+            muYu(steps) = r_i(steps) - r_j(steps) - 0.5 * (sum_v_1(steps) + sum_r_1(steps));
             % muYu(steps,1) = r_i(steps,1) - r_j(steps,1) - 0.5 * (sum_v_1(steps) + sum_r_1(steps));
             
             % Block for v
-            sum_v_2(steps) = v(steps,:).^0.5 .* dW_v(steps,:) * (a_i'-a_j');
+            sum_v_2(steps) =  v(steps)^0.5 .* dW_v(steps) * (a_i-a_j);
             
             % Block for r
-            sum_r_2(steps) = r(steps,:).^param_alpha .* dW_r(steps,:)*(b_i'-b_j');
+            sum_r_2(steps) = b_i * r_i(steps)^param_alpha * dW_r_i(steps) - b_j * r_j(steps)^param_alpha * dW_r_j(steps);
     
             % dx = (r_0 - r_i)*dt - a_i * diag_v^0.5 * dW_v - b_i * diag_r^alpha * dW_r 
-            x(steps+1) = x(steps) + mu(steps)*dt + sum_v_2(steps) + sum_r_2(steps);
+            x(steps+1) = x(steps) + muYu(steps)*dt + sum_v_2(steps) + sum_r_2(steps);
         end
     
         % Calculate the Smax and Smin
@@ -97,8 +96,8 @@ for block = 1:nblocks
         payoffs_call = max(S_end - K,0);
         payoffs_put = max(K - S_end,0);
     
-        VcMCb(1,path) = exp(-r_0(1)*T)*payoffs_call;
-        VpMCb(1,path) = exp(-r_0(1)*T)*payoffs_put;
+        VcMCb(1,path) = exp(-r_i_0*T)*payoffs_call;
+        VpMCb(1,path) = exp(-r_i_0*T)*payoffs_put;
 
        % MC_result(1:nsteps+1,path) = S0*exp(x_i_j);    
     end
