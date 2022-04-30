@@ -7,8 +7,8 @@
 
 
 % Monte Carlo parameters; 
-nblocks = 400;
-npaths = 2000;
+nblocks = 4000;
+npaths = 20000;
 
 
 %% Monte Carlo
@@ -73,11 +73,11 @@ for block = 1:nblocks
         for steps = 1:nsteps
             % Block for MuYu
             % sum_v_1(steps) = (a_i(1)^2 - a_j(1)^2) * v_1(steps) + (a_i(2)^2 - a_j(2)^2) * v_2(steps);
-            sum_v_1(steps) = v(steps,:) * (a_i' - a_j').^2;
+            sum_v_1(steps) = v(steps,:) * (a_i.^2' - a_j.^2');
             % sum_r_1(steps) = b_i^2 * r_i(steps)^(2*param_alpha) - b_j^2 * r_j(steps)^(2*param_alpha);
-            sum_r_1(steps) = r(steps,:) * (b_i' - b_j').^2;
+            sum_r_1(steps) = r(steps,:) * (b_i.^2' - b_j.^2');
 
-            mu(steps) = r(steps,1) - r(steps,2) - 0.5 * (sum_v_1(steps) + sum_r_1(steps));
+            mu(steps) = r(steps,1) - r(steps,2) + 0.5 * (sum_v_1(steps) + sum_r_1(steps));
             % muYu(steps,1) = r_i(steps,1) - r_j(steps,1) - 0.5 * (sum_v_1(steps) + sum_r_1(steps));
             
             % Block for v

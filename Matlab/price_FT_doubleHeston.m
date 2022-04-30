@@ -61,8 +61,8 @@ underline_W_q_v = exp(-sum_1-sum_2-sum_3);
 
 % Recchioni and Sun page 6 eq. (36)
 % Sun page 30 eq. (156)
-factor = S0*exp(-r_i_0*T*(q-1)); % mixes discount and damping
-call_option_integrand = ((S0/K).^(q-1-1i*xi).*exp(-1i*xi*r_i_0*T)).*underline_W_q_v./(-xi.^2-(2*q-1)*xi*1i+q*(q-1));
+factor = S0*exp(-r_0(1)*T*(q-1)); % mixes discount and damping
+call_option_integrand = ((S0/K).^(q-1-1i*xi).*exp(-1i*xi*r_0(1)*T)).*underline_W_q_v./(-xi.^2-(2*q-1)*xi*1i+q*(q-1));
 call_option_price = factor*sum(call_option_integrand)*dxi/(2*pi); 
 
 % 

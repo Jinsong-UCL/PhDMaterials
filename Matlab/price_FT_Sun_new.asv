@@ -20,7 +20,7 @@ b_ij_rho = rho_v.*b_ij;
 a_ij_prime = a_ij_tilde ./ a_ij;
 b_ij_prime = b_ij_tilde ./ b_ij;
 %% Call option
-q = -2; % damping factor for a call
+q = 2; % damping factor for a call
 
 % Recchioni and Sun page 17 eq. (58)
 % \varphi_q^{v_n}(k) = \frac{k^2}{2}-\frac{1}{2}\left[\left(q^2
@@ -43,8 +43,8 @@ zeta_qr= 0.5*(4*mu_qr.^2 + 2*diag(eta.^2.*b_ij)*phi_qr).^0.5; %
 
 % Recchioni and Sun page 17 eq. (63)
 % s_{q,v_n,g} = 1-e^{-2\zeta_{q,v_n}\tau}
-s_qvg = 1 - exp(-2 * zeta_qv*T);
-s_qrg = 1 - exp(-2 * zeta_qr*T);
+s_qvg = 1 - exp(-2*zeta_qv*T);
+s_qrg = 1 - exp(-2* zeta_qr*T);
 
 % Recchioni and Sun page 17 eq. (64)
 % s_{q,v_n,b} = (\zeta_{q,v_n}+\mu_{q,v_n})e^{-2\zeta_{q,v_n}\tau}
@@ -52,20 +52,38 @@ s_qrg = 1 - exp(-2 * zeta_qr*T);
 s_qvb = (zeta_qv+mu_qv).*exp(-2*zeta_qv*T)+zeta_qv-mu_qv;
 s_qrb = (zeta_qr+mu_qr).*exp(-2*zeta_qr*T)+zeta_qr-mu_qr;
 
-nu_v = 2*chi.*v_bar./gamma.^2 - 1;
-nu_r = 2*lambda.*r_bar./eta.^2 - 1;
+nu_v = 
 
 m_qv = diag(2./gamma) * (s_qvb./s_qvg);  
 m_qr = diag(2./eta) * (s_qrb./s_qrg);
 
-tilde_v = 4 * diag(v_0) * (zeta_qv.^2 .* exp(-2* zeta_qv *T)./s_qvb.^2);
-tilde_r = 4 * diag(r_0) * (zeta_qr.^2 .* exp(-2* zeta_qr *T)./s_qrb.^2);
-
-%%%%%% Characteristic function %%%%
-%Psi = 
 
 
+% Recchioni and Sun page 18 eq. (80)
+% \nu_{r}=2 \lambda \theta / \eta^{2}-1
+nu_r = 2*lambda.*r_bar./eta.^2 - 1;
 
+% M_{q, r}=\frac{2}{\eta^{2}} \frac{s_{q, r, b}}{s_{q, r, g}}
+%m_qr = 2*s_qrb./s_qrg./eta.^2;
+
+% \tilde{r}_{q}=\frac{4 \zeta_{q, r}^{2} r e^{-2 \zeta_{q, r} \tau}}{s_{q, r, b}^{2}}$
+tilde_r = 4 * zeta_qr.^2 * r_0(1) .* exp(-2* zeta_qr *T)./s_qrb.^2;
+
+% Recchioni and Sun page 17 eq. (69)
+% \mu_{q, r}=-\frac{1}{2}(\lambda+(l k-q) \eta \Omega \rho_{p, r}
+
+% Recchioni and Sun page 17 eq. (70)
+% $\zeta_{q,r}=\frac{1}{2}[4\mu_{q,r}^{2}+2 \eta^{2}
+% (\varphi_{q}(k)\Omega^{2}-q+\imath k))]^{1/2}$
+% zeta_qr= 0.5*(4*mu_qr.^2 + 2*eta.^2*(phi_qv.*b.^2-q+1i*xi)).^0.5;%
+
+% Recchioni and Sun page 17 eq. (71)
+% $s_{q, r, g}=1-e^{-2 \zeta_{q, r} \tau}$
+
+
+% Recchioni and Sun page 17 eq. (72)
+% $s_{q,r,b}=(\zeta_{q,r}+\mu_{q,r})e^{-2\zeta_{q,r}\tau}
+% +(\zeta_{q, r}-\mu_{q, r})$
 
 
 % Recchioni and Sun page 18 eq. (83)
@@ -73,22 +91,29 @@ tilde_r = 4 * diag(r_0) * (zeta_qr.^2 .* exp(-2* zeta_qr *T)./s_qrb.^2);
 sum_v1 = 2*chi.*v_bar./gamma.^2*log(s_qvb./(2*zeta_qv));
 sum_v2 = 2*chi.*v_bar./gamma.^2*(mu_qv+zeta_qv) * T;
 sum_v3 = 2*v_0./gamma.^2 * ((zeta_qv.^2-mu_qv.^2).*s_qvg./s_qvb); 
-underline_W_vq = exp(-sum_v1-sum_v2-sum_v3);
+underline_W_vq = exp(-sum_v1-sum_v2-sum_v3);dia
 
 % Recchioni and Sun page 18 eq. (84)
 % W_rq^0 
 sum_r1 = 2*lambda.*r_bar./eta.^2*log(s_qrb./(2*zeta_qr));
 sum_r2 = 2*lambda.*r_bar./eta.^2*(mu_qr+zeta_qr)*T;
-sum_r3 = 2*r_0./eta.^2*((zeta_qr.^2-mu_qr.^2).*s_qrg./s_qrb);
+sum_r3 = 2*r_0./eta.^2*(zeta_qr.^2-mu_qr.^2).*s_qrg./s_qrb;
 underline_W_rq = exp(-sum_r1-sum_r2-sum_r3);
 
+% Recchioni and Sun page 18 eq. (80)
+% \nu_{r}=2 \lambda \theta / \eta^{2}-1
+nu_r = 2*lambda.*r_bar./eta.^2 - 1;
 
+% M_{q, r}=\frac{2}{\eta^{2}} \frac{s_{q, r, b}}{s_{q, r, g}}
+m_qr = 2*s_qrb./s_qrg./eta.^2;
+
+% \tilde{r}_{q}=\frac{4 \zeta_{q, r}^{2} r e^{-2 \zeta_{q, r} \tau}}{s_{q, r, b}^{2}}$
+tilde_r = 4 * zeta_qr.^2 * r_0(1) .* exp(-2* zeta_qr *T)./s_qrb.^2;
 
 % Recchioni Page 6 eq. (34)
-time_factor = T * exp(lambda(1)*T) / (1+ exp(lambda(1)*T));
-factor = S0*exp(-r_0(1)*T/(1+exp(lambda(1)*T))); % mixes discount and damping
-tail_1 = (m_qr(1,:)/(m_qr(1,:)+time_factor)).^(nu_r(1)+1);
-tail = tail_1 * exp(-time_factor*m_qr(1,:).*tilde_r(1,:)./(m_qr(1,:)+time_factor));
+time_factor = T * exp(lambda*T) / (1+ exp(lambda*T));
+factor = S0*exp(-r_0(1)*T/(1+exp(lambda*T))); % mixes discount and damping
+tail = (m_qr/(m_qr+time_factor))^(nu_r+1).* exp(-time_factor*m_qr.*tilde_r./(m_qr+time_factor));
 call_integrand = ((S0/K).^(q-1-1i*xi).*exp(-1i*xi*r_0(1)*T)).*underline_W_vq.*underline_W_rq.*tail./(-xi.^2-(2*q-1)*xi*1i+q*(q-1));
 call_price = factor*sum(call_integrand)*dxi/(2*pi); 
 

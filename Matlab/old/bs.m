@@ -9,7 +9,7 @@ K = 1.1; % strike price
 % Market parameters
 S0 = 1; % spot price
 r = 0.05; % risk-free interest rate
-q = 0.0; % dividend rate
+q = 0.02; % dividend rate
 
 % Model parameter
 sigma = 0.4; % volatility
@@ -160,7 +160,7 @@ for i = 1:nblocks
     X = muABM*T + sigma*randn(1,nsample)*sqrt(T);
 
     % Transform to geometric Brownian motion S(T) at time T
-    S = S0*exp(X(end));
+    S = S0*exp(X);
 
     % Discounted expected payoff
     VcMCb(i) = exp(-r*T)*mean(max(S-K,0));
