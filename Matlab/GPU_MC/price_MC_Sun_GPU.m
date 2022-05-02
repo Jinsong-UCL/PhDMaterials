@@ -6,20 +6,21 @@
 % dr_m = lambda_m * (r_m_bar - r_m) * dt + eta_m * r_m^alpha * dZ_r_m
 
 
+
 % Monte Carlo parameters; 
-nblocks = 10000;
-npaths = 9000;
+nblocks = 100;
+npaths = 200;
 
 
 %% Monte Carlo
 
 tic;
-VcMC = zeros(nblocks,1);
-VpMC = zeros(nblocks,1);
+VcMC = zeros(nblocks,1,"gpuArray");
+VpMC = zeros(nblocks,1,"gpuArray");
 for block = 1:nblocks
-    MC_result = zeros(nsteps+1,npaths);
-    VcMCb = zeros(1,npaths);
-    VpMCb = zeros(1,npaths);
+    MC_result = zeros(nsteps+1,npaths,"gpuArray");
+    VcMCb = zeros(1,npaths,"gpuArray");
+    VpMCb = zeros(1,npaths,"gpuArray");
     for path = 1:npaths    
         % Increments of the arithmetic Brownian motion X(t) = log(S(t)/S(0))
         % dX = muABM*dt + sigma*sqrt(dt)*randn(ndates,nsample);
@@ -28,11 +29,11 @@ for block = 1:nblocks
         % Generate a random path using the above model
         % Volatility part
         % Model variables
-        v = zeros(nsteps+1,d);
+        v = zeros(nsteps+1,d,"gpuArray");
         v(1,:) = v_0;
         % corr (dW_v, dZ_v) = rho_v
-        dW_v_1 = randn(nsteps,d);
-        dW_v_2 = randn(nsteps,d);
+        dW_v_1 = randn(nsteps,d,"gpuArray");
+        dW_v_2 = randn(nsteps,d,"gpuArray");
         dW_v_3 = dW_v_1*diag(rho_v) + dW_v_2*diag((1-rho_v.^2).^0.5);
 
         dW_v = dW_v_1 * dt;
@@ -46,12 +47,12 @@ for block = 1:nblocks
     
         % Interest rate part
         % Model variables
-        r = zeros(nsteps+1,2);
+        r = zeros(nsteps+1,2,"gpuArray");
         r(1,:) = r_0;
 
         % corr (dW_r_i, dZ_r_i) = rho_r_i
-        dW_r_1 = randn(nsteps,2);
-        dW_r_2 = randn(nsteps,2);
+        dW_r_1 = randn(nsteps,2,"gpuArray");
+        dW_r_2 = randn(nsteps,2,"gpuArray");
         dW_r_3 = dW_r_1*diag(rho_r) + dW_r_2*diag((1-rho_r.^2).^0.5);
 
         dW_r = dW_r_1 * dt;
@@ -63,12 +64,12 @@ for block = 1:nblocks
                 + r(steps,:).^param_alpha .* dZ_r(steps,:)* diag(eta),0);
         end
         
-        sum_v_1 = zeros(nsteps,1);
-        sum_v_2 = zeros(nsteps,1);
-        sum_r_1 = zeros(nsteps,1);
-        sum_r_2 = zeros(nsteps,1);
-        mu = zeros(nsteps,1);
-        x = zeros(nsteps+1,1);
+        sum_v_1 = zeros(nsteps,1,"gpuArray");
+        sum_v_2 = zeros(nsteps,1,"gpuArray");
+        sum_r_1 = zeros(nsteps,1,"gpuArray");
+        sum_r_2 = zeros(nsteps,1,"gpuArray");
+        mu = zeros(nsteps,1,"gpuArray");
+        x = zeros(nsteps+1,1,"gpuArray");
         % Valuation for dx
         for steps = 1:nsteps
             % Block for MuYu
@@ -99,18 +100,20 @@ for block = 1:nblocks
     
         VcMCb(1,path) = exp(-r_0(1)*T)*payoffs_call;
         VpMCb(1,path) = exp(-r_0(1)*T)*payoffs_put;
-        
+
        % MC_result(1:nsteps+1,path) = S0*exp(x_i_j);    
     end
     VcMC(block) = mean(VcMCb);
     VpMC(block) = mean(VpMCb);
-    fprintf('%14.10f\n',block);
 end
-VcMC_result = mean(VcMC);
-VpMC_result = mean(VpMC);
-scMC = sqrt(var(VcMC)/nblocks);
-spMC = sqrt(var(VpMC)/nblocks);
-
+VcMC_result1 = mean(VcMC);
+VcMC_result = gather(VcMC_result1);
+VpMC_result1 = mean(VpMC);
+VpMC_result = gather(VpMC_result1);
+scMC1 = sqrt(var(VcMC)/nblocks);
+scMC = gather(scMC1);
+spMC1 = sqrt(var(VpMC)/nblocks);
+spMC = gather(spMC1);
 cputime_MC = toc;
 
 %fprintf('%22s%14.10f%14.10f\n','Monte Carlo 1st block',VcMC(1),VpMC(1))

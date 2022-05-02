@@ -16,7 +16,7 @@ b_ij = b_i - b_j;
 a_ij_tilde = a_i + a_j;
 b_ij_tilde = b_i + b_j;
 a_ij_rho = rho_v.*a_ij;
-b_ij_rho = rho_v.*b_ij;
+b_ij_rho = rho_r.*b_ij;
 a_ij_prime = a_ij_tilde ./ a_ij;
 b_ij_prime = b_ij_tilde ./ b_ij;
 %% Call option
@@ -27,7 +27,7 @@ q = -2; % damping factor for a call
 % + q\frac{\tilde{a}_n^{i,j}}{a_n^{i,j}}\right)-\imath k\left(2q
 % + \frac{\tilde{a}_n^{i,j}}{a_n^{i,j}}\right)\right] \\phi_vq = zeros(d,ngrid);
 phi_qv = ones(d,1)*0.5*xi.^2-0.5*((q^2+q*a_ij_prime')*ones(1,ngrid)-(2*q+a_ij_prime')*1i*xi);%
-phi_qr = ones(d,1)*0.5*xi.^2-0.5*((q^2+q*b_ij_prime')*ones(1,ngrid)-(2*q+b_ij_prime')*1i*xi);%
+phi_qr = ones(2,1)*0.5*xi.^2-0.5*((q^2+q*b_ij_prime')*ones(1,ngrid)-(2*q+b_ij_prime')*1i*xi);%
 
 
 % Recchioni and Sun page 17 eq. (61)
@@ -38,8 +38,9 @@ mu_qr = -0.5*(lambda.'*ones(1,ngrid)+(eta.*b_ij_rho).'*(1i*xi-q));
 % Recchioni and Sun page 17 eq. (62)
 % \zeta_{q,v_{n}}=\frac{1}{2}\left[4\mu_{q,v_{n}}^{2}+2\gamma_{n}^{2}
 % \varphi_{q}^{v_{n}}(k)\left(a_{n}^{i,j}\right)^{2}\right]^{1/2} \\
-zeta_qv= 0.5*(4*mu_qv.^2 + 2*diag(gamma.^2.*a_ij)*phi_qv).^0.5; 
-zeta_qr= 0.5*(4*mu_qr.^2 + 2*diag(eta.^2.*b_ij)*phi_qr).^0.5; %
+zeta_qv= 0.5*(4*mu_qv.^2 + 2*diag(gamma.^2.*a_ij.^2)*phi_qv).^0.5; 
+% zeta_qr= 0.5*(4*mu_qr.^2 + 2*diag(eta.^2.*b_ij)*phi_qr).^0.5; %
+zeta_qr= 0.5*(4*mu_qr.^2 + 2*diag(eta.^2)*(diag(b_ij.^2)*phi_qr+diag(b_ij_prime)*ones(2,1)*(-q+1i*xi))).^0.5; %
 
 % Recchioni and Sun page 17 eq. (63)
 % s_{q,v_n,g} = 1-e^{-2\zeta_{q,v_n}\tau}
@@ -67,7 +68,6 @@ tilde_r = 4 * diag(r_0) * (zeta_qr.^2 .* exp(-2* zeta_qr *T)./s_qrb.^2);
 
 
 
-
 % Recchioni and Sun page 18 eq. (83)
 % W_vq^0 
 sum_v1 = 2*chi.*v_bar./gamma.^2*log(s_qvb./(2*zeta_qv));
@@ -82,19 +82,17 @@ sum_r2 = 2*lambda.*r_bar./eta.^2*(mu_qr+zeta_qr)*T;
 sum_r3 = 2*r_0./eta.^2*((zeta_qr.^2-mu_qr.^2).*s_qrg./s_qrb);
 underline_W_rq = exp(-sum_r1-sum_r2-sum_r3);
 
-
-
 % Recchioni Page 6 eq. (34)
 time_factor = T * exp(lambda(1)*T) / (1+ exp(lambda(1)*T));
 factor = S0*exp(-r_0(1)*T/(1+exp(lambda(1)*T))); % mixes discount and damping
-tail_1 = (m_qr(1,:)/(m_qr(1,:)+time_factor)).^(nu_r(1)+1);
-tail = tail_1 * exp(-time_factor*m_qr(1,:).*tilde_r(1,:)./(m_qr(1,:)+time_factor));
+tail = (m_qr(1,:)./(m_qr(1,:)+time_factor)).^(nu_r(1)+1) .* exp(-time_factor*m_qr(1,:).*tilde_r(1,:)./(m_qr(1,:)+time_factor));
 call_integrand = ((S0/K).^(q-1-1i*xi).*exp(-1i*xi*r_0(1)*T)).*underline_W_vq.*underline_W_rq.*tail./(-xi.^2-(2*q-1)*xi*1i+q*(q-1));
 call_price = factor*sum(call_integrand)*dxi/(2*pi); 
 
 % 
 cputime = toc;
-fprintf('%22s%14.10f%14.3f\n','Call and put price, CF',call_price,cputime)
+% fprintf('%22s%14.10f%14.10f%14.3f\n','Call price, CF',call_price,0.0709481041,cputime)
+fprintf('%22s%14.10f%14.10f%14.3f\n','Put price, CF',call_price,0.0149844470,cputime)
 % 
 % figure(1)
 % plot(xi,real(call_option_integrand),xi,imag(call_option_integrand))

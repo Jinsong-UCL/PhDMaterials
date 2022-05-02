@@ -1,26 +1,4 @@
-%% Compute the YU price of European and lookback options
-% The model for the underlying is geometric Brownian motion
-% dS = mu*S*dt + sigma*S*dW
-% dS/S = (r_0 - r_i)*dt - a_i * diag_v * dW_v - b_i * diag_r^alpha * dW_r
-% dv_n = chi_n * (v_n_bar - v_n) * dt + gamma_n * v_n^0.5 * dZ_v_n
-% dr_m = lambda_m * (r_m_bar - r_m) * dt + eta_m * r_m^alpha * dZ_r_m
-
-
-% Monte Carlo parameters; 
-nblocks = 10000;
-npaths = 9000;
-
-
-%% Monte Carlo
-
-tic;
-VcMC = zeros(nblocks,1);
-VpMC = zeros(nblocks,1);
-for block = 1:nblocks
-    MC_result = zeros(nsteps+1,npaths);
-    VcMCb = zeros(1,npaths);
-    VpMCb = zeros(1,npaths);
-    for path = 1:npaths    
+function [payoffs_call,payoffs_put] = MC_GPU(nsteps,d,v_0,dt,rho_v,r_0,rho_r,a_i,a_j,b_i,b_j,param_alpha,S0,K)
         % Increments of the arithmetic Brownian motion X(t) = log(S(t)/S(0))
         % dX = muABM*dt + sigma*sqrt(dt)*randn(ndates,nsample);
         % dS/S = (r_0 - r_i)*dt - a_i * diag_v^0.5 * dW_v - b_i * diag_r^alpha * dW_r    
@@ -28,11 +6,11 @@ for block = 1:nblocks
         % Generate a random path using the above model
         % Volatility part
         % Model variables
-        v = zeros(nsteps+1,d);
+        v = zeros("like",nsteps+1,d);
         v(1,:) = v_0;
         % corr (dW_v, dZ_v) = rho_v
-        dW_v_1 = randn(nsteps,d);
-        dW_v_2 = randn(nsteps,d);
+        dW_v_1 = randn(nsteps,d,"gpuArray");
+        dW_v_2 = randn(nsteps,d,"gpuArray");
         dW_v_3 = dW_v_1*diag(rho_v) + dW_v_2*diag((1-rho_v.^2).^0.5);
 
         dW_v = dW_v_1 * dt;
@@ -46,12 +24,12 @@ for block = 1:nblocks
     
         % Interest rate part
         % Model variables
-        r = zeros(nsteps+1,2);
+        r = zeros("like",nsteps+1,2);
         r(1,:) = r_0;
 
         % corr (dW_r_i, dZ_r_i) = rho_r_i
-        dW_r_1 = randn(nsteps,2);
-        dW_r_2 = randn(nsteps,2);
+        dW_r_1 = randn(nsteps,2,"gpuArray");
+        dW_r_2 = randn(nsteps,2,"gpuArray");
         dW_r_3 = dW_r_1*diag(rho_r) + dW_r_2*diag((1-rho_r.^2).^0.5);
 
         dW_r = dW_r_1 * dt;
@@ -63,12 +41,12 @@ for block = 1:nblocks
                 + r(steps,:).^param_alpha .* dZ_r(steps,:)* diag(eta),0);
         end
         
-        sum_v_1 = zeros(nsteps,1);
-        sum_v_2 = zeros(nsteps,1);
-        sum_r_1 = zeros(nsteps,1);
-        sum_r_2 = zeros(nsteps,1);
-        mu = zeros(nsteps,1);
-        x = zeros(nsteps+1,1);
+        sum_v_1 = zeros("like",nsteps,1);
+        sum_v_2 = zeros("like",nsteps,1);
+        sum_r_1 = zeros("like",nsteps,1);
+        sum_r_2 = zeros("like",nsteps,1);
+        mu = zeros("like",nsteps,1);
+        x = zeros("like",nsteps+1,1);
         % Valuation for dx
         for steps = 1:nsteps
             % Block for MuYu
@@ -96,34 +74,5 @@ for block = 1:nblocks
     
         payoffs_call = max(S_end - K,0);
         payoffs_put = max(K - S_end,0);
-    
-        VcMCb(1,path) = exp(-r_0(1)*T)*payoffs_call;
-        VpMCb(1,path) = exp(-r_0(1)*T)*payoffs_put;
-        
-       % MC_result(1:nsteps+1,path) = S0*exp(x_i_j);    
-    end
-    VcMC(block) = mean(VcMCb);
-    VpMC(block) = mean(VpMCb);
-    fprintf('%14.10f\n',block);
 end
-VcMC_result = mean(VcMC);
-VpMC_result = mean(VpMC);
-scMC = sqrt(var(VcMC)/nblocks);
-spMC = sqrt(var(VpMC)/nblocks);
-
-cputime_MC = toc;
-
-%fprintf('%22s%14.10f%14.10f\n','Monte Carlo 1st block',VcMC(1),VpMC(1))
-%fprintf('%22s%14.10f%14.10f\n','Monte Carlo last block',VcMC(end),VpMC(end))
-fprintf('%22s%14.10f%14.10f%14.3f\n','Monte Carlo',VcMC_result,VpMC_result,cputime_MC)
-fprintf('%22s%14.10f%14.10f\n','Monte Carlo stdev',scMC,spMC)
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%% Need to be solved how to intergrate the
-%%%%%%%%%%%%%%%%%%%%%%%%%%% interest rate ???
-%%%%%%%%%%%%%%%%%%%%%%%%%%% Downward sloping???
-%%%%%%%%%%%%%%%%%%%%%%%%%%% steady result now
-
-
-
 
