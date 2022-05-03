@@ -55,11 +55,29 @@ ngrid = 2^10; % number of grid points
 % Grids in real and Fourier space
 N = ngrid/2;
 b = xwidth/2; % upper bound of the support in real space
+dx = xwidth/ngrid; % grid step in real space
+x = dx*(-N:N-1); % grid in real space
 dxi = pi/b; % Nyquist relation: grid step in Fourier space
 xi = dxi*(-N:N-1); % grid in Fourier space
 
+b = xwidth/2; % upper bound of the support in real space
+U = S0*exp(b);
+L = S0*exp(-b);
+
+% Analytical Fourier transform of the payoff
+l = log(L/S0); % lower log barrier
+k = log(K/S0); % log strike
+u = log(U/S0); % upper log barrier
+% Call 
+a1 = max(l,k);
+b1 = u;
+% % Put
+% a1 = min(k,u);
+% b1 = l;
+
+
 %% Call option
-q = -2; % damping factor for a call
+q = 2; % damping factor for a call
 
 % Recchioni and Sun page 17 eq. (58)
 % \varphi_q^{v_n}(k) = \frac{k^2}{2}-\frac{1}{2}\left[\left(q^2
@@ -127,17 +145,27 @@ m_qr = 2/eta^2*s_qrb./s_qrg;
 
 % \tilde{r}_{q}=\frac{4 \zeta_{q, r}^{2} r e^{-2 \zeta_{q, r} \tau}}{s_{q, r, b}^{2}}$
 tilde_r = 4 * zeta_qr.^2 * r_0 .* exp(-2* zeta_qr *T)./s_qrb.^2;
+%% FFT calculation
+Psi = exp(-sum_v1-sum_v2-sum_v3-sum_r1-sum_r2-sum_r3);  
+xi2 = 1i*xi-q;
+G = S0*((exp(b1*(1+xi2))-exp(a1*(1+xi2)))./(1+xi2) ...
+    - (exp(k+b1*xi2)-exp(k+a1*xi2))./xi2);
+c = exp(-r_0(1)*T).*real(fftshift(fft(ifftshift(G.*conj(Psi)))))/xwidth; % call
+VF = interp1(S0*exp(x),c,S0,'spline');
 
+
+%% Recchioni Calculation
 % Recchioni Page 6 eq. (34)
 time_factor = T * exp(lambda*T) / (1+ exp(lambda*T));
-factor = S0*exp(-r_0*T/(1+exp(lambda*T))); % mixes discount and damping
 tail = (m_qr/(m_qr+time_factor))^(nu_r+1).* exp(-time_factor*m_qr.*tilde_r./(m_qr+time_factor));
+factor = S0*exp(-r_0*T/(1+exp(lambda*T))); % mixes discount and damping
 call_integrand = ((S0/K).^(q-1-1i*xi).*exp(-1i*xi*r_0*T)).*underline_W_vq.*underline_W_rq.*tail./(-xi.^2-(2*q-1)*xi*1i+q*(q-1));
 call_price = factor*sum(call_integrand)*dxi/(2*pi); 
 
 % 
 cputime = toc;
-fprintf('%22s%14.10f%14.3f\n','Call and put price, CF',call_price,cputime)
+fprintf('%22s%14.7f%14.7f%14.7f%14.3f\n','Call price, MC, Sun, FFT',0.1177400939,call_price,VF,cputime)
+%fprintf('%22s%14.7f%14.7f%14.7f%14.3f\n','Put price, MC, Sun, FFT',0.0943065201,call_price,VF,cputime)
 % 
 % figure(1)
 % plot(xi,real(call_option_integrand),xi,imag(call_option_integrand))
