@@ -1,4 +1,6 @@
 %% Pricing of European options with the double Heston model and an integral in Fourier space
+% Call or put indicator
+theta = 0; % 1 for call and 0 for put
 %%
 tic;
 % Fourier parameters
@@ -20,12 +22,14 @@ L = S0*exp(-b);
 l = log(L/S0); % lower log barrier
 k = log(K/S0); % log strike
 u = log(U/S0); % upper log barrier
-% Call 
-% a1 = max(l,k);
-% b1 = u;
-% Put
-a1 = min(k,u);
-b1 = l;
+
+if theta == 1 % call
+    a1 = max(l,k);
+    b1 = u;
+else % put
+    a1 = min(k,u);
+    b1 = l;
+end
 
 
 % Auxiliary parameters
@@ -39,7 +43,11 @@ a_ij_division = a_ij_plus ./ a_ij_minus;
 b_ij_division = b_ij_plus ./ b_ij_minus;
 
 %% Call option
-q = -2; % damping factor for a call
+if theta == 1
+    q = 2; % damping factor for a call
+else 
+    q = -2; % damping factor for a put
+end
 
 % Recchioni and Sun, 2016 page 17 eq. (58)
 % \varphi_q^{v_n}(k) = \frac{k^2}{2}-\frac{1}{2}\left[\left(q^2
@@ -135,8 +143,12 @@ call_price = factor*sum(call_integrand)*dxi/(2*pi);
 
 % 
 cputime = toc;
-%fprintf('%22s%14.10f%14.10f%14.10f%14.3f\n','Call price, MC, FT, FFT',0.0709481041,call_price,VF,cputime)
-fprintf('%22s%14.10f%14.10f%14.10f%14.3f\n','Put price, MC, FT, FFT',0.0149844470,call_price,VF,cputime)
+if theta ==1
+    fprintf('%22s%14.10f%14.10f%14.10f%14.3f\n','Call price, MC, FT, FFT',0.0709481041,call_price,VF,cputime)
+else
+    fprintf('%22s%14.10f%14.10f%14.10f%14.3f\n','Put price, MC, FT, FFT',0.0149844470,call_price,VF,cputime)
+end
+
 % 
 % figure(1)
 % plot(xi,real(call_option_integrand),xi,imag(call_option_integrand))
