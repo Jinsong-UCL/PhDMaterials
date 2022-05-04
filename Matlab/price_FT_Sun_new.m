@@ -2,7 +2,7 @@
 tic
 
 % Call or put parameter
-theta = -1; % 1 for call and -1 for put
+theta = 1; % 1 for call and -1 for put
 
 % Damping parameter
 alpha = -theta*2; % Parseval
@@ -75,9 +75,9 @@ phi_qr = ones(2,1)*0.5*xi.^2-0.5*((q^2+q*b_ij_division')*ones(1,ngrid)-(2*q+b_ij
 % Recchioni and Sun, 2016 page 17 eq. (61)
 % \mu_{q,v_n} = -\frac{1}{2}(\chi_n+(\imath k-q)\gamma_n\tilde{\rho}_{n,v})
 % Sun page 16 eq. (60)
-mu_qv = -0.5*(chi.'*ones(1,ngrid)+(gamma.*a_ij_rho).'*(1i*xi-q));
+mu_qv = -0.5*(chi.'*ones(1,ngrid)+(gamma.*a_ij_rho)'.*(1i*xi-q));
 % Sun page 17 eq. (70,72)
-mu_qr = -0.5*(lambda.'*ones(1,ngrid)+(eta.*b_ij_rho).'*(1i*xi-q));
+mu_qr = -0.5*(lambda.'*ones(1,ngrid)+(eta.*b_ij_rho)'.*(1i*xi-q));
 
 % Recchioni and Sun, 2016 page 17 eq. (62)
 % \zeta_{q,v_{n}}=\frac{1}{2}\left[4\mu_{q,v_{n}}^{2}+2\gamma_{n}^{2}
@@ -109,9 +109,9 @@ nu_v = 2*chi.*v_bar./gamma.^2 - 1;
 nu_r = 2*lambda.*r_bar./eta.^2 - 1;
 
 % Sun page 18 eq. (80)
-m_qv = diag(2./gamma)*(s_qvb./s_qvg);  
+m_qv = diag(2./gamma.^2)*(s_qvb./s_qvg);  
 % Sun page 19 eq. (82)
-m_qr = diag(2./eta)*(s_qrb./s_qrg);
+m_qr = diag(2./eta.^2)*(s_qrb./s_qrg);
 
 % Sun page 18 eq. (80)
 tilde_v = 4*diag(v_0)*(zeta_qv.^2.*exp(-2* zeta_qv *T)./s_qvb.^2);
@@ -145,7 +145,7 @@ priceP = interp1(S0*exp(x),c,S0,'spline');
 time_factor = T*exp(lambda(1)*T)/(1+exp(lambda(1)*T));
 factor = S0*exp(-r_0(1)*T/(1+exp(lambda(1)*T))); % mixes discount and damping
 tail = (m_qr(1,:)./(m_qr(1,:)+time_factor)).^(nu_r(1)+1).*exp(-time_factor*m_qr(1,:).*tilde_r(1,:)./(m_qr(1,:)+time_factor));
-integrand = ((S0/K).^(q-1-1i*xi).*exp(-1i*xi*r_0(1)*T)).*underline_W_vq.*underline_W_rq.*tail./(-xi.^2-(2*q-1)*xi*1i+q*(q-1));
+integrand = (S0/K).^(q-1-1i*xi).*underline_W_vq.*underline_W_rq.*tail./(-xi.^2-(2*q-1)*xi*1i+q*(q-1));
 priceS = factor*sum(integrand)*dxi/(2*pi); 
 
 cputime = toc;
