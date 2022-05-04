@@ -69,15 +69,15 @@ l = log(L/S0); % lower log barrier
 k = log(K/S0); % log strike
 u = log(U/S0); % upper log barrier
 % Call 
-a1 = max(l,k);
-b1 = u;
+%a1 = max(l,k);
+%b1 = u;
 % % Put
-% a1 = min(k,u);
-% b1 = l;
+a1 = min(k,u);
+b1 = l;
 
 
 %% Call option
-q = 2; % damping factor for a call
+q = -2; % damping factor for a call
 
 % Recchioni and Sun page 17 eq. (58)
 % \varphi_q^{v_n}(k) = \frac{k^2}{2}-\frac{1}{2}\left[\left(q^2
@@ -164,8 +164,8 @@ call_price = factor*sum(call_integrand)*dxi/(2*pi);
 
 % 
 cputime = toc;
-fprintf('%22s%14.7f%14.7f%14.7f%14.3f\n','Call price, MC, Sun, FFT',0.1177400939,call_price,VF,cputime)
-%fprintf('%22s%14.7f%14.7f%14.7f%14.3f\n','Put price, MC, Sun, FFT',0.0943065201,call_price,VF,cputime)
+%fprintf('%22s%14.7f%14.7f%14.7f%14.3f\n','Call price, MC, Sun, FFT',0.1177400939,call_price,VF,cputime)
+fprintf('%22s%14.7f%14.7f%14.7f%14.3f\n','Put price, MC, Sun, FFT',0.0943065201,call_price,VF,cputime)
 % 
 % figure(1)
 % plot(xi,real(call_option_integrand),xi,imag(call_option_integrand))
