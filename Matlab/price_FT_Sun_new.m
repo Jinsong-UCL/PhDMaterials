@@ -2,7 +2,7 @@
 tic
 
 % Call or put parameter
-theta = 1; % 1 for call and -1 for put
+theta = -1; % 1 for call and -1 for put
 
 % Damping parameter
 alpha = -theta*2; % Parseval
@@ -150,9 +150,9 @@ priceS = factor*sum(integrand)*dxi/(2*pi);
 
 cputime = toc;
 if theta ==1
-    fprintf('%22s%14.10f%14.10f%14.10f%14.3f\n','Call price, MC, FTP, FTS',0.0709481041,priceP,priceS,cputime)
+    fprintf('%22s%14.10f%14.10f%14.10f%14.3f\n','Call price, MC, FTP, FTS',VcMC_result,priceP,priceS,cputime)
 else
-    fprintf('%22s%14.10f%14.10f%14.10f%14.3f\n','Put price, MC, FTP, FTS',0.0149844470,priceP,priceS,cputime)
+    fprintf('%22s%14.10f%14.10f%14.10f%14.3f\n','Put price, MC, FTP, FTS',VpMC_result,priceP,priceS,cputime)
 end
 
 % figure(1)

@@ -7,8 +7,8 @@
 
 
 % Monte Carlo parameters; 
-nblocks = 200;
-npaths = 300;
+nblocks = 2000;
+npaths = 10000;
 
 
 %% Monte Carlo
@@ -35,8 +35,8 @@ for block = 1:nblocks
         dW_v_2 = randn(nsteps,d);
         dW_v_3 = dW_v_1*diag(rho_v) + dW_v_2*diag((1-rho_v.^2).^0.5);
 
-        dW_v = dW_v_1 * dt;
-        dZ_v = dW_v_3 * dt;
+        dW_v = dW_v_1 * sqrt(dt);
+        dZ_v = dW_v_3 * sqrt(dt);
         
         % dv = chi * (v_bar - v) * dt + gamma * \sqrt(v) * dZ_v
         for steps = 1:nsteps
@@ -54,8 +54,8 @@ for block = 1:nblocks
         dW_r_2 = randn(nsteps,2);
         dW_r_3 = dW_r_1*diag(rho_r) + dW_r_2*diag((1-rho_r.^2).^0.5);
 
-        dW_r = dW_r_1 * dt;
-        dZ_r = dW_r_3 * dt;
+        dW_r = dW_r_1 * sqrt(dt);
+        dZ_r = dW_r_3 * sqrt(dt);
 
         % dr = lambda * (r_bar - r) * dt + eta * r^alpha * dZ_r
         for steps = 1:nsteps   
@@ -86,7 +86,8 @@ for block = 1:nblocks
             % Block for r
             sum_r_2(steps) = r(steps,:).^param_alpha .* dW_r(steps,:)*(b_i'-b_j');
     
-            % dx = (r_0 - r_i)*dt - a_i * diag_v^0.5 * dW_v - b_i * diag_r^alpha * dW_r 
+            % dx = (r_0 - r_i)*dt - a_i * diag_v^0.5 * dW_v - b_i *
+            % diag_r^alpha * dW_r ???????????????
             x(steps+1) = x(steps) + mu(steps)*dt + sum_v_2(steps) + sum_r_2(steps);
         end
     

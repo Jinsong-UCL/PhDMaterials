@@ -163,8 +163,8 @@ call_integrand = ((S0/K).^(q-1-1i*xi).*exp(-1i*xi*r_0*T)).*underline_W_vq.*under
 call_price = factor*sum(call_integrand)*dxi/(2*pi); 
 
 cputime = toc;
-fprintf('%22s%14.7f%14.7f%14.7f%14.3f\n','Call price, MC, Sun, Parseval',0.1177400939,call_price,VF,cputime)
-%fprintf('%22s%14.7f%14.7f%14.7f%14.3f\n','Put price, MC, Sun, Parseval',0.0943065201,call_price,VF,cputime)
+fprintf('%22s%14.7f%14.7f%14.7f%14.3f\n','Call price, MC, Sun, Parseval',0.1177400939,VF,call_price,cputime)
+%fprintf('%22s%14.7f%14.7f%14.7f%14.3f\n','Put price, MC, Sun, Parseval',0.0943065201,VF,call_price,cputime)
 % 
 % figure(1)
 % plot(xi,real(call_option_integrand),xi,imag(call_option_integrand))
