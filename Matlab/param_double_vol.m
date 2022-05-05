@@ -35,18 +35,18 @@ v_bar = [0.05];
 gamma = [0.6];
 
 % Interest rate coefficients or weights
-b_i = [0.0000004,0.000000];
-b_j = [0.000000,0.000000];
+b_i = [1,000001.000000];
+b_j = [0.000000,0.000001];
 
 % Mean-reversion rate (or strength) of the interest rate
-lambda = [0.01,0.02]; % lambda_i,lambda_j
+lambda = [0.01,0.00001]; % lambda_i,lambda_j
 
 % Long-term average of the interest rate
 r_bar = [0.02,0.0]; % \bar{r}_i,\bar{r}_j
 
 % Volatility of the interest rate
-eta = [0.001,0.002]; % \eta_i,\eta_j
+eta = [0.001,0.0001]; % \eta_i,\eta_j
 
 % Correlations
 rho_v = [-0.3];
-rho_r = [-0.23,-0.81];
+rho_r = [-0.23,0];

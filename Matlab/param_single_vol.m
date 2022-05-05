@@ -35,7 +35,7 @@ v_bar = [0.05];
 gamma = [0.6];
 
 % Interest rate coefficients or weights
-b_i = [1,0.000000];
+b_i = [1,000001.000000];
 b_j = [0.000000,0.000001];
 
 % Mean-reversion rate (or strength) of the interest rate

@@ -145,14 +145,17 @@ priceP = interp1(S0*exp(x),c,S0,'spline');
 time_factor = T*exp(lambda(1)*T)/(1+exp(lambda(1)*T));
 factor = S0*exp(-r_0(1)*T/(1+exp(lambda(1)*T))); % mixes discount and damping
 tail = (m_qr(1,:)./(m_qr(1,:)+time_factor)).^(nu_r(1)+1).*exp(-time_factor*m_qr(1,:).*tilde_r(1,:)./(m_qr(1,:)+time_factor));
+%tail = exp(q*r_0(1)*T);
 integrand = (S0/K).^(q-1-1i*xi).*underline_W_vq.*underline_W_rq.*tail./(-xi.^2-(2*q-1)*xi*1i+q*(q-1));
 priceS = factor*sum(integrand)*dxi/(2*pi); 
 
 cputime = toc;
 if theta ==1
-    fprintf('%22s%14.10f%14.10f%14.10f%14.3f\n','Call price, MC, FTP, FTS',VcMC_result,priceP,priceS,cputime)
+    %fprintf('%22s%14.10f%14.10f%14.10f%14.3f\n','Call price, MC, FTP, FTS',VcMC_result,priceP,priceS,cputime)
+    fprintf('%22s%14.10f%14.10f%14.3f\n','Call price, MC, FT_Sun',VcMC_result,priceS,cputime)
 else
-    fprintf('%22s%14.10f%14.10f%14.10f%14.3f\n','Put price, MC, FTP, FTS',VpMC_result,priceP,priceS,cputime)
+    %fprintf('%22s%14.10f%14.10f%14.10f%14.3f\n','Put price, MC, FTP, FTS',VpMC_result,priceP,priceS,cputime)
+    fprintf('%22s%14.10f%14.10f%14.3f\n','Call price, MC, FT_Sun',VpMC_result,priceS,cputime)
 end
 
 % figure(1)

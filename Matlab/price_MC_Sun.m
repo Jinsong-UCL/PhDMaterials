@@ -7,8 +7,8 @@
 
 
 % Monte Carlo parameters; 
-nblocks = 2000;
-npaths = 10000;
+nblocks = 200;
+npaths = 1000;
 
 
 %% Monte Carlo
