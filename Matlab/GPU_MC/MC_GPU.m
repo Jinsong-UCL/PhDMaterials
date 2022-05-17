@@ -6,15 +6,15 @@ function [payoffs_call,payoffs_put] = MC_GPU(nsteps,d,v_0,dt,rho_v,r_0,rho_r,a_i
         % Generate a random path using the above model
         % Volatility part
         % Model variables
-        v = zeros("like",nsteps+1,d);
+        v = zeros(nsteps+1,d);
         v(1,:) = v_0;
         % corr (dW_v, dZ_v) = rho_v
         dW_v_1 = randn(nsteps,d,"gpuArray");
         dW_v_2 = randn(nsteps,d,"gpuArray");
         dW_v_3 = dW_v_1*diag(rho_v) + dW_v_2*diag((1-rho_v.^2).^0.5);
 
-        dW_v = dW_v_1 * dt;
-        dZ_v = dW_v_3 * dt;
+        dW_v = dW_v_1 * sqrt(dt);
+        dZ_v = dW_v_3 * sqrt(dt);
         
         % dv = chi * (v_bar - v) * dt + gamma * \sqrt(v) * dZ_v
         for steps = 1:nsteps
@@ -24,7 +24,7 @@ function [payoffs_call,payoffs_put] = MC_GPU(nsteps,d,v_0,dt,rho_v,r_0,rho_r,a_i
     
         % Interest rate part
         % Model variables
-        r = zeros("like",nsteps+1,2);
+        r = zeros(nsteps+1,2);
         r(1,:) = r_0;
 
         % corr (dW_r_i, dZ_r_i) = rho_r_i

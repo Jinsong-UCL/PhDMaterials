@@ -155,7 +155,7 @@ if theta ==1
     fprintf('%22s%14.10f%14.10f%14.3f\n','Call price, MC, FT_Sun',VcMC_result,priceS,cputime)
 else
     %fprintf('%22s%14.10f%14.10f%14.10f%14.3f\n','Put price, MC, FTP, FTS',VpMC_result,priceP,priceS,cputime)
-    fprintf('%22s%14.10f%14.10f%14.3f\n','Call price, MC, FT_Sun',VpMC_result,priceS,cputime)
+    fprintf('%22s%14.10f%14.10f%14.3f\n','Put  price, MC, FT_Sun',VpMC_result,priceS,cputime)
 end
 
 % figure(1)

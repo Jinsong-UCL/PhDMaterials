@@ -1,19 +1,18 @@
-%% Compute the YU price of European and lookback options
+%% Compute the Monte Carlo price of European options with the Yu model
 % The model for the underlying is geometric Brownian motion
-% dS = mu*S*dt + sigma*S*dW
-% dS/S = (r_0 - r_i)*dt - a_i * diag_v * dW_v - b_i * diag_r^alpha * dW_r
-% dv_n = chi_n * (v_n_bar - v_n) * dt + gamma_n * v_n^0.5 * dZ_v_n
-% dr_m = lambda_m * (r_m_bar - r_m) * dt + eta_m * r_m^alpha * dZ_r_m
+% dS = mu S dt + sigma S dW
+% dS/S = (r_i-r_j)dt - (a_i-a_j)^T diag(v) dW_v - b_i diag(r^alpha) dW_r
+% dv_n = chi_n (v_n_bar-v_n) dt + gamma_n \sqrt(v_n) dZ_vn
+% dr_m = lambda_m (r_m_bar-r_m) dt + eta_m r_m^alpha dZ_rm
 
-
-% Monte Carlo parameters; 
-nblocks = 200;
+% Algorithm parameters
+nsteps = 10;
+nblocks = 20;
 npaths = 1000;
 
-
-%% Monte Carlo
-
-tic;
+% Monte Carlo
+tic
+dt = T/nsteps;
 VcMC = zeros(nblocks,1);
 VpMC = zeros(nblocks,1);
 for block = 1:nblocks
@@ -78,7 +77,6 @@ for block = 1:nblocks
             sum_r_1(steps) = r(steps,:) * (b_i.^2' - b_j.^2');
 
             mu(steps) = r(steps,1) - r(steps,2) + 0.5 * (sum_v_1(steps) + sum_r_1(steps));
-            % muYu(steps,1) = r_i(steps,1) - r_j(steps,1) - 0.5 * (sum_v_1(steps) + sum_r_1(steps));
             
             % Block for v
             sum_v_2(steps) = v(steps,:).^0.5 .* dW_v(steps,:) * (a_i'-a_j');

@@ -2,21 +2,18 @@
 % Recchioni, Sun, An explicitly solvable Heston model with stochastic interest rate,
 % European Journal of Operational Research 249 (1), 359-377, 2016.
 
-% Model parameters
-param_alpha = 0.5; % or param_alpha = 0.5
-d = 2; % dimention of n, need to be decided
+% Market parameters
+S0 = 1; % spot exchange rate
+r_0 = [0.02,0.01]; % spot interest rates r_{i0},r_{j0}
 
 % Contract parameters
 T = 1; % maturity
 K = 1; % strike price
 
-% Algoritm parameters
-nsteps = 10; % monitoring dates
-dt = T/nsteps;
+% Model parameters
 
-% Market parameters
-S0 = 1; % spot price
-r_0 = [0.02,0.01]; % initial interest rates r_{i0},r_{j0}
+param_alpha = 0.5; %
+d = 2; % number of volatility factors
 
 % Volatility coefficients or weights
 a_i = [0.6650 1.0985];
@@ -35,18 +32,18 @@ v_bar = [0.037,0.0909];
 gamma = [0.4912,1];
 
 % Interest rate coefficients or weights
-b_i = [0.0000004,0.000000];
+b_i = [1.0000004,0.000000];
 b_j = [0.000000,0.0000006];
 
 % Mean-reversion rate (or strength) of the interest rate
 lambda = [0.01,0.02]; % lambda_i,lambda_j
 
 % Long-term average of the interest rate
-r_bar = [0.02,0.1]; % \bar{r}_i,\bar{r}_j
+r_bar = [0.02,0.01]; % \bar{r}_i,\bar{r}_j
 
 % Volatility of the interest rate
 eta = [0.001,0.002]; % \eta_i,\eta_j
 
 % Correlations
-rho_v = [0.5231,-0.398];
+rho_v = [-0.5231,-0.398];
 rho_r = [-0.23,-0.81];
