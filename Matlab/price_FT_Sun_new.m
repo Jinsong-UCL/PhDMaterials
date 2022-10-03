@@ -2,7 +2,7 @@
 tic
 
 % Call or put parameter
-theta = -1; % 1 for call and -1 for put
+theta = 1; % 1 for call and -1 for put
 
 % Damping parameter
 alpha = -theta*2; % Parseval
@@ -135,8 +135,14 @@ sum_r3 = 2*r_0./eta.^2*((zeta_qr.^2-mu_qr.^2).*s_qrg./s_qrb);
 underline_W_rq = exp(-sum_r1-sum_r2-sum_r3);
 
 %% Characteristic function
-Psi = exp(-sum_v1-sum_v2-sum_v3-sum_r1-sum_r2-sum_r3); % Sun page 19 eq. (85)  
-c = exp(-r_0(1)*T).*real(fftshift(fft(ifftshift(G.*conj(Psi)))))/xwidth;
+time_factor_1 = T*exp(lambda(1)*T)/(1+exp(lambda(1)*T));
+tail_1 = (m_qr(1,:)./(m_qr(1,:)+time_factor_1)).^(nu_r(1)+1).*exp(-time_factor_1*m_qr(1,:).*tilde_r(1,:)./(m_qr(1,:)+time_factor_1));
+Psi = ((S0/K).^(q-1-1i*xi)./(-xi.^2-(2*q-1)*xi*1i+q*(q-1))).*exp(-sum_v1-sum_v2-sum_v3-sum_r1-sum_r2-sum_r3).*tail_1./G; % Sun page 19 eq. (85)  
+Psi_fa = ((S0/K).^(q-1-1i*xi)./(-xi.^2-(2*q-1)*xi*1i+q*(q-1))).*exp(-sum_v1-sum_v2-sum_v3-sum_r1-sum_r2-sum_r3); % Sun page 19 eq. (85)  
+Psi_fb = conj(Psi_fa./ G);
+%c = S0*exp(-r_0(1)*T)/(1+exp(lambda(1)*T)).*real(fftshift(fft(ifftshift(G.*conj(Psi)))))/xwidth;
+c = S0*exp(-r_0(1)*T).*real(fftshift(fft(ifftshift(G.*conj(Psi_fb)))))/xwidth;
+
 priceP = interp1(S0*exp(x),c,S0,'spline');
 
 %% Sun calculation
@@ -145,17 +151,19 @@ priceP = interp1(S0*exp(x),c,S0,'spline');
 time_factor = T*exp(lambda(1)*T)/(1+exp(lambda(1)*T));
 factor = S0*exp(-r_0(1)*T/(1+exp(lambda(1)*T))); % mixes discount and damping
 tail = (m_qr(1,:)./(m_qr(1,:)+time_factor)).^(nu_r(1)+1).*exp(-time_factor*m_qr(1,:).*tilde_r(1,:)./(m_qr(1,:)+time_factor));
-%tail = exp(q*r_0(1)*T);
 integrand = (S0/K).^(q-1-1i*xi).*underline_W_vq.*underline_W_rq.*tail./(-xi.^2-(2*q-1)*xi*1i+q*(q-1));
 priceS = factor*sum(integrand)*dxi/(2*pi); 
 
+factor_simple = S0*exp(-r_0(1)*T); % mixes discount and damping
+integrand_simple = (S0/K).^(q-1-1i*xi).*underline_W_vq.*underline_W_rq./(-xi.^2-(2*q-1)*xi*1i+q*(q-1));
+priceS_simple = factor_simple*sum(integrand_simple)*dxi/(2*pi); 
 cputime = toc;
 if theta ==1
-    %fprintf('%22s%14.10f%14.10f%14.10f%14.3f\n','Call price, MC, FTP, FTS',VcMC_result,priceP,priceS,cputime)
-    fprintf('%22s%14.10f%14.10f%14.3f\n','Call price, MC, FT_Sun',VcMC_result,priceS,cputime)
+    fprintf('%22s%14.10f%14.10f%14.10f%14.10f%14.3f\n','Call price, MC, FTS_Simple, FTS, FTP',VcMC_result,priceS_simple,priceS,priceP,cputime)
+    %fprintf('%22s%14.10f%14.10f%14.3f\n','Call price, MC, FT_Sun',VcMC_result,priceS,cputime)
 else
-    %fprintf('%22s%14.10f%14.10f%14.10f%14.3f\n','Put price, MC, FTP, FTS',VpMC_result,priceP,priceS,cputime)
-    fprintf('%22s%14.10f%14.10f%14.3f\n','Put  price, MC, FT_Sun',VpMC_result,priceS,cputime)
+    fprintf('%22s%14.10f%14.10f%14.10f%14.10f%14.3f\n','Put price, MC, FTS_Simple, FTS, FTP',VpMC_result,priceS_simple,priceS,priceP,cputime)
+    %fprintf('%22s%14.10f%14.10f%14.3f\n','Put  price, MC, FT_Sun',VpMC_result,priceS,cputime)
 end
 
 % figure(1)

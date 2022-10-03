@@ -1,0 +1,346 @@
+% 12pt is the font size and report is the document type can be changed into book, article, etc..
+\documentclass[12pt]{report} 
+\usepackage[a4 paper, top=25mm, bottom=25mm]{geometry} %page dimensions
+\headheight= 15pt
+\usepackage[utf8]{inputenc} %font used is Times new roman which is the standard font for articles
+
+%Bibliography package
+\usepackage[backend=biber,style=nature]{biblatex}
+% .bib is the name of the file which contains the list of references for citation
+\addbibresource{references.bib}
+\usepackage{fancyhdr} %for header and footer
+\pagestyle{fancy}
+\fancyhf{}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{color}
+\usepackage{setspace}
+\setstretch{1} %linespacing can be changed as per requirement
+\usepackage{import}
+\usepackage{titlesec}
+\usepackage[export]{adjustbox}
+\usepackage{indentfirst}
+\usepackage{tocloft}
+\usepackage{supertabular}
+%\renewcommand\cftchapaftersnum{.}
+%\renewcommand\cftsecaftersnum{.}
+%\renewcommand\thechapter{\Roman{chapter}}
+\renewcommand\thesection{\arabic{section}}
+\setcounter{secnumdepth}{3} %shows detailed contents with higher sub divisions (3)
+\setcounter{tocdepth}{3}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{algorithmic}
+
+\newcommand{\R}{\mathbb{R}}
+
+\usepackage{mathrsfs} 
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\usepackage{graphicx} %allows the user to use the graphics env
+\graphicspath{{./Images/}} % The folder where the images will be uploaded
+\usepackage{caption} %Allows the user to use the caption in tables and figures
+\usepackage[labelfont=bf]{caption}
+\captionsetup[figure]{labelsep=space,singlelinecheck=off} % The captions won`t be affected with change in line spacing and alignment of the entire document 
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
+\tolerance=1
+\emergencystretch=\maxdimen
+\hyphenpenalty=10000
+\hbadness=10000
+\fancyhead[R]{Jinsong Hao}
+%Name of Project
+\fancyhead[L]{PhD0001}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{2pt} % the horizontal line at the top of the page
+\renewcommand{\footrulewidth}{1pt} % the horizontal line at the bottom of the page
+%The document starts from here------------------------------------------------------------------------------
+\begin{document}
+\begin{titlepage}
+\begin{center}
+        \vspace*{0.1cm}
+        \LARGE %use HUGE for very big and bold title, notice that huge and HUGE will have difference in size, also LARGE and large will have difference in size and dimensions. For more check the website of overleaf.
+        \textbf{Heston model with stochastic interest rate}
+        \large
+        \vfill
+        \begin{center}
+        \textbf{Jinsong Hao
+        } %The person who is carrying out the project / thesis
+        \end{center}
+        \vfill
+        \begin{flushleft}
+        
+        \vspace{0.8cm}
+        Financial Computing and Analytics research group\\
+        Department of Computer Science\\
+        University College London\\
+        London, United Kingdom\\ %Location info
+        Date of submission/ presentation
+        \end{flushleft}
+\end{center}
+\end{titlepage}
+%----------------------------------End of title page---------------------------------------------------------
+%creates the table of contents automatically
+
+
+\thispagestyle{empty}
+\chapter*{Abstract}
+%This thesis contains three/ four projects with respect to the variations of Heston model with stochastic interest rates.
+
+%The first project took the Multi-factor Heston model developed by Yu Sun. Monte Carlo Simulation was applied to verify the characteristic functions of the Sun model.
+Monte Carlo simulation of a Heston model with stochastic interest rate and validation of the characteristic function. Calibration of the validation of the calibration with Monte Carlo. Calibration on empirical data to assess the usefulness of the extra parameters.
+
+
+\thispagestyle{empty}
+\chapter*{Acknowledgements}
+
+\thispagestyle{empty}
+\chapter*{Impact Statement}
+
+\newpage
+\tableofcontents 
+%adds the word page above page numbers in contents page
+\addtocontents{toc}{~\hfill\textbf{Page}\par} 
+\thispagestyle{empty}
+% newpage Starts the next section in a new page
+\newpage 
+ %Automatically creates a new page with all the list of figures
+\listoffigures
+%adding List of figures into contents without any number beside it
+\addcontentsline{toc}{chapter}{List of Figures} 
+%Automatically creates a new page with all the list of tables created
+\listoftables 
+%adding List of tables into contents without any number beside it
+\addcontentsline{toc}{chapter}{List of Tables} 
+\thispagestyle{empty}
+\newpage
+\setcounter{page}{1}
+
+%---------------------------------The body of the document starts here---------------------------------------
+
+
+
+%creates matter for contents page as each section is a new heading and will be added to the table of contents
+\section{Introduction} 
+\subsection{Background and overview}
+(Needs to be changed)The market is filled with products that are sensitive to the volatilities and the interest rates. Models described as a system of stochastic differential equations (SDEs) are used to accurately price these products. 
+
+The aim of this paper is to examine a multi-factor Heston model proposed by Sun \cite{sun2021explicitly} that belongs to the class of affine diffusion (AD) process. We validate the analytical characteristic function (CF) with Monte Carlo (MC). Then we introduce a calibration method and test it again with MC. Last, we calibrate on the empirical data to assess the usefulness of the extra parameters introduced. 
+\subsection{Outline}
+The structure of this paper is as follows. In Section 2, we introduce previous variants of the Heston model and the Sun model. In Section 3, we use MC to validate the analytic characteristic function of the Sun model. Section 4 concludes this paper.
+
+\section{Stochastic volatility models with stochastic interest rates}
+\subsection{Stochastic volatility models}
+In this section, we give an overview of variants of the Heston model. We denote the underlying with $S(t)$, the volatility with $v(t)$, and the interest rate with $r(t)$ for time $t \geq 0$.
+
+Stochastic volatility models assume that the underlying follows a geometric Brownian motion with a constant $r$ drift and a constant volatility $\sigma$ like in the  Black-Scholes-Merton (BSM) model \cite{merton1973theory,Black1973pricing}, 
+\begin{align}
+    \frac{\mathrm{d} S(t)}{S(t)} = r\mathrm{d} t + \sigma \mathrm{d} W_v(t),
+\end{align}
+where $W_v(t)$ is a standard Wiener process. 
+
+This model with a constant volatility does not describe certain stylized facts like fat tails, skewness of the distribution of log returns, volatility clustering, the leverage effect, etc. In 1993, Heston \cite{heston1993closed} proposed his model as an improvement of the BSM model where the volatility follows a Feller square-root process (FSR) \cite{feller1951two},
+\begin{align}
+    \frac{\mathrm{d} S(t)}{S(t)} &= r\mathrm{d} t + \sqrt{v(t)} \mathrm{d} W_v(t)\\
+    \mathrm{d} v(t) &= \chi(\bar{v}-v(t)) \mathrm{d} t+\gamma \sqrt{v(t)} \mathrm{d} Z_v(t),
+\end{align}
+where the interest rate $r$ is still constant, $\chi$ is the mean-reversion rate of the volatility, $\bar{v}$ is the long-term mean of the volatility, $\gamma$ is the volatility of the volatility (or vol of vol), $W_v(t)$ and $Z_v(t)$ are two standard Wiener processes with correlation $\rho_v$, 
+\begin{equation}
+E\left[\mathrm{d} W_v(t) \mathrm{d} Z_v(t)\right]=\rho_v \mathrm{d} t.
+\end{equation}
+
+\subsection{Stochastic interest rate models}
+In 1977, Vasicek \cite{vasicek1977equilibrium} proposed that the interest rate follows an Ornstein-Uhlenbeck (OU) process \cite{uhlenbeck1930theory},
+\begin{equation}
+    \mathrm{d} r(t) = \lambda\left(\bar{r}-r(t)\right) \mathrm{d} t+\eta \mathrm{d} Z_r(t),
+\end{equation}
+where $\lambda$ is the mean-reversion rate of the interest rate, $\bar{r}$ is the long-term mean of the interest rate, $\eta$ is the volatility of interest rate and $Z(t)$ is a standard Wiener process.
+
+The OU process has an infinite support, but generally the interest rate has a lower bound. Therefore, in 1985, Cox, Ingersoll and Ross (CIR) \cite{cox1985Theory} proposed that the interest rate follows the Feller square-root process \cite{feller1951two},
+\begin{equation}
+\mathrm{d} r(t)=\lambda(\bar{r}-r(t)) \mathrm{d} t+\eta \sqrt{r(t)} \mathrm{d} Z_r(t).
+\end{equation}
+The original FSR model can only take positive values, but it can be easily modified to  
+\begin{equation}
+\mathrm{d} r(t)=\lambda(\bar{r}-r(t)) \mathrm{d} t+\eta \sqrt{r(t)-r_l} \mathrm{d} Z_r(t),
+\end{equation}
+where $r_l $ is the lower bound of the interest rate.
+
+In 1990, Hull and White (HW) \cite{hull1990pricing} proposed their model as a extension of the Vasicek and the CIR model . Their interest rate could be written as 
+\begin{equation}\label{eq:HW}
+    \mathrm{d} r(t) = \lambda\left(\bar{r}(t)-r(t)\right) \mathrm{d} t+\eta r^{\alpha}(t) \mathrm{d} Z_r(t),
+\end{equation}
+where the mean reversion level of the interest rate $\bar{r}(t)$ changes with time and the exponent $\alpha$ is an additional free parameter. With $\bar{r}(t) = r$ is a constant, \ref{eq:HW} correspond to the generalized squared Bessel process. According to an econometric study of Chan, Karolyi, Longstaff and Sanders \cite{chan1992empirical}, $\alpha \approx 1.48$. The case $\alpha = 0$ correspond to the Vasicek and the case $\alpha = 0.5$ correspond to the CIR model. 
+
+\subsection{Heston models with stochastic interest rate}
+In 2000, Duffie, Pan and Singleton proposed the transform analysis of the affine jump-diffusion (AJD) processes \cite{duffie2000transform}. In our analysis, we use the analytical characteristic function of the affine diffusion process. Suppose we have a system of stochastic differential equation
+\begin{equation}
+\mathrm{d} \mathbf{X}(t)=\mu(\mathbf{X}(t)) \mathrm{d} t+\sigma(\mathbf{X}(t)) \mathrm{d} \mathbf{W}(t).
+\end{equation}
+The stochastic process $\mathbf{X}$ is called affine if the characteristic function of $\mathbf{X}(T)$ is exponential affine in $\mathbf{X}(t)$ for all $t leq T$. The characteristic function is of the form
+\begin{equation}
+\phi(\mathbf{u}, \mathbf{X}(t), t, T)=\mathrm{e}^{A(\mathbf{u}, T-t)+\mathbf{B}^{\mathrm{T}}(\mathbf{u}, T-t) \mathbf{X}(t)}.
+\end{equation}
+
+In 2008, van Haastrecht, Lord, Pelsser and Schrager \cite{van2008pricing} proposed the Schöbel-Zhu-Hull-White (SZHW) model following the research of Schöbel and Zhu \cite{schobel1999stochastic} and Hull and White \cite{hull1993one}, 
+\begin{align}
+\frac{\mathrm{d} S(t)}{S(t)} &= r(t) \mathrm{d} t + \sqrt{v(t)} \mathrm{d} W_{v}(t) \\
+\mathrm{d} v(t) &= \chi\left(\bar{v}-v(t)\right) \mathrm{d} t+\gamma \sqrt{v(t)} \mathrm{d} Z_v(t) \\
+\mathrm{d} r(t) &= \lambda\left(\bar{r}(t)-r(t)\right) \mathrm{d} t+\eta \mathrm{d} Z_{r}(t),
+\end{align}
+with the correlations 
+\begin{align}
+&E\left[\mathrm{d} W_{v}(t) \mathrm{d} Z_{v}(t)\right] =\rho_{v} \mathrm{d} t \\
+&E\left[\mathrm{d} W_{v}(t) \mathrm{d} Z_{r}(t)\right] =\rho_{r} \mathrm{d} t \\
+&E\left[\mathrm{d} Z_{v}(t) \mathrm{d} Z_{r}(t)\right] =\rho_{vr} \mathrm{d} t. 
+\end{align}
+Their model considered the underlying with stochastic interest rate. Their model improved the pricing accuracy of the underlying changes dramatically with interest rate.   
+
+Giese introduced the Heston-Hull-White (HHW) type model \cite{giese2006pricing} (Source needs verification):
+\begin{align}
+\frac{\mathrm{d} S(t)}{S(t)} &= r(t) \mathrm{d} t + \sqrt{v(t)} \mathrm{d} W_{v}(t) +\Omega \mathrm{d} W_{r}(t) \\
+\mathrm{d} v(t) &= \chi\left(\bar{v}-v(t)\right) \mathrm{d} t+\gamma \sqrt{v(t)} \mathrm{d} Z_v(t) \\
+\mathrm{d} r(t) &= \lambda\left(\bar{r}(t)-r(t)\right) \mathrm{d} t+\eta \mathrm{d} W_{r}(t),
+\end{align}
+with non-zero correlation
+\begin{equation}
+E\left[\mathrm{d} W_{v}(t) \mathrm{d} Z_{v}(t)\right] =\rho_{v} \mathrm{d} t.
+\end{equation}
+This model assumes $E\left[\mathrm{d} W_{v}(t) \mathrm{d} Z_{r}(t)\right]=0$, because these two processes are indirectly linked via $\Omega$. Ito's formula yields the correlation 
+\begin{align}
+\rho_{r} &=\frac{\operatorname{Cov}\left(\mathrm{d} S(t), \mathrm{d} r(t)\right)}{\sqrt{\operatorname{Var}\left(\mathrm{d} S(t)\right)} \cdot \sqrt{\operatorname{Var}\left(\mathrm{d} r(t)\right)}} \\
+&=\frac{\eta \Omega S(t) \mathrm{d} t}{\sqrt{v(t) S(t)^{2} \mathrm{d} t+\Omega^{2} S(t)^{2} \mathrm{d} t} \cdot \sqrt{\eta^{2} \mathrm{d} t}}\\
+&=\frac{\Omega}{\sqrt{v(t)+\Omega^{2}}} .
+\end{align}
+We can derive the $\Omega$ as a function of $\rho_r$,
+\begin{equation}
+    \Omega = \frac{\rho_r \sqrt{v(t)}}{\sqrt{1-\rho^2_r}}.
+\end{equation}
+By including the $\Omega$, this model can accurately price the underlying even in the case of $\rho_r \neq 0$.
+
+In 2011, Grzelak and Oosterlee (GO) proposed their model \cite{grzelak2011heston},
+\begin{align}
+\frac{\mathrm{d} S(t)}{S(t)} &= r(t)\mathrm{d} t+ \sqrt{v(t)} \mathrm{d} W_{v}(t)+ \Delta \sqrt{v(t)} \mathrm{d} Z_{v}(t)
+ +\Omega {r^\alpha(t)} \mathrm{d} Z_{r}(t)  \\
+\mathrm{d} v(t) &= \chi\left(\bar{v}-v(t)\right) \mathrm{d} t+\gamma \sqrt{v(t)} \mathrm{d} Z_v(t) \\
+\mathrm{d} r(t) &= \lambda\left(\bar{r}-r(t)\right) \mathrm{d} t+\eta {r^\alpha(t)} \mathrm{d} Z_{r}(t),
+\end{align}
+with non-zero correlations 
+\begin{equation}
+E\left[\mathrm{d} W_{v}(t) \mathrm{d} Z_{v}(t)\right] =\rho_{v} \mathrm{d} t.
+\end{equation}
+Grezlak and Oosterlee used the stochastic interest rate as in \ref{eq:HW}, and included an extra parameter $\Delta$ to deal with the case of $\rho_{vr} \neq 0$.
+
+In 2016, Recchioni and Sun \cite{recchioni2016explicitly} did empirical analysis on the prices of call and put options on the S\&P 500 index and Euro-Dollar futures of the Heston-Cox–Ingersoll–Ross (HCIR) model. Their model used CIR in interest rate.
+\begin{align}
+\frac{\mathrm{d} S(t)}{S(t)} &=  r(t) \mathrm{d} t + \sqrt{v(t)} \mathrm{d} W_{v}(t) +  \Delta \sqrt{v(t)} \mathrm{d} Z_{v}(t)
+ + \Omega \sqrt{r(t)} \mathrm{d} W_{r}(t)  \\
+\mathrm{d} v(t) &= \chi\left(\bar{v}-v(t)\right) \mathrm{d} t+\gamma \sqrt{v(t)} \mathrm{d} Z_v(t) \\
+\mathrm{d} r(t) &= \lambda\left(\bar{r}-r(t)\right) \mathrm{d} t+\eta \sqrt{r(t)}\mathrm{d} Z_{r}(t),
+\end{align}
+the correlations among the Wiener processes are zero except for
+\begin{align}
+E\left[\mathrm{d} W_{v}(t) \mathrm{d} Z_{v}(t)\right] &=\rho_{v} \mathrm{d} t \\
+E\left[\mathrm{d} W_{r}(t) \mathrm{d} Z_{r}(t)\right] &=\rho_{r} \mathrm{d} t.
+\end{align}
+Their analysis of the empirical data shows that the stochastic interest rate plays a crucial role as a volatility factor and provides a multi-factor model that outperforms the Heston model in pricing options.
+
+In 2017, Recchioni, Sun and Tedeschi \cite{recchioni2017can} conducted another empirical analyses with the Heston-Hull-White-Vasicek (HHWV) model that allows for negative interest rate,
+\begin{align}
+\frac{\mathrm{d} S(t)}{S(t)} &= r(t) \mathrm{d} t + \sqrt{v(t)} \mathrm{d} W_{v}(t) + \Delta \sqrt{v(t)} \mathrm{d} Z_{v}(t)
+ + \Omega  \mathrm{d} W_{r}(t)  \\
+\mathrm{d} v(t) &= \chi\left(\bar{v}-v(t)\right) \mathrm{d} t+\gamma \sqrt{v(t)} \mathrm{d} Z_v(t) \\
+\mathrm{d} r(t) &= \lambda\left(\bar{r}-r(t)\right) \mathrm{d} t+\eta \mathrm{d} Z_{r}(t)
+\end{align}
+where the correlations are the same as with in the earlier HCIR model.
+
+
+\subsection{Multi-dimensional stochastic volatility models}
+In 2013, De Col, Gnoatto and Grasselli \cite{de2013smiles} introduced the ``smiles all around'' (SAA) model.
+They described the value at time $t$ of one unit of the underlying $i$ in terms of another artificial underlying as $S_{(0,i)}(t)$. In their multi-dimensional Heston model, it is possible to fit not only one underlying but also across different underlying pairs.
+\begin{align}
+\frac{\mathrm{d} S_{0i}(t)}{S_{0i}(t)} &=\left(r_{0}-r_{i}\right) \mathrm{d}t-\mathbf{a}_{i}^{\top} \sqrt{\operatorname{Diag}\mathbf{v}(t)} \mathrm{d} \mathbf{W}(t), \quad i=1, \ldots, N \\
+\mathrm{d} v_{n}(t)&=\chi_{n}\left(\overline{v_{n}}-v_{n}(t)\right) \mathrm{d} t+\gamma_{n} \sqrt{v_{n}(t)} \mathrm{d} Z_{n}(t), \quad n=1, \ldots, d
+\end{align}
+where $\chi_n$, $\overline{v_{n}}$, $\gamma_{n}$, are real constants, $\mathbf{a}_{i} \in \R^d$, $\sqrt{\operatorname{Diag}\mathbf{v}}$ is the diagonal matrix with the square root of the elements of the vector $\mathbf{v}$ in the principal diagonal, $W_{v,n}$, $Z_{v,n}$ are standard Wiener processes with zero correlations except for
+\begin{equation}
+E\left[\mathrm{d} W_{vn}(t) \mathrm{d} Z_{vn}(t)\right] =\rho_{vn} \mathrm{d} t. 
+\end{equation}
+Their model satisfying the inversion and triangulation symmetries, while being
+able to produce a satisfactory joint calibration of different underlyings and cross
+implied volatility smiles, outperforming other models of the foreign exchange (FX) market.
+
+In 2021, Sun \cite{sun2021explicitly} presented his modification on the SAA model, allowing stochastic interest rate
+\begin{align}
+\frac{\mathrm{d} S_{0i}(t)}{S_{0i}(t)} &=\left(r_{0}-r_{i}\right) \mathrm{d}t-\mathbf{a}_{i}^{\top} \sqrt{\operatorname{Diag}\mathbf{v}(t)} \mathrm{d} \mathbf{W}_v(t)
+-\mathbf{b}_{i}^{\top} \left[{\operatorname{Diag}\mathbf{r}(t)}\right]^\alpha \mathrm{d} \mathbf{W}_r(t) \\
+\mathrm{d} v_{n}(t)&=\chi_{n}\left(\overline{v_{n}}-v_{n}(t)\right) \mathrm{d} t+\gamma_{n} \sqrt{v_{n}(t)} \mathrm{d} Z_{v,n}(t), \quad n=1, \ldots, d\\
+\mathrm{d}  r_{m}(t)&=\lambda_{m}\left(\overline{r_{m}}-r_{m}(t)\right) \mathrm{d} t+\eta_{m} r_{m}^{\alpha}(t) \mathrm{d} Z_{r,m}(t)), \quad m = 0,i
+\end{align}
+where $\mathbf{a}_{i} \in \R^d$, $\mathbf{b}_{i} \in \R^2$, $W_{rm}$, $Z_{rm}$ are standard Wiener processes with zero correlations except for
+\begin{align}
+&E\left[\mathrm{d} W_{vn}(t) \mathrm{d} Z_{vn}(t)\right] =\rho_{vn} \mathrm{d} t \\
+&E\left[\mathrm{d} W_{rm}(t) \mathrm{d} Z_{rm}(t)\right] =\rho_{rm} \mathrm{d} t.
+\end{align}
+
+\section{Multidimensional stochastic volatility model with stochastic interest rates}
+Our new model for the exchange rate between currencies $i$ and $j$ is
+\begin{align}
+\frac{\mathrm{d} S_{ij}(t)}{S_{ij}(t)} =& \{r_{i}-r_{j}+(\mathbf{a}_{i} - \mathbf{a}_{j})^{\top} \operatorname{Diag}\mathbf{v}(t)\mathbf{a}_{i} + (\mathbf{b}_{i} - \mathbf{b}_{j})^{\top} [{\operatorname{Diag}\mathbf{r}(t)}]^{2\alpha} \mathbf{b}_{i} \}\mathrm{d}t \notag \\
+&+(\mathbf{a}_{j} - \mathbf{a}_{i})^{\top} \sqrt{\operatorname{Diag}\mathbf{v}(t)} \mathrm{d} \mathbf{Z}_v(t) +(\mathbf{b}_{j} - \mathbf{b}_{i})^{\top} [{\operatorname{Diag}\mathbf{r}(t)}]^{\alpha}\mathrm{d}\mathbf{Z}_r(t) \\
+\mathrm{d} v_{n}(t)&=\kappa_{vn}(\overline{v_{n}}-v_{n}(t)) \mathrm{d} t+\sigma_{vn} \sqrt{v_{n}(t)} \mathrm{d} W_{vn}(t), \quad n=1, \ldots, d\\
+\mathrm{d}  r_{m}(t)&=\kappa_{rm}(\overline{r_{m}}-r_{m}(t)) \mathrm{d} t+\sigma_{rm} r_{m}^{\alpha}(t) \mathrm{d} W_{rm}(t), \quad m = i,j.
+\end{align}
+Exchange rates should be consistent with respect to multiplication,
+\begin{equation}
+S_{ij}S_{jk} = S_{ik}
+\end{equation}
+or equivalently
+\begin{equation}
+S_{ij} = \frac{S_{ik}}{S_{jk}},
+\end{equation}
+and with respect to inversion, which is a special case of the previous property with $k = i$,
+\begin{equation}
+S_{ij}S_{ji} = 1
+\end{equation}
+or equivalently
+\begin{equation}
+S_{ij} = \frac{1}{S_{ji}}.
+\end{equation}
+With Ito's formula we rewrite the equation in terms of the log-exchange rate $x_{ij}(t) = \log (S_{ij}(t)/S_{ij}(0))$ and obtain
+\begin{align}
+    \mathrm{d} x_{ij}(t) =& \left\{r_{i}-r_{j} - \frac{1}{2}(\mathbf{a}_{i} - \mathbf{a}_{j})^{\top} \operatorname{Diag}\mathbf{v}(t)(\mathbf{a}_{i} + \mathbf{a}_{j}) \right. \notag \\
+    &- \left. \frac{1}{2}(\mathbf{b}_i - \mathbf{b}_j)^{\top}  [{\operatorname{Diag}\mathbf{r}(t)}]^{2\alpha}    (\mathbf{b}_{i} + \mathbf{b}_{j})      \right\} \mathrm{d}t \notag \\ 
+    &+  (\mathbf{a}_{j} - \mathbf{a}_{i})^{\top} \sqrt{\operatorname{Diag}\mathbf{v}(t)} \mathrm{d} \mathbf{Z}_v(t)+(\mathbf{b}_{j} - \mathbf{b}_{i})^{\top} [{\operatorname{Diag}\mathbf{r}(t)}]^{\alpha}\mathrm{d}\mathbf{Z}_r(t).
+\end{align}
+The quadratic forms involving the diagonal matrices could also be written
+\begin{gather}
+(\mathbf{a}_{i}-\mathbf{a}_{j})^{\top} \operatorname{Diag}\mathbf{v}(t)(\mathbf{a}_{i}+\mathbf{a}_{j}) =\sum_{n=1}^{d}(a_{in}^2-a_{jn}^2) v_{n}(t) \\
+(\mathbf{b}_{i}-\mathbf{b}_{j})^\top [{\operatorname{Diag}\mathbf{r}(t)}]^{2\alpha}(\mathbf{b}_{i}+\mathbf{b}_{j}) =\sum_{m= i,j}(b_{im}^2-b_{jm}^2) r_{m}^{2\alpha}(t).
+\end{gather}
+
+
+Let $G$ be the moment generating function of the log-exchange rate. The Laplace transform $G$ solves the following backward Kolmogorov equation \cite{karatzas1991brownian}
+\begin{align}
+-\frac{\partial G}{\partial t}&= \frac{1}{2} \frac{\partial^{2} G}{\partial x^{2}}\left\{(\mathbf{a}_{i}-\mathbf{a}_{j})^{2} \operatorname{Diag}\mathbf{v}(t) + (\mathbf{b}_{i}-\mathbf{b}_{j})^{2} [{\operatorname{Diag}\mathbf{r}(t)}]^{2\alpha}\right\} \notag\\
+&+\frac{\partial G}{\partial x} \left\{r_{i}-r_{j}-\frac{1}{2}(\mathbf{a}_{i}-\mathbf{a}_{j})^{\top} \operatorname{Diag}\mathbf{v}(t)(\mathbf{a}^{i}+\mathbf{a}^{j}) \right. \notag\\
+&+ \left.(\mathbf{b}_{i}-\mathbf{b}_{j})^{\top} [{\operatorname{Diag}\mathbf{r}(t)}]^{2\alpha}(\mathbf{b}_{i}+\mathbf{b}_{j})\right\}  \notag\\
+&+\sum_{n=1}^{d} \frac{\partial^{2} G}{\partial x \partial v_{n}}\left(a_{jn}-a_{in}\right) v_{n} \sigma_{vn} \rho_{vn} + \sum_{m= i,j} \frac{\partial^{2} G}{\partial x \partial r_{m}^{2\alpha}}\left(b_{jm}-b_{im}\right) r_{m}^{2\alpha} \sigma_{rm} \rho_{rm}\notag \\
+&+\sum_{n=1}^{d} \frac{\partial G}{\partial v_{n}} \kappa_{vn}(\overline{v_{n}}-v_{n}) + \sum_{m= i,j} \frac{\partial G}{\partial r_{m}} \kappa_{rm}(\overline{r_{m}}-r_{m})\notag\\
+&+\frac{1}{2} \sum_{n=1}^{d} \frac{\partial^{2} G}{\partial v_{n}^{2}} \sigma_{vn}^{2} v_{n} +\frac{1}{2} \sum_{m= i,j} \frac{\partial^{2} G}{\partial r_{m}^{2}} \sigma_{rm}^{2} r_{n}^{2\alpha}, 
+\end{align}
+with initial condition
+
+with substitution, the above equation gives
+\begin{align}
+-\frac{\partial G}{\partial t}&= \frac{1}{2} \frac{\partial^{2} G}{\partial x^{2}}\left\{(\mathbf{a}_{i}-\mathbf{a}_{j})^{\top} \operatorname{Diag}\mathbf{v}(t)(\mathbf{a}_{i}+\mathbf{a}_{j}) + (\mathbf{b}_{i}-\mathbf{b}_{j})^{\top} [{\operatorname{Diag}\mathbf{r}(t)}]^{2\alpha}(\mathbf{b}_{i}+\mathbf{b}_{j})\right\} \notag\\
+&+\frac{\partial G}{\partial x} \left\{r_{i}-r_{j}-\frac{1}{2}(\mathbf{a}_{i}-\mathbf{a}_{j})^{\top} \operatorname{Diag}\mathbf{v}(t)(\mathbf{a}^{i}+\mathbf{a}^{j}) \right. \notag\\
+&+ \left.(\mathbf{b}_{i}-\mathbf{b}_{j})^{\top} [{\operatorname{Diag}\mathbf{r}(t)}]^{2\alpha}(\mathbf{b}_{i}+\mathbf{b}_{j})\right\}  \notag\\
+&+\sum_{n=1}^{d} \frac{\partial^{2} G}{\partial x \partial v_{n}}(a_{jn}-a_{in}) v_{n} \sigma_{vn} \rho_{vn} + \sum_{m= i,j} \frac{\partial^{2} G}{\partial x \partial r_{m}^{2\alpha}}(b_{jm}-b_{im}) r_{m}^{2\alpha} \sigma_{rm} \rho_{rm}\notag \\
+&+\sum_{n=1}^{d} \frac{\partial G}{\partial v_{n}} \left[\kappa_{vn}(\overline{v_{n}}-v_{n}) +(a_{jn}-a_{in}) v_{n} \sigma_{vn} \rho_{vn} q \right] \notag \\
+&+ \sum_{m= i,j} \frac{\partial G}{\partial r_{m}} \left[\kappa_{rm}(\overline{r_{m}}-r_{m})+(b_{jm}-b_{im}) r_{m}^{2\alpha} \sigma_{rm} \rho_{rm}q\right]\notag\\
+&+\frac{1}{2} \sum_{n=1}^{d} \frac{\partial^{2} G}{\partial v_{n}^{2}} \sigma_{vn}^{2} v_{n} +\frac{1}{2} \sum_{m= i,j} \frac{\partial^{2} G}{\partial r_{m}^{2}} \sigma_{rm}^{2} r_{n}^{2\alpha}, 
+\end{align}
+
+\printbibliography[title = {References}]
+\addcontentsline{toc}{chapter}{References}
+\end{document}
+%------------------------------------------The Document Ends here--------------------------------------------

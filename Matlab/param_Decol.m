@@ -4,7 +4,7 @@
 
 % Market parameters
 S0 = 1; % spot exchange rate
-r_0 = [0.02,0.01]; % spot interest rates r_{i0},r_{j0}
+r_0 = [0.05,0.06]; % spot interest rates r_{i0},r_{j0}
 
 % Contract parameters
 T = 1; % maturity
@@ -36,13 +36,13 @@ b_i = [1.0000004,0.000000];
 b_j = [0.000000,0.0000006];
 
 % Mean-reversion rate (or strength) of the interest rate
-lambda = [0.01,0.02]; % lambda_i,lambda_j
+lambda = [0.02,0.02]; % lambda_i,lambda_j
 
 % Long-term average of the interest rate
-r_bar = [0.02,0.01]; % \bar{r}_i,\bar{r}_j
+r_bar = [0.05,0.06]; % \bar{r}_i,\bar{r}_j
 
 % Volatility of the interest rate
-eta = [0.001,0.002]; % \eta_i,\eta_j
+eta = [0.002,0.002]; % \eta_i,\eta_j
 
 % Correlations
 rho_v = [-0.5231,-0.398];

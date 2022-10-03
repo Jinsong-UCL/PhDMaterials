@@ -34,14 +34,14 @@ elseif (alpha == -1)
 end
 
 % Plot to compare the analytical and numerical payoffs
-% gn = fftshift(fft(ifftshift(G)))./((x(2)-x(1))*length(x));
-% figure, clf
-% plot(x,g,'g',x,real(gn),'r')
-% xlabel('x')
-% ylabel('g')
-% legend('analytical','numerical')
-% if theta == 1
-%     title('Damped payoff function for a call option')
-% else % put
-%     title('Damped payoff function for a put option')
-% end
+gn = fftshift(fft(ifftshift(G)))./((x(2)-x(1))*length(x));
+figure, clf
+plot(x,g,'g',x,real(gn),'r')
+xlabel('x')
+ylabel('g')
+legend('analytical','numerical')
+if theta == 1
+    title('Damped payoff function for a call option')
+else % put
+    title('Damped payoff function for a put option')
+end

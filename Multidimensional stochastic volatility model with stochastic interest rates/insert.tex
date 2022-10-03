@@ -1,0 +1,32 @@
+
+%How to insert a single figure with a single caption
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{} 
+    \caption{}
+    \label{fig:a}
+\end{figure} %ends the image environment
+
+
+
+
+
+%------------------------------Single Table Environment-----------------------------------------------------
+%==============A small hack: images of tables cam be inserted here by changing the the body of the table env with that of graphics env=============  
+\begin{table}[H]
+% use \resizebox{1.2\textwidth}{!}{ to adjust the size and use the "}" after "\end{tabular}"
+\resizebox{1.2\textwidth}{!}{
+\centering
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+asdasfasfa & afasfasfa & asfafaf & afsafafasf & bfgtdhghgff \\ \hline
+dfgoiln iuehcehnviesbopi & fhfgjfgdfbfbdfb & ffgjfgj & fjfjfgjfgjf & z;w,oaxfaifsu di \\ \hline
+osd snsidmvosijdnbos dojfos & osdijniuvhbtigoivjoemjoi & dfmdfnioijbpodjfgdig & dgnid fg hdfipg od & f gdofgdf \\ \hline
+osdjodfgpo dfjgodhigp & d fhgidhof k,dghpds,kcsmdoi & ls jmgdgjopdgjpvop & dgjkl hgismgs & di jgndfhg odgjd \\ \hline
+ifg hdfgjmdfhidjgodfig & djghdodbmoigsdpm & jgoidf;bdfjkbdjnbkj & ovndfbgpiobd & vndfbngbngin \\ \hline
+\end{tabular}}
+\caption[The caption that goes into the list of tables]{Generic Table}
+\label{tab:name the table for cross reference}
+\end{table}
+
+%======The table has been created using a website https://www.tablesgenerator.com/# other websites can be used as well.. Google "latex table generator"

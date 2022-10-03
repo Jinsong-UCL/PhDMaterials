@@ -6,9 +6,9 @@
 % dr_m = lambda_m (r_m_bar-r_m) dt + eta_m r_m^alpha dZ_rm
 
 % Algorithm parameters
-nsteps = 10;
-nblocks = 20;
-npaths = 1000;
+nsteps = 20;
+nblocks = 100;
+npaths = 2000;
 
 % Monte Carlo
 tic
