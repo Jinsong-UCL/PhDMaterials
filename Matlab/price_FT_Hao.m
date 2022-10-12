@@ -2,11 +2,11 @@
 tic
 
 % Call or put parameter
-theta = 1; % 1 for call and -1 for put
+theta = -1; % 1 for call and -1 for put
 
 % Damping parameter
-alpha = -theta*2; % Parseval
-q = -alpha; % Sun
+alpha = -2*theta; % Parseval
+
 
 % Fourier parameters
 xwidth = 20; % width of the support in real space
@@ -75,9 +75,9 @@ c_r = ones(2,1)*0.5*xi.^2-0.5*((alpha^2-alpha*b_ij_division')*ones(1,ngrid)+(2*a
 % Recchioni and Sun, 2016 page 17 eq. (61)
 % \mu_{q,v_n} = -\frac{1}{2}(\chi_n+(\imath k-q)\gamma_n\tilde{\rho}_{n,v})
 % Sun page 16 eq. (60)
-d_v = -0.5*(chi.'*ones(1,ngrid)+(gamma.*a_ij_rho)'.*(1i*xi+alpha));
+d_v = 0.5*(chi.'*ones(1,ngrid)+(gamma.*a_ij_rho)'.*(1i*xi+alpha));
 % Sun page 17 eq. (70,72)
-d_r = -0.5*(lambda.'*ones(1,ngrid)+(eta.*b_ij_rho)'.*(1i*xi+alpha));
+d_r = 0.5*(lambda.'*ones(1,ngrid)+(eta.*b_ij_rho)'.*(1i*xi+alpha));
 
 % Recchioni and Sun, 2016 page 17 eq. (62)
 % \zeta_{q,v_{n}}=\frac{1}{2}\left[4\mu_{q,v_{n}}^{2}+2\gamma_{n}^{2}
@@ -99,33 +99,33 @@ f_r = 1 - exp(-2*e_r*T);
 % s_{q,v_n,b} = (\zeta_{q,v_n}+\mu_{q,v_n})e^{-2\zeta_{q,v_n}\tau}
 % +\zeta_{q,v_n}-\mu_{q,v_n})
 % Sun page 16 eq. (62)
-g_v = (e_v+d_v).*exp(-2*e_v*T)+e_v-d_v;
+g_v = (e_v-d_v).*exp(-2*e_v*T)+e_v+d_v;
 % Sun page 16 eq. (68)
-g_r = (e_r+d_r).*exp(-2*e_r*T)+e_r-d_r;
+g_r = (e_r-d_r).*exp(-2*e_r*T)+e_r+d_r;
 
 
 % Recchioni and Sun, 2016 page 18 eq. (83)
 % Sun page 28 eq. (139)
 % W_vq^0 
-sum_v1 = 2*chi.*v_bar./gamma.^2*log(g_v./(2*e_v));
-sum_v2 = 2*chi.*v_bar./gamma.^2*(d_v+e_v)*T;
-sum_v3 = 2*v_0./gamma.^2*((e_v.^2-d_v.^2).*f_v./g_v); 
-underline_W_vq = exp(-sum_v1-sum_v2-sum_v3);
+sum_v1 = 2*chi.*v_bar./gamma.^2*log((2*e_v)./g_v);
+sum_v2 = 2*chi.*v_bar./gamma.^2*(d_v-e_v)*T;
+sum_v3 = 2*v_0./gamma.^2*((d_v.^2-e_v.^2).*f_v./g_v); 
+phi_v = exp(sum_v1+sum_v2+sum_v3);
 
 % Recchioni and Sun, 2016 page 18 eq. (84)
 % Sun page 28 eq. (140)
 % W_rq^0 
-sum_r1 = 2*lambda.*r_bar./eta.^2*log(g_r./(2*e_r));
-sum_r2 = 2*lambda.*r_bar./eta.^2*(d_r+e_r)*T;
-sum_r3 = 2*r_0./eta.^2*((e_r.^2-d_r.^2).*f_r./g_r);
-underline_W_rq = exp(-sum_r1-sum_r2-sum_r3);
+sum_r1 = 2*lambda.*r_bar./eta.^2*log((2*e_r)./g_r);
+sum_r2 = 2*lambda.*r_bar./eta.^2*(d_r-e_r)*T;
+sum_r3 = 2*r_0./eta.^2*((d_r.^2-e_r.^2).*f_r./g_r);
+phi_r = exp(sum_r1+sum_r2+sum_r3);
 
 
 %% Sun calculation
 % Recchioni Page 6, 2016 eq. (34)
 % Sun page 31 eq. (154,155)
 factor_simple = S0*exp(-r_0(1)*T); % mixes discount and damping
-integrand_simple = (K/S0).^(alpha+1+1i*xi).*underline_W_vq.*underline_W_rq./((1i*xi+alpha).*(1i*xi+alpha+1));
+integrand_simple = (K/S0).^(alpha+1+1i*xi).*phi_v.*phi_r./((1i*xi+alpha).*(1i*xi+alpha+1));
 priceS_simple = factor_simple*sum(integrand_simple)*dxi/(2*pi); 
 cputime = toc;
 if theta ==1
