@@ -7,8 +7,8 @@
 
 % Algorithm parameters
 nsteps = 20;
-nblocks = 100;
-npaths = 200;
+nblocks = 500;
+npaths = 1000;
 
 % Monte Carlo
 tic
