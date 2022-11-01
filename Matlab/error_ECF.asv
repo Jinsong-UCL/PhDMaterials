@@ -6,10 +6,10 @@
 % dr_m = lambda_m (r_m_bar-r_m) dt + eta_m r_m^alpha dZ_rm
 
 % Call or put parameter
-theta = 1; % 1 for call and -1 for put
+theta = -1; % 1 for call and -1 for put
 
 % Damping parameter
-alpha = -2*theta; % Parseval
+alpha = 0*theta; % Parseval
 
 
 % Fourier parameters
@@ -26,7 +26,7 @@ xi = dxi*(-N:N-1); % grid in Fourier space
 
 % Algorithm parameters
 nsteps = 20;
-nblocks = 50;
+nblocks = 100;
 npaths = 200;
 
 % Monte Carlo
@@ -182,7 +182,7 @@ sum_r2 = 2*lambda.*r_bar./eta.^2*(d_r-e_r)*T;
 sum_r3 = 2*r_0./eta.^2*((d_r.^2-e_r.^2).*f_r./g_r);
 phi_r = exp(sum_r1+sum_r2+sum_r3);
 
-phi_a = phi_r.*phi_v;
+phi_a = exp(1i*rxi).*phi_r.*phi_v;
 
 MSE = immse(phi_e,phi_a);
 RMSE = rmse(phi_e,phi_a);

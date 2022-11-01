@@ -23,13 +23,13 @@ a_j = [1.6177 1.3588];
 chi = [0.9418,1.7909];
 
 % Initial volatility
-v_0 = [0.1244,0.0391];
+v_0 = [0.1244,0.0591];
 
 % Long-term average of the volatility
 v_bar = [0.037,0.0909];
 
 % Volatility of volatility
-gamma = [0.4912,1];
+gamma = [0.4912,0.08];
 
 % Interest rate coefficients or weights
 b_i = [1.0000004,0.000000];

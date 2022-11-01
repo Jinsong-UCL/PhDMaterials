@@ -159,15 +159,15 @@ integrand_simple = (S0/K).^(q-1-1i*xi).*underline_W_vq.*underline_W_rq./(-xi.^2-
 priceS_simple = factor_simple*sum(integrand_simple)*dxi/(2*pi); 
 cputime = toc;
 if theta ==1
-    fprintf('%22s%14.10f%14.10f%14.10f%14.10f%14.3f\n','Call price, MC, FTS_Simple, FTS, FTP',VcMC_result,priceS_simple,priceS,priceP,cputime)
+    %fprintf('%22s%14.10f%14.10f%14.10f%14.10f%14.3f\n','Call price, MC, FTS_Simple, FTS, FTP',VcMC_result,priceS_simple,priceS,priceP,cputime)
     %fprintf('%22s%14.10f%14.10f%14.3f\n','Call price, MC, FT_Sun',VcMC_result,priceS,cputime)
 else
-    fprintf('%22s%14.10f%14.10f%14.10f%14.10f%14.3f\n','Put price, MC, FTS_Simple, FTS, FTP',VpMC_result,priceS_simple,priceS,priceP,cputime)
+    %fprintf('%22s%14.10f%14.10f%14.10f%14.10f%14.3f\n','Put price, MC, FTS_Simple, FTS, FTP',VpMC_result,priceS_simple,priceS,priceP,cputime)
     %fprintf('%22s%14.10f%14.10f%14.3f\n','Put  price, MC, FT_Sun',VpMC_result,priceS,cputime)
 end
 
-% figure(1)
-% plot(xi,real(call_option_integrand),xi,imag(call_option_integrand))
+figure(1)
+plot(xi,real(underline_W_rq.*underline_W_vq))
 % title('Call option integrand')
 % xlabel('\xi')
 % legend('Real part','Imaginary part')
