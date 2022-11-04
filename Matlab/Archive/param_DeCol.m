@@ -1,72 +1,49 @@
 %% Set parameter values for multifactor stochastic volatility model
-% Gauthier and Possamai, Efficient simulation of the double Heston model,
-% IUP Journal of Computational Mathematics 4 (3), 23-73, 2011
+% Recchioni, Sun, An explicitly solvable Heston model with stochastic interest rate,
+% European Journal of Operational Research 249 (1), 359-377, 2016.
 
-% Model parameters
-param_alpha = 0.5; % exponent of the interest rate
-d = 2; % number of volatility factors
+% Market parameters
+S0 = 1; % spot exchange rate
+r_0 = [0.05,0.06]; % spot interest rates r_{i0},r_{j0}
 
 % Contract parameters
 T = 1; % maturity
-K = 1.1; % strike price
+K = 1; % strike price
 
-% Algorithm parameters
-nsteps = 50;
-dt = T/nsteps;
+% Model parameters
 
-% Market parameters
-S0 = 1; % spot price
-r_i_0 = 0.03; % interest rate
-r_j_0 = 0.0; % interest rate
-r_0 = [r_i_0,r_j_0];
+param_alpha = 0.5; %
+d = 2; % number of volatility factors
 
-% Volatility coefficient
-a_i = [1 1];
-a_j = [0.0001 0.0005];
+% Volatility coefficients or weights
+a_i = [0.6650 1.0985];
+a_j = [1.6177 1.3588];
 
-% Mean-reversion rate/strength of the volatility
-chi_1 = 0.9;
-chi_2 = 1.2;
-chi = [chi_1,chi_2];
+% Mean-reversion rate (or strength) of the volatility
+chi = [0.9418,1.7909];
 
 % Initial volatility
-v_1_0 = 0.03;
-v_2_0 = 0.09;
-v_0 = [v_1_0,v_2_0];
+v_0 = [0.1244,0.0591];
 
 % Long-term average of the volatility
-v_bar_1 = 0.03;%%% Problem!!!
-v_bar_2 = 0.09;%%% Problem
-v_bar = [v_bar_1,v_bar_2];
+v_bar = [0.037,0.0909];
 
 % Volatility of volatility
-gamma_1 = 0.65;
-gamma_2 = 0.8;
-gamma = [gamma_1,gamma_2];
+gamma = [0.4912,0.08];
 
-% Interest rate coefficient
-b_i = 0.0000;
-b_j = 0.0000;
+% Interest rate coefficients or weights
+b_i = [1.004,0.000000];
+b_j = [0.000000,1.006];
 
-% Mean-reversion rate/strength of the interest rate 
-lambda_i = 0; % arbitrary, e.g. 0 or 1
-lambda_j = 0; % arbitrary, e.g. 0 or 1
-lambda = [lambda_i,lambda_j];
+% Mean-reversion rate (or strength) of the interest rate
+lambda = [0.02,0.02]; % lambda_i,lambda_j
 
 % Long-term average of the interest rate
-r_bar_i = r_i_0;
-r_bar_j = r_j_0;
-r_bar = [r_bar_i,r_bar_j];
+r_bar = [0.05,0.06]; % \bar{r}_i,\bar{r}_j
 
 % Volatility of the interest rate
-eta_i = 0.000; %
-eta_j = 0.0001; %
-eta = [eta_i,eta_j];
+eta = [0.002,0.002]; % \eta_i,\eta_j
 
 % Correlations
-rho_v_1 = -0.5;
-rho_v_2 = -0.5;
-rho_v = [rho_v_1,rho_v_2];
-rho_r_i = -0;
-rho_r_j = -0;
-rho_r = [rho_r_i,rho_r_j];
+rho_v = [0.5231,-0.398];
+rho_r = [-0.23,-0.81];
