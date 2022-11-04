@@ -1,0 +1,57 @@
+nblocks = 2000;
+npaths = 5000;
+The call price of 0.90 is 0.191942
+nsteps =  10, MCprice is 0.191821, std is 0.000105, abs err is 0.000121
+nsteps =  20, MCprice is 0.191749, std is 0.000100, abs err is 0.000193
+nsteps =  30, MCprice is 0.191875, std is 0.000102, abs err is 0.000067
+nsteps =  40, MCprice is 0.191705, std is 0.000104, abs err is 0.000237
+nsteps =  50, MCprice is 0.192076, std is 0.000101, abs err is 0.000134
+nsteps =  60, MCprice is 0.192000, std is 0.000103, abs err is 0.000058
+nsteps =  70, MCprice is 0.191972, std is 0.000097, abs err is 0.000030
+nsteps =  80, MCprice is 0.191860, std is 0.000097, abs err is 0.000083
+nsteps =  90, MCprice is 0.191977, std is 0.000100, abs err is 0.000035
+nsteps = 100, MCprice is 0.191992, std is 0.000100, abs err is 0.000050
+The call price of 0.95 is 0.169645
+nsteps =  10, MCprice is 0.169760, std is 0.000098, abs err is 0.000114
+nsteps =  20, MCprice is 0.169728, std is 0.000096, abs err is 0.000083
+nsteps =  30, MCprice is 0.169663, std is 0.000098, abs err is 0.000017
+nsteps =  40, MCprice is 0.169644, std is 0.000097, abs err is 0.000002
+nsteps =  50, MCprice is 0.169625, std is 0.000097, abs err is 0.000021
+nsteps =  60, MCprice is 0.169731, std is 0.000097, abs err is 0.000085
+nsteps =  70, MCprice is 0.169510, std is 0.000096, abs err is 0.000136
+nsteps =  80, MCprice is 0.169712, std is 0.000098, abs err is 0.000066
+nsteps =  90, MCprice is 0.169774, std is 0.000096, abs err is 0.000129
+nsteps = 100, MCprice is 0.169656, std is 0.000094, abs err is 0.000010
+The call price of 1.00 is 0.149574
+nsteps =  10, MCprice is 0.149856, std is 0.000093, abs err is 0.000282
+nsteps =  20, MCprice is 0.149728, std is 0.000091, abs err is 0.000155
+nsteps =  30, MCprice is 0.149693, std is 0.000092, abs err is 0.000119
+nsteps =  40, MCprice is 0.149760, std is 0.000096, abs err is 0.000186
+nsteps =  50, MCprice is 0.149649, std is 0.000091, abs err is 0.000076
+nsteps =  60, MCprice is 0.149661, std is 0.000091, abs err is 0.000087
+nsteps =  70, MCprice is 0.149638, std is 0.000091, abs err is 0.000065
+nsteps =  80, MCprice is 0.149584, std is 0.000090, abs err is 0.000011
+nsteps =  90, MCprice is 0.149663, std is 0.000092, abs err is 0.000090
+nsteps = 100, MCprice is 0.149624, std is 0.000090, abs err is 0.000050
+The call price of 1.05 is 0.131590
+nsteps =  10, MCprice is 0.132061, std is 0.000088, abs err is 0.000471
+nsteps =  20, MCprice is 0.131867, std is 0.000087, abs err is 0.000277
+nsteps =  30, MCprice is 0.131783, std is 0.000086, abs err is 0.000192
+nsteps =  40, MCprice is 0.131815, std is 0.000088, abs err is 0.000225
+nsteps =  50, MCprice is 0.131634, std is 0.000090, abs err is 0.000044
+nsteps =  60, MCprice is 0.131648, std is 0.000087, abs err is 0.000058
+nsteps =  70, MCprice is 0.131726, std is 0.000086, abs err is 0.000136
+nsteps =  80, MCprice is 0.131645, std is 0.000086, abs err is 0.000055
+nsteps =  90, MCprice is 0.131702, std is 0.000088, abs err is 0.000112
+nsteps = 100, MCprice is 0.131594, std is 0.000085, abs err is 0.000004
+The call price of 1.10 is 0.115547
+nsteps =  10, MCprice is 0.116137, std is 0.000084, abs err is 0.000591
+nsteps =  20, MCprice is 0.115804, std is 0.000084, abs err is 0.000258
+nsteps =  30, MCprice is 0.115756, std is 0.000082, abs err is 0.000209
+nsteps =  40, MCprice is 0.115736, std is 0.000080, abs err is 0.000189
+nsteps =  50, MCprice is 0.115622, std is 0.000080, abs err is 0.000075
+nsteps =  60, MCprice is 0.115634, std is 0.000083, abs err is 0.000087
+nsteps =  70, MCprice is 0.115669, std is 0.000086, abs err is 0.000122
+nsteps =  80, MCprice is 0.115638, std is 0.000080, abs err is 0.000091
+nsteps =  90, MCprice is 0.115576, std is 0.000085, abs err is 0.000029
+nsteps = 100, MCprice is 0.115562, std is 0.000081, abs err is 0.000015

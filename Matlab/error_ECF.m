@@ -9,7 +9,7 @@
 theta = 1; % 1 for call and -1 for put
 
 % Damping parameter
-alpha = -2*theta; % Parseval
+alpha = 0*theta; % Parseval
 
 
 % Fourier parameters
@@ -26,8 +26,8 @@ xi = dxi*(-N:N-1); % grid in Fourier space
 
 % Algorithm parameters
 nsteps = 20;
-nblocks = 50;
-npaths = 200;
+nblocks = 500;
+npaths = 2000;
 
 % Monte Carlo
 tic
@@ -130,16 +130,16 @@ b_ij_division = b_ij_plus./b_ij_minus;
 % + q\frac{\tilde{a}_n^{i,j}}{a_n^{i,j}}\right)-\imath k\left(2q
 % + \frac{\tilde{a}_n^{i,j}}{a_n^{i,j}}\right)\right] \\phi_vq = zeros(d,ngrid);
 % Sun page 14 eq. (52)
-c_v = ones(d,1)*0.5*xi.^2-0.5*((alpha^2-alpha*a_ij_division')*ones(1,ngrid)+(2*alpha-a_ij_division')*1i*xi);%
+c_v = ones(d,1)*0.5*xi.^2-0.5*((alpha^2-alpha*a_ij_division')*ones(1,ngrid)-(2*alpha-a_ij_division')*1i*xi);%
 % Sun page 15 eq. (53,54)
-c_r = ones(2,1)*0.5*xi.^2-0.5*((alpha^2-alpha*b_ij_division')*ones(1,ngrid)+(2*alpha-b_ij_division')*1i*xi);%
+c_r = ones(2,1)*0.5*xi.^2-0.5*((alpha^2-alpha*b_ij_division')*ones(1,ngrid)-(2*alpha-b_ij_division')*1i*xi);%
 
 % Recchioni and Sun, 2016 page 17 eq. (61)
 % \mu_{q,v_n} = -\frac{1}{2}(\chi_n+(\imath k-q)\gamma_n\tilde{\rho}_{n,v})
 % Sun page 16 eq. (60)
-d_v = 0.5*(chi.'*ones(1,ngrid)+(gamma.*a_ij_rho)'.*(1i*xi+alpha));
+d_v = 0.5*(chi.'*ones(1,ngrid)+(gamma.*a_ij_rho)'.*(-1i*xi+alpha));
 % Sun page 17 eq. (70,72)
-d_r = 0.5*(lambda.'*ones(1,ngrid)+(eta.*b_ij_rho)'.*(1i*xi+alpha));
+d_r = 0.5*(lambda.'*ones(1,ngrid)+(eta.*b_ij_rho)'.*(-1i*xi+alpha));
 
 % Recchioni and Sun, 2016 page 17 eq. (62)
 % \zeta_{q,v_{n}}=\frac{1}{2}\left[4\mu_{q,v_{n}}^{2}+2\gamma_{n}^{2}
@@ -147,7 +147,7 @@ d_r = 0.5*(lambda.'*ones(1,ngrid)+(eta.*b_ij_rho)'.*(1i*xi+alpha));
 % Sun page 16 eq. (60)
 e_v= 0.5*(4*d_v.^2 + 2*diag(gamma.^2.*a_ij_minus.^2)*c_v).^0.5; 
 % Sun page 17 eq. (71,73)
-e_r= 0.5*(4*d_r.^2 + 2*diag(eta.^2)*(diag(b_ij_minus.^2)*c_r+diag(b_ij_division)*ones(2,1)*(alpha+1i*xi))).^0.5; %
+e_r= 0.5*(4*d_r.^2 + 2*diag(eta.^2)*(diag(b_ij_minus.^2)*c_r+diag(b_ij_division)*ones(2,1)*(alpha-1i*xi))).^0.5; %
 %e_r= 0.5*(4*d_r.^2 + 2*diag(eta.^2.*b_ij_minus.^2)*c_r).^0.5;
 
 % Recchioni and Sun page, 2016 17 eq. (63)
@@ -199,13 +199,14 @@ fprintf('%22s%14.10f\n','Root mean square error',RMSE)
 
 figure(1)
 plot(xi,real(phi_a),xi,real(phi_e))
-xlim = ([-200 200]);
+axis([-20 20 0 1])
 title('Real part of the analytical and empirical characteristic function')
 xlabel('\xi')
 legend('Analytical','Empirical')
 
 figure(2)
 plot(xi,imag(phi_a),xi,imag(phi_e))
+axis([-20 20 -0.2 0.2])
 title('Imaginary part of the analytical and empirical characteristic function')
 xlabel('\xi')
 legend('Analytical','Empirical')

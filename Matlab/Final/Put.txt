@@ -1,0 +1,57 @@
+nblocks = 2000;
+npaths = 5000;
+The put price of 0.90 is 0.129202
+nsteps =  10, MCprice is 0.131503, std is 0.000054, abs err is 0.002302
+nsteps =  20, MCprice is 0.130363, std is 0.000056, abs err is 0.001161
+nsteps =  30, MCprice is 0.130044, std is 0.000056, abs err is 0.000842
+nsteps =  40, MCprice is 0.129818, std is 0.000054, abs err is 0.000616
+nsteps =  50, MCprice is 0.129907, std is 0.000054, abs err is 0.000705
+nsteps =  60, MCprice is 0.129584, std is 0.000055, abs err is 0.000382
+nsteps =  70, MCprice is 0.129587, std is 0.000055, abs err is 0.000385
+nsteps =  80, MCprice is 0.129448, std is 0.000055, abs err is 0.000246
+nsteps =  90, MCprice is 0.129518, std is 0.000055, abs err is 0.000316
+nsteps = 100, MCprice is 0.129610, std is 0.000057, abs err is 0.000408
+The put price of 0.95 is 0.154467
+nsteps =  10, MCprice is 0.156968, std is 0.000061, abs err is 0.002502
+nsteps =  20, MCprice is 0.155664, std is 0.000061, abs err is 0.001197
+nsteps =  30, MCprice is 0.155200, std is 0.000061, abs err is 0.000733
+nsteps =  40, MCprice is 0.155141, std is 0.000061, abs err is 0.000674
+nsteps =  50, MCprice is 0.154946, std is 0.000061, abs err is 0.000479
+nsteps =  60, MCprice is 0.155025, std is 0.000060, abs err is 0.000558
+nsteps =  70, MCprice is 0.154817, std is 0.000061, abs err is 0.000350
+nsteps =  80, MCprice is 0.154904, std is 0.000060, abs err is 0.000437
+nsteps =  90, MCprice is 0.154844, std is 0.000063, abs err is 0.000377
+nsteps = 100, MCprice is 0.154881, std is 0.000060, abs err is 0.000414
+The put price of 1.00 is 0.181956
+nsteps =  10, MCprice is 0.184708, std is 0.000066, abs err is 0.002752
+nsteps =  20, MCprice is 0.183445, std is 0.000067, abs err is 0.001489
+nsteps =  30, MCprice is 0.182961, std is 0.000063, abs err is 0.001005
+nsteps =  40, MCprice is 0.182761, std is 0.000067, abs err is 0.000805
+nsteps =  50, MCprice is 0.182568, std is 0.000066, abs err is 0.000612
+nsteps =  60, MCprice is 0.182541, std is 0.000067, abs err is 0.000585
+nsteps =  70, MCprice is 0.182479, std is 0.000065, abs err is 0.000522
+nsteps =  80, MCprice is 0.182502, std is 0.000066, abs err is 0.000546
+nsteps =  90, MCprice is 0.182403, std is 0.000065, abs err is 0.000447
+nsteps = 100, MCprice is 0.182339, std is 0.000067, abs err is 0.000383
+The put price of 1.05 is 0.211534
+nsteps =  10, MCprice is 0.214283, std is 0.000071, abs err is 0.002748
+nsteps =  20, MCprice is 0.213053, std is 0.000072, abs err is 0.001519
+nsteps =  30, MCprice is 0.212562, std is 0.000071, abs err is 0.001028
+nsteps =  40, MCprice is 0.212211, std is 0.000069, abs err is 0.000676
+nsteps =  50, MCprice is 0.212138, std is 0.000071, abs err is 0.000604
+nsteps =  60, MCprice is 0.212130, std is 0.000073, abs err is 0.000596
+nsteps =  70, MCprice is 0.211907, std is 0.000072, abs err is 0.000373
+nsteps =  80, MCprice is 0.211847, std is 0.000071, abs err is 0.000313
+nsteps =  90, MCprice is 0.212035, std is 0.000071, abs err is 0.000500
+nsteps = 100, MCprice is 0.211821, std is 0.000069, abs err is 0.000287
+The put price of 1.10 is 0.243052
+nsteps =  10, MCprice is 0.245857, std is 0.000077, abs err is 0.002805
+nsteps =  20, MCprice is 0.244592, std is 0.000076, abs err is 0.001539
+nsteps =  30, MCprice is 0.244153, std is 0.000076, abs err is 0.001101
+nsteps =  40, MCprice is 0.243817, std is 0.000077, abs err is 0.000765
+nsteps =  50, MCprice is 0.243649, std is 0.000075, abs err is 0.000596
+nsteps =  60, MCprice is 0.243662, std is 0.000076, abs err is 0.000610
+nsteps =  70, MCprice is 0.243526, std is 0.000077, abs err is 0.000474
+nsteps =  80, MCprice is 0.243575, std is 0.000077, abs err is 0.000523
+nsteps =  90, MCprice is 0.243434, std is 0.000076, abs err is 0.000381
+nsteps = 100, MCprice is 0.243553, std is 0.000074, abs err is 0.000501
