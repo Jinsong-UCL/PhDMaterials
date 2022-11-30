@@ -1,0 +1,190 @@
+The call price of 0.90 is 0.191942
+nsteps =  16, MCprice is 0.189594, std is 0.006430, abs err is 0.002348
+Validated
+nsteps =  32, MCprice is 0.193864, std is 0.005082, abs err is 0.001922
+Validated
+nsteps =  64, MCprice is 0.191652, std is 0.006133, abs err is 0.000290
+Validated
+nsteps = 128, MCprice is 0.185306, std is 0.005772, abs err is 0.006636
+Validated
+nsteps = 256, MCprice is 0.197460, std is 0.006140, abs err is 0.005518
+Validated
+nsteps = 512, MCprice is 0.193579, std is 0.006269, abs err is 0.001637
+Validated
+nsteps = 1024, MCprice is 0.198707, std is 0.006075, abs err is 0.006765
+Validated
+nsteps = 2048, MCprice is 0.186975, std is 0.006315, abs err is 0.004967
+Validated
+nsteps = 4096, MCprice is 0.194156, std is 0.006528, abs err is 0.002214
+Validated
+The call price of 0.95 is 0.169645
+nsteps =  16, MCprice is 0.174838, std is 0.004945, abs err is 0.005193
+Validated
+nsteps =  32, MCprice is 0.177068, std is 0.006440, abs err is 0.007422
+Validated
+nsteps =  64, MCprice is 0.174944, std is 0.005945, abs err is 0.005299
+Validated
+nsteps = 128, MCprice is 0.178528, std is 0.006053, abs err is 0.008882
+Validated
+nsteps = 256, MCprice is 0.168390, std is 0.005327, abs err is 0.001256
+Validated
+nsteps = 512, MCprice is 0.176674, std is 0.005552, abs err is 0.007029
+Validated
+nsteps = 1024, MCprice is 0.180786, std is 0.005504, abs err is 0.011140
+Not Validated
+nsteps = 2048, MCprice is 0.171720, std is 0.006175, abs err is 0.002075
+Validated
+nsteps = 4096, MCprice is 0.167922, std is 0.006458, abs err is 0.001723
+Validated
+The call price of 1.00 is 0.149574
+nsteps =  16, MCprice is 0.144045, std is 0.005068, abs err is 0.005528
+Validated
+nsteps =  32, MCprice is 0.146979, std is 0.004808, abs err is 0.002594
+Validated
+nsteps =  64, MCprice is 0.145786, std is 0.004965, abs err is 0.003788
+Validated
+nsteps = 128, MCprice is 0.147729, std is 0.004514, abs err is 0.001845
+Validated
+nsteps = 256, MCprice is 0.139076, std is 0.005366, abs err is 0.010498
+Validated
+nsteps = 512, MCprice is 0.144767, std is 0.005625, abs err is 0.004806
+Validated
+nsteps = 1024, MCprice is 0.145592, std is 0.005073, abs err is 0.003982
+Validated
+nsteps = 2048, MCprice is 0.153079, std is 0.004933, abs err is 0.003506
+Validated
+nsteps = 4096, MCprice is 0.137840, std is 0.004551, abs err is 0.011733
+Not Validated
+The call price of 1.05 is 0.131590
+nsteps =  16, MCprice is 0.137049, std is 0.004716, abs err is 0.005458
+Validated
+nsteps =  32, MCprice is 0.125891, std is 0.004919, abs err is 0.005699
+Validated
+nsteps =  64, MCprice is 0.128709, std is 0.004236, abs err is 0.002881
+Validated
+nsteps = 128, MCprice is 0.129632, std is 0.005295, abs err is 0.001958
+Validated
+nsteps = 256, MCprice is 0.137176, std is 0.005238, abs err is 0.005586
+Validated
+nsteps = 512, MCprice is 0.129729, std is 0.004852, abs err is 0.001861
+Validated
+nsteps = 1024, MCprice is 0.136930, std is 0.005254, abs err is 0.005340
+Validated
+nsteps = 2048, MCprice is 0.128123, std is 0.004209, abs err is 0.003467
+Validated
+nsteps = 4096, MCprice is 0.130191, std is 0.005426, abs err is 0.001399
+Validated
+The call price of 1.10 is 0.115547
+nsteps =  16, MCprice is 0.113607, std is 0.004599, abs err is 0.001939
+Validated
+nsteps =  32, MCprice is 0.112836, std is 0.004073, abs err is 0.002710
+Validated
+nsteps =  64, MCprice is 0.113905, std is 0.003831, abs err is 0.001641
+Validated
+nsteps = 128, MCprice is 0.111972, std is 0.004486, abs err is 0.003575
+Validated
+nsteps = 256, MCprice is 0.108931, std is 0.004865, abs err is 0.006615
+Validated
+nsteps = 512, MCprice is 0.121704, std is 0.004596, abs err is 0.006157
+Validated
+nsteps = 1024, MCprice is 0.110762, std is 0.004820, abs err is 0.004784
+Validated
+nsteps = 2048, MCprice is 0.114695, std is 0.004860, abs err is 0.000852
+Validated
+nsteps = 4096, MCprice is 0.112026, std is 0.004733, abs err is 0.003521
+Validated
+The put price of 0.90 is 0.129202
+nsteps =  16, MCprice is 0.134404, std is 0.003055, abs err is 0.005202
+Validated
+nsteps =  32, MCprice is 0.133037, std is 0.002921, abs err is 0.003835
+Validated
+nsteps =  64, MCprice is 0.124322, std is 0.003178, abs err is 0.004880
+Validated
+nsteps = 128, MCprice is 0.131407, std is 0.003396, abs err is 0.002205
+Validated
+nsteps = 256, MCprice is 0.134953, std is 0.002708, abs err is 0.005751
+Not Validated
+nsteps = 512, MCprice is 0.129971, std is 0.002604, abs err is 0.000769
+Validated
+nsteps = 1024, MCprice is 0.129903, std is 0.003174, abs err is 0.000701
+Validated
+nsteps = 2048, MCprice is 0.127468, std is 0.003192, abs err is 0.001734
+Validated
+nsteps = 4096, MCprice is 0.128718, std is 0.003019, abs err is 0.000484
+Validated
+The put price of 0.95 is 0.154467
+nsteps =  16, MCprice is 0.156128, std is 0.003491, abs err is 0.001662
+Validated
+nsteps =  32, MCprice is 0.155048, std is 0.003451, abs err is 0.000581
+Validated
+nsteps =  64, MCprice is 0.151816, std is 0.003034, abs err is 0.002651
+Validated
+nsteps = 128, MCprice is 0.158592, std is 0.004075, abs err is 0.004125
+Validated
+nsteps = 256, MCprice is 0.154254, std is 0.003764, abs err is 0.000213
+Validated
+nsteps = 512, MCprice is 0.147972, std is 0.003223, abs err is 0.006495
+Not Validated
+nsteps = 1024, MCprice is 0.160042, std is 0.003081, abs err is 0.005575
+Validated
+nsteps = 2048, MCprice is 0.153887, std is 0.003610, abs err is 0.000580
+Validated
+nsteps = 4096, MCprice is 0.156283, std is 0.003008, abs err is 0.001816
+Validated
+The put price of 1.00 is 0.181956
+nsteps =  16, MCprice is 0.187089, std is 0.004380, abs err is 0.005132
+Validated
+nsteps =  32, MCprice is 0.182492, std is 0.003987, abs err is 0.000535
+Validated
+nsteps =  64, MCprice is 0.179873, std is 0.003664, abs err is 0.002084
+Validated
+nsteps = 128, MCprice is 0.176776, std is 0.003849, abs err is 0.005181
+Validated
+nsteps = 256, MCprice is 0.186464, std is 0.003553, abs err is 0.004508
+Validated
+nsteps = 512, MCprice is 0.189884, std is 0.004024, abs err is 0.007928
+Validated
+nsteps = 1024, MCprice is 0.188487, std is 0.003485, abs err is 0.006530
+Validated
+nsteps = 2048, MCprice is 0.178356, std is 0.002947, abs err is 0.003600
+Validated
+nsteps = 4096, MCprice is 0.180115, std is 0.004044, abs err is 0.001841
+Validated
+The put price of 1.05 is 0.211534
+nsteps =  16, MCprice is 0.207761, std is 0.003654, abs err is 0.003774
+Validated
+nsteps =  32, MCprice is 0.223515, std is 0.003926, abs err is 0.011981
+Not Validated
+nsteps =  64, MCprice is 0.209338, std is 0.004047, abs err is 0.002196
+Validated
+nsteps = 128, MCprice is 0.211958, std is 0.003468, abs err is 0.000424
+Validated
+nsteps = 256, MCprice is 0.207809, std is 0.004949, abs err is 0.003726
+Validated
+nsteps = 512, MCprice is 0.210513, std is 0.003734, abs err is 0.001021
+Validated
+nsteps = 1024, MCprice is 0.205750, std is 0.003766, abs err is 0.005784
+Validated
+nsteps = 2048, MCprice is 0.218197, std is 0.003783, abs err is 0.006663
+Validated
+nsteps = 4096, MCprice is 0.214859, std is 0.004090, abs err is 0.003324
+Validated
+The put price of 1.10 is 0.243052
+nsteps =  16, MCprice is 0.240414, std is 0.003916, abs err is 0.002639
+Validated
+nsteps =  32, MCprice is 0.248766, std is 0.004316, abs err is 0.005714
+Validated
+nsteps =  64, MCprice is 0.242114, std is 0.003979, abs err is 0.000938
+Validated
+nsteps = 128, MCprice is 0.246714, std is 0.003899, abs err is 0.003662
+Validated
+nsteps = 256, MCprice is 0.240639, std is 0.004327, abs err is 0.002414
+Validated
+nsteps = 512, MCprice is 0.236855, std is 0.004166, abs err is 0.006198
+Validated
+nsteps = 1024, MCprice is 0.243851, std is 0.004644, abs err is 0.000799
+Validated
+nsteps = 2048, MCprice is 0.245074, std is 0.004754, abs err is 0.002022
+Validated
+nsteps = 4096, MCprice is 0.249191, std is 0.004442, abs err is 0.006138
+Validated

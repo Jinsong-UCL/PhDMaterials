@@ -148,15 +148,14 @@ for K = [0.9 0.95 1 1.05 1.1]
     end
 
     % Algorithm parameters
-    nblocks = 20;
-    npaths = 50;
-    parfor n = [1 2 3 4 5 6 7 8 9 10]
-        nsteps = n*10;
+    nblocks = 2000;
+    npaths = 5000;
+    parfor n = [4 5 6 7 8 9 10 11 12]
+        nsteps = 2^n;
         dt = T/nsteps;
         VcMC = zeros(nblocks,1);
         VpMC = zeros(nblocks,1);
         for block = 1:nblocks
-            MC_result = zeros(nsteps+1,npaths);
             VcMCb = zeros(1,npaths);
             VpMCb = zeros(1,npaths);
             for path = 1:npaths
@@ -248,10 +247,25 @@ for K = [0.9 0.95 1 1.05 1.1]
         VpMC_result = mean(VpMC);
         scMC = sqrt(var(VcMC)/nblocks);
         spMC = sqrt(var(VpMC)/nblocks);
+        
+        ts = tinv([0.025  0.975],nblocks-1);      % 95 T-Score
+        CI_c = VcMC_result+ ts*scMC;
+        CI_p = VpMC_result+ ts*spMC;
+        
         if theta ==1
             fprintf('nsteps = %3d, MCprice is %4.6f, std is %4.6f, abs err is %4.6f\n',nsteps,VcMC_result,scMC,abs(priceS_simple-VcMC_result))
+            if (priceS_simple > CI_c(1) && priceS_simple < CI_c(2))
+                fprintf('Validated\n')
+            else
+                fprintf('Not Validated\n')
+            end
         else
             fprintf('nsteps = %3d, MCprice is %4.6f, std is %4.6f, abs err is %4.6f\n',nsteps,VpMC_result,spMC,abs(priceS_simple-VpMC_result))
+            if (priceS_simple > CI_p(1) && priceS_simple < CI_p(2))
+                fprintf('Validated\n')
+            else
+                fprintf('Not Validated\n')
+            end
         end
 
     end
