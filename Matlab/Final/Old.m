@@ -41,6 +41,7 @@ v_bar = [0.037,0.0909];
 % Volatility of volatility
 sigmav = [0.4912,0.08];
 
+
 % Correlations
 rho_v = [0.5231,-0.398];
 rho_r = [-0.23,-0.81];
@@ -56,11 +57,8 @@ B = xwidth/2; % upper bound of the support in real space
 dx = xwidth/ngrid; % grid step in real space
 x = dx*(-N:N-1); % grid in real space
 dxi = pi/B; % Nyquist relation: grid step in Fourier space
-xi2 = dxi*(-N:N-1); % grid in Fourier space
-xi = xi2 +1i*alpha;
-
-alpha2 = -4*theta;
-alpha = 0;
+xi = dxi*(-N:N-1); % grid in Fourier space
+%xi2 = xi +1i*alpha 
 
 % Auxiliary parameters
 a_ij_minus = a_i - a_j;
@@ -86,7 +84,7 @@ CFv = exp(kappav.*v_bar./sigmav.^2*((ev-dv)*T-2*log((1-gv.*exp(-dv*T))./(1-gv)))
 CF = CFr.*CFv;
 
 factor_simple = S0*exp(-r_0(1)*T); % mixes discount and damping
-payoff = (K/S0).^(alpha2+1+1i*xi2)./((1i*xi2+alpha2).*(1i*xi2+alpha2+1));
+payoff = (K/S0).^(alpha+1+1i*xi)./((1i*xi+alpha).*(1i*xi+alpha+1));
 integrand_new = conj(payoff).*CF;
 priceS_new = factor_simple*sum(integrand_new)*dxi/(2*pi);
 if theta ==1
@@ -95,3 +93,25 @@ else
     fprintf('The put price of %2.2f is %4.6f\n', K, priceS_new)
 end
 
+%% Barrier options
+% Analytical Fourier transform of the payoff
+l = -B; % = log(L/C); % lower log barrier
+k = log(K/S0); % log strike
+u = B; % = log(U/C); % upper log barrier
+
+% Integration bounds
+if theta == 1 % call
+    a = max(l,k);
+    b = u;
+else % put
+    a = min(k,u);
+    b = l;
+end
+
+% Green, Fusai, Abrahams 2010 Eq. (3.26) with extension to put option
+xi2 = alpha + 1i*xi;
+G = S0*((exp(b*(1+xi2))-exp(a*(1+xi2)))./(1+xi2) ...
+    - (exp(k+b*xi2)-exp(k+a*xi2))./xi2);
+c = S0*exp(-r_0(1)*T).*real(fftshift(fft(ifftshift(G.*conj(CF)))))/xwidth;
+
+priceP = interp1(S0*exp(x),c,S0,'spline')

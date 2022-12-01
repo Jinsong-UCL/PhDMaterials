@@ -105,7 +105,7 @@ for block = 1:nblocks
             x(steps+1) = x(steps) + mu(steps)*dt + sum_v_2(steps) + sum_r_2(steps);
         end
     
-        % Calculate the emperical characteristic function
+        % Calculate the empirical characteristic function
     
         phi_e_path(path,:) = exp(1i*xi*x(end)); 
     end
