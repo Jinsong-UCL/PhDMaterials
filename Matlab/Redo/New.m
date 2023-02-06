@@ -56,11 +56,8 @@ B = xwidth/2; % upper bound of the support in real space
 dx = xwidth/ngrid; % grid step in real space
 x = dx*(-N:N-1); % grid in real space
 dxi = pi/B; % Nyquist relation: grid step in Fourier space
-xi2 = dxi*(-N:N-1); % grid in Fourier space
-xi = xi2 +1i*alpha;
-
-alpha2 = -4*theta;
-alpha = 0;
+xi = dxi*(-N:N-1); % grid in Fourier space
+xi_shifted = xi +1i*alpha;
 
 % Auxiliary parameters
 a_ij_minus = a_i - a_j;
@@ -73,11 +70,11 @@ a_ij_division = a_ij_plus./a_ij_minus;
 b_ij_division = b_ij_plus./b_ij_minus;
 
 % New notation:
-fr = xi.^2-((alpha^2-alpha*a_ij_division')*ones(1,ngrid)-(2*alpha-a_ij_division')*1i*xi);%
-fv = xi.^2-((alpha^2-alpha*b_ij_division')*ones(1,ngrid)-(2*alpha-b_ij_division')*1i*xi);%
-er = (kappar.'*ones(1,ngrid)+(sigmar.*a_ij_rho)'.*(-1i*xi+alpha));
-ev = (kappav.'*ones(1,ngrid)+(sigmav.*b_ij_rho)'.*(-1i*xi+alpha));
-dr= (er.^2 + diag(sigmar.^2)*(diag(a_ij_minus.^2)*fr+2*diag(a_ij_division)*ones(2,1)*(alpha-1i*xi))).^0.5; %
+fr = xi_shifted.^2-a_ij_division'*1i*xi_shifted;%
+fv = xi_shifted.^2-b_ij_division'*1i*xi_shifted;%
+er = (kappar.'*ones(1,ngrid)+(sigmar.*a_ij_rho)'.*(-1i*xi_shifted));
+ev = (kappav.'*ones(1,ngrid)+(sigmav.*b_ij_rho)'.*(-1i*xi_shifted));
+dr= (er.^2 + diag(sigmar.^2)*(diag(a_ij_minus.^2)*fr+2*diag(a_ij_division)*ones(2,1)*(-1i*xi_shifted))).^0.5; %
 dv= (ev.^2 + diag(sigmav.^2.*b_ij_minus.^2)*fv).^0.5;
 gr = (er - dr)./ (er + dr);
 gv = (ev - dv)./ (ev + dv);
@@ -86,7 +83,7 @@ CFv = exp(kappav.*v_bar./sigmav.^2*((ev-dv)*T-2*log((1-gv.*exp(-dv*T))./(1-gv)))
 CF = CFr.*CFv;
 
 factor_simple = S0*exp(-r_0(1)*T); % mixes discount and damping
-payoff = (K/S0).^(alpha2+1+1i*xi2)./((1i*xi2+alpha2).*(1i*xi2+alpha2+1));
+payoff = (K/S0).^(alpha+1+1i*xi)./((1i*xi+alpha).*(1i*xi+alpha+1));
 integrand_new = conj(payoff).*CF;
 priceS_new = factor_simple*sum(integrand_new)*dxi/(2*pi);
 if theta ==1

@@ -10,7 +10,7 @@ theta = 1; % 1 for call and -1 for put
 
 % Damping parameter
 alpha = 0*theta; % Parseval
-
+d =2;
 
 % Fourier parameters
 xwidth = 20; % width of the support in real space
@@ -26,7 +26,7 @@ xi = dxi*(-N:N-1); % grid in Fourier space
 
 % Algorithm parameters
 nsteps = 20;
-nblocks = 500;
+nblocks = 5000;
 npaths = 2000;
 
 % Monte Carlo

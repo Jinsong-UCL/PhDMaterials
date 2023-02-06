@@ -91,7 +91,7 @@ CFv = exp(kappav.*v_bar./sigmav.^2*((ev-dv)*T-2*log((1-gv.*exp(-dv*T))./(1-gv)))
 CF = CFr.*CFv;
 
 
-for K = [0.9 0.95 1 1.05 1.1]
+for K = [ 1]
     % Recchioni Page 6, 2016 eq. (34)
     % Sun page 31 eq. (154,155)
     factor_simple = S0*exp(-r_0(1)*T); % mixes discount and damping
@@ -105,7 +105,7 @@ for K = [0.9 0.95 1 1.05 1.1]
     end
 
     % Algorithm parameters
-    nblocks = 20;
+    nblocks = 2000;
     npaths = 500;
     parfor n = [4 5 6 7 8 9 10]
         nsteps = 2^n;
