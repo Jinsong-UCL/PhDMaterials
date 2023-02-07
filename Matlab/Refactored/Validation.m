@@ -4,7 +4,6 @@ r_0 = [0.05,0.06]; % spot interest rates r_{i0},r_{j0}
 
 % Contract parameters
 T = 1; % maturity
-K = 1; % strike price
 
 % Interest rate coefficients or weights
 parStruct.a_i = [1.004,0.000000];
@@ -37,17 +36,11 @@ parStruct.sigmav = [0.4912,0.08];
 parStruct.rho_v = [0.5231,-0.398];
 parStruct.rho_r = [-0.23,-0.81];
 
-%%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-% European Options
-%%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-european_call_price = europeanPricing(parStruct,1,S0,T,K,r_0);
-european_put_price = europeanPricing(parStruct,-1,S0,T,K,r_0);
+for K = [0.9 0.95 1 1.05 1.1]
+    european.call_price = europeanPricing(parStruct,1,S0,T,K,r_0);
+    european.put_price = europeanPricing(parStruct,-1,S0,T,K,r_0);
 
-
-%%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-% Barrier Options
-%%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-barrier_call_price = barrierPricing(parStruct,-1,S0,T,K,r_0);
-barrier_put_price = barrierPricing(parStruct,-1,S0,T,K,r_0);
-
-
+    parfor n = [4 5 6 7 8 9 10]
+        [simulated_call, simulated_put] = europeanSimulation(parStruct,european,n,S0,T,K,r_0);
+    end
+end

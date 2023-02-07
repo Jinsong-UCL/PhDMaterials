@@ -40,14 +40,21 @@ parStruct.rho_r = [-0.23,-0.81];
 %%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 % European Options
 %%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-european_call_price = europeanPricing(parStruct,1,S0,T,K,r_0);
-european_put_price = europeanPricing(parStruct,-1,S0,T,K,r_0);
+european.call_price = europeanPricing(parStruct,1,S0,T,K,r_0);
+european.put_price = europeanPricing(parStruct,-1,S0,T,K,r_0);
 
 
 %%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 % Barrier Options
 %%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-barrier_call_price = barrierPricing(parStruct,exp(-9),exp(9),1,S0,T,K,r_0);
-barrier_put_price = barrierPricing(parStruct,exp(-9),exp(9),-1,S0,T,K,r_0);
+barrier.call_price = barrierPricing(parStruct,exp(-9),exp(9),1,S0,T,K,r_0);
+barrier.put_price = barrierPricing(parStruct,exp(-9),exp(9),-1,S0,T,K,r_0);
 
+%%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+% Simulations
+%%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+% Number of steps 2^n
+parfor n = [4 5 6 7 8 9 10]
+    [simulated_call, simulated_put] = europeanSimulation(parStruct,european,n,S0,T,K,r_0);
+end
 
