@@ -12,8 +12,8 @@ hn = params.hn;
 h = hm-hn;
 d = 4;
 % Number of simulations 
-nblocks = 500;
-npaths = 500;
+nblocks = 10;
+npaths = 100;
 % Number of steps 
 nsteps = 50*n;
 dt = T/nsteps;
@@ -67,14 +67,15 @@ for block = 1:nblocks
         payoffs_put = max(K - S_end,0);
 
         % Countinuous Compounding 
-        dfactor = exp(- sum(hm * y' *dt));
-        dfactor2 = exp(-r_0(1)*T);
+        r_sum = 0;
+        for step = 1:nsteps
+            r_sum = r_sum + trace(y(step,:) * hm') *dt;
+        end
+        dfactor = exp(- r_sum);
         %fprintf("The difference is %f", abs(dfactor2-dfactor))
-
 
         VcMCb(1,path) = dfactor*payoffs_call;
         VpMCb(1,path) = dfactor*payoffs_put;
-
         % MC_result(1:nsteps+1,path) = S0*exp(x_i_j);
     end
     VcMC(block) = mean(VcMCb);

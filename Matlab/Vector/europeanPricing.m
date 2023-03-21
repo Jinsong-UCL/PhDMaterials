@@ -31,13 +31,14 @@ xi_shifted = xi +1i*alpha;
 a_ij_minus = a_i - a_j;
 a_ij_plus = a_i + a_j;
 a_ij_rho = rho.*a_ij_minus;
-a_ij_division = a_ij_plus./a_ij_minus;
+%a_ij_division = a_ij_plus./a_ij_minus;
 
 % New notation:
-f =  xi_shifted.^2-a_ij_division'*1i*xi_shifted;
+%f_c =  diag(a_ij_minus.^2)*(xi_shifted.^2-a_ij_division'*1i*xi_shifted);
+f = diag(a_ij_minus.^2)*ones(4,1)*(xi_shifted.^2) - diag(a_ij_plus.*a_ij_minus)*ones(4,1)*1i*xi_shifted;
+
 e = (kappa.'*ones(1,ngrid)+(sigma.*a_ij_rho)'.*(-1i*xi_shifted));
-%d= (e.^2 + diag(sigma.^2)*(diag(a_ij_minus.^2)*f- 2*diag(h)*ones(4,1)*(1i*xi_shifted) )).^0.5; %
-d= (e.^2 + diag(sigma.^2)*(diag(a_ij_minus.^2)*f- 2*diag(h)*ones(4,1)*(1i*xi_shifted) +2 * hm')).^0.5; %
+d= (e.^2 + diag(sigma.^2)*(f- 2*diag(h)*ones(4,1)*(1i*xi_shifted) +2 * hm')).^0.5; %
 g = (e - d)./ (e + d);
 CF = exp(kappa.*y_bar./sigma.^2*((e-d)*T-2*log((1-g.*exp(-d*T))./(1-g))) + y_0./sigma.^2*((e-d).*(1-exp(-d*T))./(1-g.*exp(-d*T))));
 
