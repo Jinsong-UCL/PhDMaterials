@@ -58,18 +58,9 @@ european.put_price = europeanPricing(parStruct,-1,S0,T,K);
 
 
 %%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-% Barrier Options
-%%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-fprintf("The Barrier option prices are: \n")
-barrier.call_price = barrierPricing(parStruct,exp(-9),exp(9),1,S0,T,K,r_0);
-barrier.put_price = barrierPricing(parStruct,exp(-9),exp(9),-1,S0,T,K,r_0);
-
-
-
-%%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 % Simulations
 %%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-%[simulated_call, simulated_put] = europeanSimulation(parStruct,european,1,S0,T,K);
+[simulated_call, simulated_put] = europeanSimulation(parStruct,european,1,S0,T,K);
 
 % Number of steps 2^n
 %parfor n = [4 5 6 7]

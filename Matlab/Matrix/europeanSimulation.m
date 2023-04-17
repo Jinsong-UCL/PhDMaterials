@@ -12,8 +12,8 @@ hn = diag(params.hn);
 h = hm-hn;
 d = 4;
 % Number of simulations 
-nblocks = 500;
-npaths = 1000;
+nblocks = 50;
+npaths = 100;
 % Number of steps 
 nsteps = 50*n;
 dt = T/nsteps;
@@ -28,7 +28,7 @@ for block = 1:nblocks
         % corr (dW_v, dZ_v) = rho_v
         dW_1 = randn(nsteps,d);
         dW_2 = randn(nsteps,d);
-        dW_3 = dW_1*rho + dW_2*(eye(d)-rho.^2).^0.5;
+        dW_3 = dW_1*rho + dW_2*sqrt(eye(d)-rho.^2);
 
         dW = dW_1 * sqrt(dt);
         dZ = dW_3 * sqrt(dt);
