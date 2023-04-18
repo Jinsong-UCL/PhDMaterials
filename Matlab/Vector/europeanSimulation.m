@@ -53,7 +53,8 @@ for block = 1:nblocks
         x = zeros(nsteps+1,1);
         % Valuation for dx
         for step = 1:nsteps
-            sum_y_1(step) = y(step,:) * (a_i.^2' - a_j.^2');
+            %sum_y_1(step) = y(step,:) * (a_i.^2' - a_j.^2'); % plus
+            sum_y_1(step) = y(step,:) * (a_i' - a_j').^2; % minus
             mu(step) = sum(y(step,:).*h) + 0.5 * (sum_y_1(step));
             sum_y_2(step) = y(step,:).^0.5 .* dW(step,:) * (a_i'-a_j');
             x(step+1) = x(step) + mu(step)*dt + sum_y_2(step);

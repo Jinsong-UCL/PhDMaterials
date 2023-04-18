@@ -35,8 +35,8 @@ a_ij_rho = rho.*a_ij_minus;
 
 % New notation:
 %f_c =  diag(a_ij_minus.^2)*(xi_shifted.^2-a_ij_division'*1i*xi_shifted);
-f = diag(a_ij_minus.^2)*ones(4,1)*(xi_shifted.^2) - diag(a_ij_plus.*a_ij_minus)*ones(4,1)*1i*xi_shifted;
-
+%f = diag(a_ij_minus.^2)*ones(4,1)*(xi_shifted.^2) - diag(a_ij_plus.*a_ij_minus)*ones(4,1)*1i*xi_shifted; %plus
+f = diag(a_ij_minus.^2)*ones(4,1)*(xi_shifted.^2) - diag(a_ij_plus.*a_ij_minus)*ones(4,1)*1i*xi_shifted; %minus
 e = (kappa.'*ones(1,ngrid)+(sigma.*a_ij_rho)'.*(-1i*xi_shifted));
 d= (e.^2 + diag(sigma.^2)*(f- 2*diag(h)*ones(4,1)*(1i*xi_shifted) +2 * hm')).^0.5; %
 g = (e - d)./ (e + d);
