@@ -1,4 +1,4 @@
-function [option_price] = GGCF(market,param,theta)
+function [option_price, CF] = GGCF2(market,param,theta)
 %% Retrieve parameters 
 S0 = market.S0;
 K = market.K;
@@ -33,17 +33,23 @@ xi = dxi*(-N:N-1); % grid in Fourier space
 xi_shifted = xi +1i*alpha;
 
 % Auxiliary parameters
-a_minus = am - an;
-a_plus = am + an; 
+a_ij_minus = am - an;
+a_ij_plus = am + an; 
 
 CF = zeros(1,ngrid);
 for i = 1:ngrid
     x = xi_shifted(i);
-    E = kappa - a_minus * rho *sigma *1i*x;
-    F = a_minus*a_minus*x^2 - a_plus*a_minus*1i*x;
-    D = sqrtm(E*E.' + sigma*sigma'* (F - 2 * h*1i*x + 2*hm));
-    G = (E - D)/(E + D);    
-    CF(i) = trace(beta*((E-D)*T-2*logm((eye(d)-G*expm(-D*T))/(eye(d)-G)))) + trace(y_0*eye(d)/(sigma*sigma')*((E-D)*(eye(d)-expm(-D*T))/(eye(d)-G*expm(-D*T))));
+    %e1 = kappa - a_ij_minus * rho *sigma *1i*x;
+    %e2 = kappa' - sigma' *rho' *a_ij_minus' *1i* x;
+    %E = 0.5*(e1 + e2);
+    E = kappa - a_ij_minus * rho *sigma *1i*x;
+    F = a_ij_minus*a_ij_minus'*x^2 - a_ij_plus*a_ij_minus'*1i*x;
+    D = sqrt(E*E.' + sigma*sigma'* (F - 2 * h*1i*x + 2*hm));
+
+    G = (E - D)/(E + D);
+    
+    CF(i) = beta*((E-D)*T-2*logm((eye(d)-G*expm(-D*T))/(eye(d)-G))) + trace(y_0/(sigma*sigma')*((E-D)*(eye(d)-expm(-D*T))/(eye(d)-G*expm(-D*T))));
+
 end
 CF_E = exp(CF);
 factor_simple = S0;

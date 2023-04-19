@@ -1,7 +1,6 @@
-function [option_price] = GGCF(market,param,theta)
+function [statement] = ECFACF(market,param,phi_empirical)
 %% Retrieve parameters 
-S0 = market.S0;
-K = market.K;
+
 d = market.d;
 T = market.T;
 
@@ -18,8 +17,6 @@ sigma = param.sigma;
 
 h = hm - hn;
 
-% Damping parameter
-alpha = -4*theta;
 
 % Fourier parameters
 xwidth = 20; % width of the support in real space
@@ -30,7 +27,6 @@ N = ngrid/2;
 B = xwidth/2; % upper bound of the support in real space
 dxi = pi/B; % Nyquist relation: grid step in Fourier space
 xi = dxi*(-N:N-1); % grid in Fourier space
-xi_shifted = xi +1i*alpha;
 
 % Auxiliary parameters
 a_minus = am - an;
@@ -38,21 +34,27 @@ a_plus = am + an;
 
 CF = zeros(1,ngrid);
 for i = 1:ngrid
-    x = xi_shifted(i);
+    x = xi(i);
     E = kappa - a_minus * rho *sigma *1i*x;
     F = a_minus*a_minus*x^2 - a_plus*a_minus*1i*x;
     D = sqrtm(E*E.' + sigma*sigma'* (F - 2 * h*1i*x + 2*hm));
     G = (E - D)/(E + D);    
     CF(i) = trace(beta*((E-D)*T-2*logm((eye(d)-G*expm(-D*T))/(eye(d)-G)))) + trace(y_0*eye(d)/(sigma*sigma')*((E-D)*(eye(d)-expm(-D*T))/(eye(d)-G*expm(-D*T))));
 end
-CF_E = exp(CF);
-factor_simple = S0;
-payoff = (K/S0).^(alpha+1+1i*xi)./((1i*xi+alpha).*(1i*xi+alpha+1));
-integrand_new = conj(payoff).*CF_E;
-option_price = factor_simple*sum(integrand_new)*dxi/(2*pi);
-if theta ==1
-    fprintf('The call price of %2.2f is %4.6f\n', K, option_price)
-else
-    fprintf('The put price of %2.2f is %4.6f\n', K, option_price)
-end
+phi_analytical = exp(CF);
+
+figure(1)
+plot(xi,real(phi_empirical),xi,real(phi_analytical))
+axis([-20 20 -0.5 1])
+title('Real part of the discounted characteristic function')
+xlabel('\xi')
+legend('Empirical', 'Analytical')
+
+figure(2)
+plot(xi,imag(phi_empirical),xi,imag(phi_analytical))
+axis([-20 20 -0.5 0.5])
+title('Imaginary part of the discounted characteristic function')
+xlabel('\xi')
+legend('Empirical', 'Analytical')
+statement = 1;
 end

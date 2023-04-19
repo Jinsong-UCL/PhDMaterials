@@ -1,32 +1,51 @@
-function [simulated_call, simulated_put, phi_e] = GGsimulation(market,param)
-%% Retrieve parameters 
-S0 = market.S0;
-K = market.K;
-d = market.d;
-T = market.T;
+% Simulation based on our notations 
+S0 = 1;
+K = 1;
+d = 2;
+% The following numbers are from Gnoatto and Grasselli 2014
+am = [0.7764 0.4837;0.4837 0.9639];
+an = [0.6679 0.6277;0.6277 0.8520];
+hm = [0.2725 0.0804;0.0804 0.4726];
+hn = [0.1841 0.0155;0.0155 0.4761];
+y_0 = [0.1688 0.1708;0.1708 0.3169];
+% am = [0.7764 0.0;0.0 0.9639];
+% an = [0.6679 0.0;0.0 0.8520];
+% hm = [0.2725 0.0;0.0 0.4726];
+% hn = [0.1841 0.0;0.0 0.4700];
+% y_0 = [0.1688 0.0;0.0 0.3169];
+%y_bar =
+%rho = [-0.5417 0.1899;-0.1170 -0.4834];
+%kappa = [1.0426,0.6764;0.9880,0.8778]; 
+%sigma = [0.4364,0.1914;0.4966,0.7362];
 
-beta = param.beta;
-am = param.am;
-an = param.an;
-hm = param.hm;
-hn = param.hn;
-y_0 = param.y_0;
+rho = [-0.5417 0.1899;0.1899 -0.4834];
+kappa = [1.0426,0.6764;0.6764,0.8778]; 
+sigma = [0.4364,0.1914;0.1914,0.7362];
 
-rho = param.rho;
-kappa = param.kappa;
-sigma = param.sigma;
+% rho = [-0.5417 0.0;0.0 -0.4834];
+% rho test
+if sum(eig(eye(d)-rho*rho.')>=0) == d
+    fprintf("rho is valid\n");
+end
+
+% kappa = [1.0426,0.0;0.0,0.8778]; 
+% sigma = [0.4364,0.0;0.0,0.7362];
 
 h = hm - hn;
+beta = 3.1442;
+T = 1;
 
-%% Simulation parameters
-% Number of simulations
-nblocks = 50;
-npaths = 50;
-% Number of steps
-nsteps = 10;
+% Number of simulations 
+nblocks = 100;
+npaths = 100;
+% Number of steps 
+nsteps = 400
 dt = T/nsteps;
+% Initialize calls
+VcMC = zeros(nblocks,1);
+VpMC = zeros(nblocks,1);
 
-%% Fourier parameters
+% Fourier parameters
 xwidth = 20; % width of the support in real space
 ngrid = 2^10; % number of grid points
 
@@ -38,10 +57,9 @@ xi = dxi*(-N:N-1); % grid in Fourier space
 
 tic;
 
-%% Simulation procedure
-% Initialization
-VcMC = zeros(nblocks,1);
-VpMC = zeros(nblocks,1);
+[msgStr,warnId] = lastwarn;
+warnStruct = warning('off',warnId);
+
 phi_e_block = zeros(nblocks,ngrid);% accumulate everything inside of it
 for block = 1:nblocks
     VcMCb = zeros(1,npaths);
@@ -90,7 +108,7 @@ for block = 1:nblocks
 
         VcMCb(1,path) = dfactor*payoffs_call;
         VpMCb(1,path) = dfactor*payoffs_put;
-        phi_e_path(path,:) = dfactor*exp(1i*xi*x_latest);
+        phi_e_path(path,:) = exp(1i*xi*x_latest);
     end
     VcMC(block) = mean(VcMCb);
     VpMC(block) = mean(VpMCb);
@@ -101,23 +119,22 @@ simulated_put = mean(VpMC);
 scMC = sqrt(var(VcMC)/nblocks);
 spMC = sqrt(var(VpMC)/nblocks);
 phi_e = mean(phi_e_block);
-%phi_e_s = sqrt(var(phi_e_block)/nblocks);
+phi_e_s = sqrt(var(phi_e_block)/nblocks);
 
-cputime_MC = toc;
+cputime_MC = toc
 fprintf('%20s%14.10f%14.10f\n','Monte Carlo',simulated_call,simulated_put)
 fprintf('%20s%14.10f%14.10f\n','Monte Carlo stdev',scMC,spMC)
 
-% figure(1)
-% plot(xi,real(phi_e))
-% axis([-20 20 -0.5 1])
-% title('Real part of the empirical characteristic function')
-% xlabel('\xi')
-% legend('Empirical')
-% 
-% figure(2)
-% plot(xi,imag(phi_e))
-% axis([-20 20 -0.5 0.5])
-% title('Imaginary part of the empirical characteristic function')
-% xlabel('\xi')
-% legend('Empirical')
-end
+figure(1)
+plot(xi,real(phi_e))
+axis([-20 20 -0.5 1])
+title('Real part of the empirical characteristic function')
+xlabel('\xi')
+legend('Empirical')
+
+figure(2)
+plot(xi,imag(phi_e))
+axis([-20 20 -1 1])
+title('Imaginary part of the empirical characteristic function')
+xlabel('\xi')
+legend('Empirical')

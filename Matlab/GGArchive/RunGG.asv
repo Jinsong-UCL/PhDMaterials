@@ -1,0 +1,42 @@
+%% Market parameters 
+paramStruct.S0 = 1;
+paramStruct.K = 1;
+paramStruct.d = 2;
+paramStruct.T = 1;
+% The following numbers are from Gnoatto and Grasselli 2014
+%% Diagonal parameters
+% paramStruct.beta = 3.1442;
+% paramStruct.am = [0.7764 0.0;0.0 0.9639];
+% paramStruct.an = [0.6679 0.0;0.0 0.8520];
+% paramStruct.hm = [0.2725 0.0;0.0 0.4726];
+% paramStruct.hn = [0.1841 0.0;0.0 0.4700];
+% paramStruct.y_0 = [0.1688 0.0;0.0 0.3169];
+% paramStruct.rho = [-0.5417 0.0;0.0 -0.4834];
+% paramStruct.kappa = [1.0426,0.0;0.0,0.8778]; 
+% paramStruct.sigma = [0.4364,0.0;0.0,0.7362];
+%% Symmetric parameters
+paramStruct.beta = 3.1442;
+paramStruct.am = [0.7764 0.4837;0.4837 0.9639];
+paramStruct.an = [0.6679 0.6277;0.6277 0.8520];
+paramStruct.hm = [0.2725 0.0804;0.0804 0.4726];
+paramStruct.hn = [0.1841 0.0155;0.0155 0.4761];
+paramStruct.y_0 = [0.1688 0.1708;0.1708 0.3169];
+paramStruct.rho = [-0.5417 0.1899;0.1899 -0.4834];
+paramStruct.kappa = [1.0426,0.6764;0.6764,0.8778]; 
+paramStruct.sigma = [0.4364,0.1914;0.1914,0.7362];
+
+
+% rho test this is to test if 
+if sum(eig(eye(d)-rho*rho.')>=0) == d
+    fprintf("rho is valid\n");
+end
+
+
+
+
+% Number of simulations 
+nblocks = 100;
+npaths = 300;
+% Number of steps 
+nsteps = 100;
+dt = T/nsteps;
