@@ -37,13 +37,18 @@ else
 end
 
 %% Simulation without constant dispalcements in the interets rates
-[simulated_call, simulated_put, phi_empirical] = GGsimulation(marketStruct,paramStruct);
+%[simulated_call, simulated_put, phi_empirical] = GGsimulation(marketStruct,paramStruct);
 
 %% CF
-[call_price] = GGCF(marketStruct,paramStruct,1);
-[put_price] = GGCF(marketStruct,paramStruct,-1);
+fprintf("This is the result of CF in our format\n")
+[call_price_H] = HCF(marketStruct,paramStruct,1);
+[put_price_H] = HCF(marketStruct,paramStruct,-1);
 
+%% CFG
+fprintf("This is the result of CF in Da Fonseca's format\n")
+[call_price] = GCF(marketStruct,paramStruct,1);
+[put_price] = GCF(marketStruct,paramStruct,-1);
 
 %% ECF and ACF
-[statement] = ECFACF(marketStruct,paramStruct,phi_empirical);
+%[statement] = ECFACF(marketStruct,paramStruct,phi_empirical);
 

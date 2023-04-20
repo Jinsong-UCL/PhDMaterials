@@ -20,8 +20,8 @@ h = hm - hn;
 
 %% Simulation parameters
 % Number of simulations
-nblocks = 50;
-npaths = 50;
+nblocks = 1000;
+npaths = 1000;
 % Number of steps
 nsteps = 10;
 dt = T/nsteps;
@@ -65,14 +65,20 @@ for block = 1:nblocks
             interet_rate(step) = trace(hm * y_latest);
             % Update X
             sum1 = trace((am - an) * y_latest * (am + an)');
+            %sum1 = trace((am - an) * (am + an)' * y_latest);
+            %sum1 = trace(0.5*(am - an) * y_latest * (am + an)' + 0.5*(am + an)* y_latest' * (am - an)');
+            %sum1 = trace(0.5*(am - an)* (am + an)' * y_latest + 0.5* y_latest'*(am + an)* (am - an)' );
             mu = trace(y_latest * h) +  0.5 * (sum1);
-            sum2 = trace((am - an) * sqrtm(y_latest) * dW);
+            sum2 = trace((am - an) * sqrtm(y_latest) * dW); 
+            %sum2 = trace(0.5*(am - an) * sqrtm(y_latest) * dW + 0.5*dW'*sqrtm(y_latest)* (am - an)');
             x_latest = x_latest + mu*dt + sum2;
 
             % Update V
+            %y_update = y_latest + (beta*(sigma*sigma') -kappa*y_latest) * dt ...
+            %    +sigma*sqrtm(y_latest)* dZ; %definitely not working
             y_update = y_latest + (beta*(sigma*sigma') -0.5* kappa*y_latest-0.5* y_latest*kappa) * dt ...
                 +0.5*(sigma*sqrtm(y_latest)* dZ + dZ'*sqrtm(y_latest)'*sigma');
-            % y_latest = max(y_update,0);
+            
             y_latest = y_update;
         end
         S_end = S0*exp(x_latest);
@@ -81,12 +87,12 @@ for block = 1:nblocks
         payoffs_put = max(K - S_end,0);
 
 
-        % Countinuous Compounding
+        % discounting
         r_sum = 0;
         for step = 1:nsteps
-            r_sum = r_sum + (interet_rate(step)) *dt;
+            r_sum = r_sum + interet_rate(step) ;
         end
-        dfactor = exp(- r_sum);
+        dfactor = exp(- r_sum*dt);
 
         VcMCb(1,path) = dfactor*payoffs_call;
         VpMCb(1,path) = dfactor*payoffs_put;

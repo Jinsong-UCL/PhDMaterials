@@ -1,4 +1,4 @@
-function [option_price] = GGCF(market,param,theta)
+function [option_price] = HCF(market,param,theta)
 %% Retrieve parameters 
 S0 = market.S0;
 K = market.K;

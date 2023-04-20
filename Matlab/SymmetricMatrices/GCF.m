@@ -1,4 +1,4 @@
-function [option_price, CF] = GGCF2(market,param,theta)
+function [option_price] = GCF(market,param,theta)
 %% Retrieve parameters 
 S0 = market.S0;
 K = market.K;
@@ -33,32 +33,31 @@ xi = dxi*(-N:N-1); % grid in Fourier space
 xi_shifted = xi +1i*alpha;
 
 % Auxiliary parameters
-a_ij_minus = am - an;
-a_ij_plus = am + an; 
+
+a_minus = am - an;
+a_plus = am + an; 
 
 CF = zeros(1,ngrid);
 for i = 1:ngrid
     x = xi_shifted(i);
-    %e1 = kappa - a_ij_minus * rho *sigma *1i*x;
-    %e2 = kappa' - sigma' *rho' *a_ij_minus' *1i* x;
-    %E = 0.5*(e1 + e2);
-    E = kappa - a_ij_minus * rho *sigma *1i*x;
-    F = a_ij_minus*a_ij_minus'*x^2 - a_ij_plus*a_ij_minus'*1i*x;
-    D = sqrt(E*E.' + sigma*sigma'* (F - 2 * h*1i*x + 2*hm));
-
-    G = (E - D)/(E + D);
-    
-    CF(i) = beta*((E-D)*T-2*logm((eye(d)-G*expm(-D*T))/(eye(d)-G))) + trace(y_0/(sigma*sigma')*((E-D)*(eye(d)-expm(-D*T))/(eye(d)-G*expm(-D*T))));
-
+    e1 = -kappa + sigma'*rho*a_minus *1i*x;
+    e2 = kappa' - a_minus*rho'*sigma *1i*x;
+    G = a_minus*a_minus'*(x^2) - a_minus'*a_plus*1i*x - 2 * h*1i*x+2*hm;
+    ret = expm([0.5*e1 -2*(sigma'*sigma);-0.5*G 0.5*e2]*T);
+    B21 = ret(d+1:2*d,1:d);
+    B22 = ret(d+1:2*d,d+1:2*d);
+    CF(i) = -0.5*beta*trace(logm(B22)+0.5*e1*T)+trace(B22^(-1)*B21*y_0);
 end
 CF_E = exp(CF);
 factor_simple = S0;
 payoff = (K/S0).^(alpha+1+1i*xi)./((1i*xi+alpha).*(1i*xi+alpha+1));
 integrand_new = conj(payoff).*CF_E;
 option_price = factor_simple*sum(integrand_new)*dxi/(2*pi);
+
 if theta ==1
     fprintf('The call price of %2.2f is %4.6f\n', K, option_price)
 else
     fprintf('The put price of %2.2f is %4.6f\n', K, option_price)
 end
-end
+
+
