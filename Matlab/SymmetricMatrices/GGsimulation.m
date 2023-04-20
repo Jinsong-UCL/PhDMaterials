@@ -20,8 +20,8 @@ h = hm - hn;
 
 %% Simulation parameters
 % Number of simulations
-nblocks = 1000;
-npaths = 1000;
+nblocks = 100;
+npaths = 100;
 % Number of steps
 nsteps = 10;
 dt = T/nsteps;

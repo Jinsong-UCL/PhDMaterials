@@ -19,7 +19,7 @@ marketStruct.T = 1;
 % paramStruct.kappa = [1.0426,0.0;0.0,0.8778]; 
 % paramStruct.sigma = [0.4364,0.0;0.0,0.7362];
 %% Symmetric parameters
-paramStruct.beta = 3.1442;
+paramStruct.beta = 3.5;
 paramStruct.am = [0.7764 0.4837;0.4837 0.9639];
 paramStruct.an = [0.6679 0.6277;0.6277 0.8520];
 paramStruct.hm = [0.2725 0.0804;0.0804 0.4726];
@@ -37,7 +37,7 @@ else
 end
 
 %% Simulation without constant dispalcements in the interets rates
-%[simulated_call, simulated_put, phi_empirical] = GGsimulation(marketStruct,paramStruct);
+[simulated_call, simulated_put, phi_empirical] = GGsimulation(marketStruct,paramStruct);
 
 %% CF
 fprintf("This is the result of CF in our format\n")

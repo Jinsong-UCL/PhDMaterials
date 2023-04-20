@@ -39,11 +39,14 @@ a_plus = am + an;
 CF = zeros(1,ngrid);
 for i = 1:ngrid
     x = xi_shifted(i);
-    E = kappa - a_minus * rho *sigma *1i*x;
+    %E = kappa- a_minus*rho*sigma*1i*x;
+    e1 = kappa - sigma'*rho*a_minus*1i*x;
+    e2 = kappa'- a_minus*rho'*sigma*1i*x;
+    E = 0.5*(e1+e2);
     F = a_minus*a_minus*x^2 - a_plus*a_minus*1i*x;
-    D = sqrtm(E*E.' + sigma*sigma'* (F - 2 * h*1i*x + 2*hm));
+    D = sqrtm(E*E.' + sigma'*sigma* (F - 2 * h*1i*x + 2*hm));
     G = (E - D)/(E + D);    
-    CF(i) = trace(beta*((E-D)*T-2*logm((eye(d)-G*expm(-D*T))/(eye(d)-G)))) + trace(y_0*eye(d)/(sigma*sigma')*((E-D)*(eye(d)-expm(-D*T))/(eye(d)-G*expm(-D*T))));
+    CF(i) = trace(beta*((E-D)*T-2*logm((eye(d)-G*expm(-D*T))/(eye(d)-G)))) + trace(y_0*eye(d)/(sigma'*sigma)*((E-D)*(eye(d)-expm(-D*T))/(eye(d)-G*expm(-D*T))));
 end
 CF_E = exp(CF);
 factor_simple = S0;

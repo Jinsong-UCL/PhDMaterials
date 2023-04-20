@@ -40,20 +40,20 @@ a_plus = am + an;
 CF = zeros(1,ngrid);
 for i = 1:ngrid
     x = xi_shifted(i);
-    e1 = -kappa + sigma* rho*a_minus *1i*x;
-    e2 = kappa' - a_minus*rho'*sigma' *1i* x;
-    F = a_minus*a_minus'*(x^2) - a_minus'*a_plus*1i*x;
-    G = F - 2 * h*1i*x + 2*hm;
-    ret = expm([0.5*e1 -0.5*(sigma'*sigma);0.5*G 0.5*e2]*T);
+    e1 = -kappa + sigma'*rho*a_minus *1i*x;
+    e2 = kappa' - a_minus*rho'*sigma *1i*x;
+    G = a_minus*a_minus'*(x^2) - a_minus'*a_plus*1i*x - 2 * h*1i*x+2*hm;
+    ret = expm([0.5*e1 -2*(sigma'*sigma);-0.5*G 0.5*e2]*T);
     B21 = ret(d+1:2*d,1:d);
     B22 = ret(d+1:2*d,d+1:2*d);
-    CF(i) = -0.5*beta*trace(logm(B22)-0.5*e2*T)+trace(B22^(-1)*B21*y_0);
+    CF(i) = -0.5*beta*trace(logm(B22)+0.5*e1*T)+trace(B22^(-1)*B21*y_0);
 end
 CF_E = exp(CF);
 factor_simple = S0;
 payoff = (K/S0).^(alpha+1+1i*xi)./((1i*xi+alpha).*(1i*xi+alpha+1));
 integrand_new = conj(payoff).*CF_E;
 option_price = factor_simple*sum(integrand_new)*dxi/(2*pi);
+
 if theta ==1
     fprintf('The call price of %2.2f is %4.6f\n', K, option_price)
 else
