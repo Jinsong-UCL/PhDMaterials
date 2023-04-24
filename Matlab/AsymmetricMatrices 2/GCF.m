@@ -1,4 +1,4 @@
-function [option_price] = GCF(market,param,theta)
+function [option_price] = GCF(market,param,fourier,theta)
 %% Retrieve parameters 
 S0 = market.S0;
 K = market.K;
@@ -10,31 +10,20 @@ An = param.An;
 Am = param.Am;
 Rn = param.Rn;
 Rm = param.Rm;
+R = Rn - Rm;
 V_0 = param.V_0;
 
 rho = param.rho;
 kappa = param.kappa;
 sigma = param.sigma;
 
-
-R = Rn - Rm;
-
-% Damping parameter
-alpha = -4*theta;
-
-% Fourier parameters
-xwidth = 20; % width of the support in real space
-ngrid = 2^10; % number of grid points
-
-% Grids in real and Fourier space
-N = ngrid/2;
-B = xwidth/2; % upper bound of the support in real space
-dxi = pi/B; % Nyquist relation: grid step in Fourier space
-xi = dxi*(-N:N-1); % grid in Fourier space
-xi_shifted = xi +1i*alpha;
+ngrid = fourier.ngrid; % number of grid points
+dxi = fourier.dxi; 
+xi = fourier.xi; 
 
 % Auxiliary parameters
-
+alpha = -2*theta; % Damping parameter
+xi_shifted = xi +1i*alpha;
 a_minus = An - Am;
 a_plus = An + Am; 
 

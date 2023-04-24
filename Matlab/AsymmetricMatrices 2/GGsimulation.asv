@@ -1,4 +1,4 @@
-function [simulated_call, simulated_put, CF_e] = GGsimulation(market,param)
+function [simulated_call, simulated_put, CF_e] = GGsimulation(market,param,fourier)
 %% Retrieve parameters 
 S0 = market.S0;
 K = market.K;
@@ -18,6 +18,16 @@ sigma = param.sigma;
 
 R = Rn - Rm;
 
+%% Fourier parameters
+xwidth = fourier.xwi
+ngrid = 2^10; % number of grid points
+
+% Grids in real and Fourier space
+N = ngrid/2;
+B = xwidth/2; % upper bound of the support in real space
+dxi = pi/B; % Nyquist relation: grid step in Fourier space
+xi = dxi*(-N:N-1); % grid in Fourier space
+
 %% Simulation parameters
 % Number of simulations
 nblocks = 300;
@@ -26,15 +36,7 @@ npaths =  300;
 nsteps = 10;
 dt = T/nsteps;
 
-%% Fourier parameters
-xwidth = 20; % width of the support in real space
-ngrid = 2^10; % number of grid points
 
-% Grids in real and Fourier space
-N = ngrid/2;
-B = xwidth/2; % upper bound of the support in real space
-dxi = pi/B; % Nyquist relation: grid step in Fourier space
-xi = dxi*(-N:N-1); % grid in Fourier space
 
 tic;
 
@@ -66,8 +68,8 @@ for block = 1:nblocks
 
             interet_rate(step) = max(trace(Rn * V_latest),0);
             % Update X
-            sum1 = trace((An - Am) * V_latest * (An + Am));
-            sum1 = trace((An - Am) * V_latest * (An + Am));
+            %sum1 = trace((An - Am) * V_latest * (An + Am));
+            sum1 = trace((An - Am) * (An + Am) * V_latest);
             %sum1 = trace(0.5*(An - Am) * V_latest * (An + Am) + 0.5*(An + Am)* V_latest' * (An - Am));
             %sum1 = trace(0.5*(am - an)* (am + an) * y_latest + 0.5* y_latest'*(am + an)* (am - an));
             mu = trace(V_latest * R) +  0.5 * (sum1);
@@ -79,7 +81,7 @@ for block = 1:nblocks
             %y_update = y_latest + (beta*(sigma*sigma') -kappa*y_latest) * dt ...
             %    +sigma*sqrtm(y_latest)* dZ; %definitely not working
             V_latest = V_latest + (beta*(sigma'*sigma) -0.5* kappa*V_latest-0.5* V_latest*kappa) * dt ...
-                +1*(sqrtm(V_latest)* dZ*sigma + sigma'*dZ'*sqrtm(V_latest));
+                +0.5*(sqrtm(V_latest)* dZ*sigma + sigma'*dZ'*sqrtm(V_latest));
         end
         S_end = S0*exp(x_latest);
 

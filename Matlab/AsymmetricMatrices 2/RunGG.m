@@ -4,7 +4,7 @@ warnStruct = warning('off',warnId);
 
 %% Market parameters 
 marketStruct.S0 = 1;
-marketStruct.K = 1;
+marketStruct.K = 1.1;
 marketStruct.d = 2;
 marketStruct.T = 1;
 % The following numbers are from Gnoatto and Grasselli 2014
@@ -19,6 +19,16 @@ paramStruct.rho = [-0.5417 0.1899;-0.1170 -0.4834];
 paramStruct.kappa = [1.0426,0.6764;0.9880,0.8778]; 
 paramStruct.sigma = [0.4368,0.2014;0.3514,0.7362];
 
+%% Fourier parameters
+fourierStruct.xwidth = 20; % width of the support in real space
+fourierStruct.ngrid = 2^12; % number of grid points
+
+% Grids in real and Fourier space
+fourierStruct.N = fourierStruct.ngrid/2;
+fourierStruct.B = fourierStruct.xwidth/2; % upper bound of the support in real space
+fourierStruct.dxi = pi/fourierStruct.B; % Nyquist relation: grid step in Fourier space
+fourierStruct.xi = fourierStruct.dxi*(-fourierStruct.N:fourierStruct.N-1); % grid in Fourier space
+
 % rho test this is to test if 
 if sum(eig(eye(marketStruct.d)-paramStruct.rho*paramStruct.rho.')>=0) == marketStruct.d 
     fprintf("rho is valid, please continue.\n");
@@ -27,18 +37,18 @@ else
 end
 
 %% Simulation without constant dispalcements in the interets rates
-[simulated_call, simulated_put, CF_E] = GGsimulation(marketStruct,paramStruct);
+[simulated_call, simulated_put, CF_E] = GGsimulation(marketStruct,paramStruct,fourierStruct);
 
 %% CF
 fprintf("This is the result of CF in our format\n")
-[call_price_H] = HCF(marketStruct,paramStruct,1);
-[put_price_H] = HCF(marketStruct,paramStruct,-1);
+[call_price_H] = HCF(marketStruct,paramStruct,fourierStruct,1);
+[put_price_H] = HCF(marketStruct,paramStruct,fourierStruct,-1);
 
 %% CFG
 fprintf("This is the result of CF in Da Fonseca's format\n")
-[call_price] = GCF(marketStruct,paramStruct,1);
-[put_price] = GCF(marketStruct,paramStruct,-1);
+[call_price] = GCF(marketStruct,paramStruct,fourierStruct,1);
+[put_price] = GCF(marketStruct,paramStruct,fourierStruct,-1);
 
 %% ECF and ACF
-[statement] = ECFACF(marketStruct,paramStruct,CF_E);
+[statement] = ECFACF(marketStruct,paramStruct,fourierStruct,CF_E);
 

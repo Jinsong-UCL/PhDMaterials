@@ -1,4 +1,4 @@
-function [simulated_call, simulated_put, CF_e] = GGsimulation(market,param)
+function [simulated_call, simulated_put, CF_e] = GGsimulation(market,param,fourier)
 %% Retrieve parameters 
 S0 = market.S0;
 K = market.K;
@@ -10,31 +10,22 @@ An = param.An;
 Am = param.Am;
 Rn = param.Rn;
 Rm = param.Rm;
+R = Rn - Rm;
 V_0 = param.V_0;
 
 rho = param.rho;
 kappa = param.kappa;
 sigma = param.sigma;
 
-R = Rn - Rm;
-
+ngrid = fourier.ngrid; % number of grid points
+xi = fourier.xi; 
 %% Simulation parameters
 % Number of simulations
 nblocks = 300;
 npaths =  300;
 % Number of steps
-nsteps = 10;
+nsteps = 100;
 dt = T/nsteps;
-
-%% Fourier parameters
-xwidth = 20; % width of the support in real space
-ngrid = 2^10; % number of grid points
-
-% Grids in real and Fourier space
-N = ngrid/2;
-B = xwidth/2; % upper bound of the support in real space
-dxi = pi/B; % Nyquist relation: grid step in Fourier space
-xi = dxi*(-N:N-1); % grid in Fourier space
 
 tic;
 
@@ -113,17 +104,4 @@ cputime_MC = toc;
 fprintf('%20s%14.10f%14.10f\n','Monte Carlo',simulated_call,simulated_put)
 fprintf('%20s%14.10f%14.10f\n','Monte Carlo stdev',scMC,spMC)
 
-% figure(1)
-% plot(xi,real(phi_e))
-% axis([-20 20 -0.5 1])
-% title('Real part of the empirical characteristic function')
-% xlabel('\xi')
-% legend('Empirical')
-% 
-% figure(2)
-% plot(xi,imag(phi_e))
-% axis([-20 20 -0.5 0.5])
-% title('Imaginary part of the empirical characteristic function')
-% xlabel('\xi')
-% legend('Empirical')
 end
