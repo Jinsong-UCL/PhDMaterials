@@ -1,7 +1,6 @@
-function [option_price] = GCF(market,param,fourier,theta)
+function [option_price] = GCF(market,param,fourier,K,theta)
 %% Retrieve parameters 
 S0 = market.S0;
-K = market.K;
 d = market.d;
 T = market.T;
 

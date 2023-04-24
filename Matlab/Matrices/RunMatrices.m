@@ -4,7 +4,7 @@ warnStruct = warning('off',warnId);
 
 %% Market parameters 
 marketStruct.S0 = 1;
-marketStruct.K = 0.9;
+K = 1;
 marketStruct.d = 2;
 marketStruct.T = 1;
 % The following numbers are from Gnoatto and Grasselli 2014
@@ -18,7 +18,9 @@ paramStruct.V_0 = [0.1688 0.1708;0.1708 0.3169];
 paramStruct.rho = [-0.5417 0.1899;-0.1170 -0.4834];
 paramStruct.kappa = [1.0426,0.6764;0.9880,0.8778]; 
 paramStruct.sigma = [0.4368,0.2014;0.3514,0.7362];
-
+% Number of simulations
+paramStruct.nblocks = 30;
+paramStruct.npaths =  30;
 %% Fourier parameters
 fourierStruct.xwidth = 20; % width of the support in real space
 fourierStruct.ngrid = 2^12; % number of grid points
@@ -31,23 +33,23 @@ fourierStruct.xi = fourierStruct.dxi*(-fourierStruct.N:fourierStruct.N-1); % gri
 
 % rho test this is to test if 
 if sum(eig(eye(marketStruct.d)-paramStruct.rho*paramStruct.rho.')>=0) == marketStruct.d 
-    fprintf("rho is valid, please continue.\n");
+    fprintf("rho is valid.\n");
 else
-    fprintf("rho is not valid, please check rho first.\n");
+    error("rho is not valid, please check rho first.\n");
 end
 
 %% Simulation without constant dispalcements in the interets rates
-[simulated_call, simulated_put, CF_E] = GGsimulation(marketStruct,paramStruct,fourierStruct);
+[simulated_call, simulated_put,~,~,CF_E] = GGsimulation(marketStruct,paramStruct,fourierStruct,K,4);
 
 %% CF
 fprintf("This is the result of CF in our format\n")
-[call_price_H] = HCF(marketStruct,paramStruct,fourierStruct,1);
-[put_price_H] = HCF(marketStruct,paramStruct,fourierStruct,-1);
+call_price_H = HCF(marketStruct,paramStruct,fourierStruct,K,1);
+put_price_H = HCF(marketStruct,paramStruct,fourierStruct,K,-1);
 
 %% CFG
 fprintf("This is the result of CF in Da Fonseca's format\n")
-[call_price] = GCF(marketStruct,paramStruct,fourierStruct,1);
-[put_price] = GCF(marketStruct,paramStruct,fourierStruct,-1);
+call_price_G = GCF(marketStruct,paramStruct,fourierStruct,K,1);
+put_price_G = GCF(marketStruct,paramStruct,fourierStruct,K,-1);
 
 %% ECF and ACF
 [statement] = ECFACF(marketStruct,paramStruct,fourierStruct,CF_E);

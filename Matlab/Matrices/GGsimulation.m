@@ -1,7 +1,6 @@
-function [simulated_call, simulated_put, CF_e] = GGsimulation(market,param,fourier)
+function [simulated_call, simulated_put,scMC,spMC, CF_e] = GGsimulation(market,param,fourier,K,n)
 %% Retrieve parameters 
 S0 = market.S0;
-K = market.K;
 d = market.d;
 T = market.T;
 
@@ -21,10 +20,10 @@ ngrid = fourier.ngrid; % number of grid points
 xi = fourier.xi; 
 %% Simulation parameters
 % Number of simulations
-nblocks = 300;
-npaths =  300;
+nblocks = param.nblocks;
+npaths =  param.npaths;
 % Number of steps
-nsteps = 100;
+nsteps = n*25;
 dt = T/nsteps;
 
 tic;
@@ -59,16 +58,11 @@ for block = 1:nblocks
             % Update X
             %sum1 = trace((An - Am) * V_latest * (An + Am));
             sum1 = trace((An - Am) * (An + Am) * V_latest);
-            %sum1 = trace(0.5*(An - Am) * V_latest * (An + Am) + 0.5*(An + Am)* V_latest' * (An - Am));
-            %sum1 = trace(0.5*(am - an)* (am + an) * y_latest + 0.5* y_latest'*(am + an)* (am - an));
             mu = trace(V_latest * R) +  0.5 * (sum1);
             sum2 = trace((An - Am) * sqrtm(V_latest) * dW); 
-            %sum2 = trace(0.5*(An - Am) * sqrtm(V_latest) * dW + 0.5*dW'*sqrtm(V_latest)* (An - Am)');
             x_latest = x_latest + mu*dt + sum2;
 
             % Update V
-            %y_update = y_latest + (beta*(sigma*sigma') -kappa*y_latest) * dt ...
-            %    +sigma*sqrtm(y_latest)* dZ; %definitely not working
             V_latest = V_latest + (beta*(sigma'*sigma) -0.5* kappa*V_latest-0.5* V_latest*kappa) * dt ...
                 +0.5*(sqrtm(V_latest)* dZ*sigma + sigma'*dZ'*sqrtm(V_latest));
         end
