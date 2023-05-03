@@ -1,0 +1,91 @@
+rho is valid.
+The call price of 0.90 is 0.096711
+The put price of 0.90 is 0.005697
+         Monte Carlo  0.0962228248 -0.0164899731
+   Monte Carlo stdev  0.0004342292  0.0002981678
+nsteps = 100, MC call price is 0.096223, std is 0.000434, abs err is 0.000488  Call option is validated
+nsteps = 100, MC put price is -0.016490, std is 0.000298, abs err is 0.022187  Put option is not validated
+         Monte Carlo  0.0958325754 -0.0185078615
+   Monte Carlo stdev  0.0003997888  0.0003649799
+nsteps = 125, MC call price is 0.095833, std is 0.000400, abs err is 0.000881  Call option is not validated
+nsteps = 125, MC put price is -0.018508, std is 0.000365, abs err is 0.024205  Put option is not validated
+         Monte Carlo  0.0958533207 -0.0193893548
+   Monte Carlo stdev  0.0004533256  0.0003513418
+nsteps = 150, MC call price is 0.095853, std is 0.000453, abs err is 0.000858  Call option is validated
+nsteps = 150, MC put price is -0.019389, std is 0.000351, abs err is 0.025087  Put option is not validated
+         Monte Carlo  0.0954651623 -0.0206055126
+   Monte Carlo stdev  0.0004292736  0.0003839318
+nsteps = 175, MC call price is 0.095465, std is 0.000429, abs err is 0.001246  Call option is not validated
+nsteps = 175, MC put price is -0.020606, std is 0.000384, abs err is 0.026303  Put option is not validated
+The call price of 0.95 is 0.072621
+The put price of 0.95 is 0.011247
+         Monte Carlo  0.0714250862 -0.0059285480
+   Monte Carlo stdev  0.0003998302  0.0003017248
+nsteps = 100, MC call price is 0.071425, std is 0.000400, abs err is 0.001196  Call option is not validated
+nsteps = 100, MC put price is -0.005929, std is 0.000302, abs err is 0.017176  Put option is not validated
+         Monte Carlo  0.0715185014 -0.0080128912
+   Monte Carlo stdev  0.0004071251  0.0003252142
+nsteps = 125, MC call price is 0.071519, std is 0.000407, abs err is 0.001103  Call option is not validated
+nsteps = 125, MC put price is -0.008013, std is 0.000325, abs err is 0.019260  Put option is not validated
+         Monte Carlo  0.0706860981 -0.0081799135
+   Monte Carlo stdev  0.0004276198  0.0003223489
+nsteps = 150, MC call price is 0.070686, std is 0.000428, abs err is 0.001936  Call option is not validated
+nsteps = 150, MC put price is -0.008180, std is 0.000322, abs err is 0.019427  Put option is not validated
+         Monte Carlo  0.0710167196 -0.0087652225
+   Monte Carlo stdev  0.0004249157  0.0003262834
+nsteps = 175, MC call price is 0.071017, std is 0.000425, abs err is 0.001605  Call option is not validated
+nsteps = 175, MC put price is -0.008765, std is 0.000326, abs err is 0.020012  Put option is not validated
+The call price of 1.00 is 0.051980
+The put price of 1.00 is 0.020245
+         Monte Carlo  0.0481528475  0.0073898349
+   Monte Carlo stdev  0.0004085802  0.0003046562
+nsteps = 100, MC call price is 0.048153, std is 0.000409, abs err is 0.003827  Call option is not validated
+nsteps = 100, MC put price is 0.007390, std is 0.000305, abs err is 0.012855  Put option is not validated
+         Monte Carlo  0.0481838221  0.0061226374
+   Monte Carlo stdev  0.0003200592  0.0003054091
+nsteps = 125, MC call price is 0.048184, std is 0.000320, abs err is 0.003796  Call option is not validated
+nsteps = 125, MC put price is 0.006123, std is 0.000305, abs err is 0.014122  Put option is not validated
+         Monte Carlo  0.0486315598  0.0049482896
+   Monte Carlo stdev  0.0003580020  0.0003839224
+nsteps = 150, MC call price is 0.048632, std is 0.000358, abs err is 0.003348  Call option is not validated
+nsteps = 150, MC put price is 0.004948, std is 0.000384, abs err is 0.015296  Put option is not validated
+         Monte Carlo  0.0482961084  0.0045912314
+   Monte Carlo stdev  0.0003915912  0.0003544834
+nsteps = 175, MC call price is 0.048296, std is 0.000392, abs err is 0.003684  Call option is not validated
+nsteps = 175, MC put price is 0.004591, std is 0.000354, abs err is 0.015653  Put option is not validated
+The call price of 1.05 is 0.035463
+The put price of 1.05 is 0.033367
+         Monte Carlo  0.0289946920  0.0225941085
+   Monte Carlo stdev  0.0002816354  0.0003117226
+nsteps = 100, MC call price is 0.028995, std is 0.000282, abs err is 0.006469  Call option is not validated
+nsteps = 100, MC put price is 0.022594, std is 0.000312, abs err is 0.010773  Put option is not validated
+         Monte Carlo  0.0295282029  0.0223543109
+   Monte Carlo stdev  0.0003737958  0.0003843042
+nsteps = 125, MC call price is 0.029528, std is 0.000374, abs err is 0.005935  Call option is not validated
+nsteps = 125, MC put price is 0.022354, std is 0.000384, abs err is 0.011013  Put option is not validated
+         Monte Carlo  0.0290444709  0.0216922676
+   Monte Carlo stdev  0.0003796576  0.0003936176
+nsteps = 150, MC call price is 0.029044, std is 0.000380, abs err is 0.006419  Call option is not validated
+nsteps = 150, MC put price is 0.021692, std is 0.000394, abs err is 0.011675  Put option is not validated
+         Monte Carlo  0.0281210216  0.0216876944
+   Monte Carlo stdev  0.0004010197  0.0003862013
+nsteps = 175, MC call price is 0.028121, std is 0.000401, abs err is 0.007342  Call option is not validated
+nsteps = 175, MC put price is 0.021688, std is 0.000386, abs err is 0.011679  Put option is not validated
+The call price of 1.10 is 0.023174
+The put price of 1.10 is 0.050716
+         Monte Carlo  0.0127903689  0.0417350225
+   Monte Carlo stdev  0.0002793375  0.0003525390
+nsteps = 100, MC call price is 0.012790, std is 0.000279, abs err is 0.010383  Call option is not validated
+nsteps = 100, MC put price is 0.041735, std is 0.000353, abs err is 0.008981  Put option is not validated
+         Monte Carlo  0.0123256419  0.0414757459
+   Monte Carlo stdev  0.0003228023  0.0003525543
+nsteps = 125, MC call price is 0.012326, std is 0.000323, abs err is 0.010848  Call option is not validated
+nsteps = 125, MC put price is 0.041476, std is 0.000353, abs err is 0.009241  Put option is not validated
+         Monte Carlo  0.0117817733  0.0413106599
+   Monte Carlo stdev  0.0003252670  0.0003879303
+nsteps = 150, MC call price is 0.011782, std is 0.000325, abs err is 0.011392  Call option is not validated
+nsteps = 150, MC put price is 0.041311, std is 0.000388, abs err is 0.009406  Put option is not validated
+         Monte Carlo  0.0112613218  0.0414280947
+   Monte Carlo stdev  0.0002989634  0.0003806392
+nsteps = 175, MC call price is 0.011261, std is 0.000299, abs err is 0.011913  Call option is not validated
+nsteps = 175, MC put price is 0.041428, std is 0.000381, abs err is 0.009288  Put option is not validated

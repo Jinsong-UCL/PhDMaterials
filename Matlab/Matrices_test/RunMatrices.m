@@ -19,8 +19,8 @@ paramStruct.rho = [-0.5417 0.1899;-0.1170 -0.4834];
 paramStruct.kappa = [1.0426,0.6764;0.9880,0.8778]; 
 paramStruct.sigma = [0.4368,0.1914;0.4966,0.7362];
 % Number of simulations
-paramStruct.nblocks = 100;
-paramStruct.npaths =  100;
+paramStruct.nblocks = 10;
+paramStruct.npaths =  10;
 %% Fourier parameters
 fourierStruct.xwidth = 20; % width of the support in real space
 fourierStruct.ngrid = 2^12; % number of grid points

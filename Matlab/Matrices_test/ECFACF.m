@@ -29,9 +29,9 @@ for i = 1:ngrid
     e2 = kappa'- a_minus*rho'*sigma*1i*x;
     E = 0.5*(e1+e2);
     F = a_minus*a_minus*x^2 - a_plus*a_minus*1i*x;
-    D = sqrtm(E*E + 2*sigma'*sigma* (F - 2 * R*1i*x + 2*Rn));
+    D = sqrtm(E*E + 2*(sigma'*sigma)* (F - 2 * R*1i*x + 2*Rn));
     G = (E - D)/(E + D);    
-    HCF(i) = trace(0.5*beta*((E-D)*T-2*logm((eye(N)-G*expm(-D*T))/(eye(N)-G)))) + trace(V_0*eye(N)/(2*sigma'*sigma)*((E-D)*(eye(N)-expm(-D*T))/(eye(N)-G*expm(-D*T))));
+    HCF(i) = trace(0.5*beta*((E-D)*T-2*logm((eye(N)-G*expm(-D*T))/(eye(N)-G)))) + trace(V_0*eye(N)/(2*(sigma'*sigma))*((E-D)*(eye(N)-expm(-D*T))/(eye(N)-G*expm(-D*T))));
 end
 HCF_A = exp(HCF);
 

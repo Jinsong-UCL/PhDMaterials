@@ -49,7 +49,6 @@ for K = [0.9 0.95 1 1.05 1.1]
     put_price = HCF(marketStruct,paramStruct,fourierStruct,K,-1);
 
     parfor n = [4 5 6 7]
-        warnStruct = warning('off','all');
         [simulated_call, simulated_put,scMC,spMC, ~] = GGsimulation(marketStruct,paramStruct,fourierStruct,K,n);
         ts = tinv([0.025  0.975],paramStruct.nblocks-1);      % 95 T-Score
         CI_c = simulated_call+ ts*scMC;

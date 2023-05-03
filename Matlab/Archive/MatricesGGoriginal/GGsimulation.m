@@ -15,7 +15,6 @@ V_0 = param.V_0;
 rho = param.rho;
 kappa = param.kappa;
 sigma = param.sigma;
-sum(eig(sigma)>=0)
 
 ngrid = fourier.ngrid; % number of grid points
 xi = fourier.xi; 
@@ -45,28 +44,27 @@ for block = 1:nblocks
         for step = 1:nsteps           
             NW = randn(d,d);
             NB = randn(d,d);
-            %NZ = NW*rho.' + NB*sqrtm(eye(d)-rho*rho.');
-            NZ = rho.'*NW + sqrtm(eye(d)-rho'*rho)*NB;
+            NZ = NW*rho.' + NB*sqrtm(eye(d)-rho*rho.');
             dW = NW * sqrt(dt);
             dZ = NZ * sqrt(dt);
             % positive semi-definitness
             if sum(eig(V_latest)>=0)<d
                 [P, Q] = eig(V_latest);
                 Q = max(Q,0);
-                V_latest = P*Q/P
+                V_latest = P*Q/P;
             end
 
             interet_rate(step) = max(trace(Rn * V_latest),0);
             % Update X
             %sum1 = trace((An - Am) * V_latest * (An + Am));
-            sum1 = trace((An - Am) * (An + Am) * V_latest);
+            sum1 = trace((An - Am) * V_latest * (An - Am));
             mu = trace(V_latest * R) +  0.5 * (sum1);
             sum2 = trace((An - Am) * sqrtm(V_latest) * dW); 
             x_latest = x_latest + mu*dt + sum2;
 
             % Update V
             V_latest = V_latest + (beta*(sigma'*sigma) -0.5* kappa*V_latest-0.5* V_latest*kappa) * dt ...
-                +0.5*(sigma'*sqrtm(V_latest)* dZ +dZ'*sqrtm(V_latest)*sigma);
+                +0.5*(sqrtm(V_latest)* dZ*sigma + sigma'*dZ'*sqrtm(V_latest));
         end
         S_end = S0*exp(x_latest);
 

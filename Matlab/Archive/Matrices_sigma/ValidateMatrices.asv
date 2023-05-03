@@ -1,12 +1,11 @@
 %% Warning option
 [msgStr,warnId] = lastwarn;
-warnStruct = warning('off',warnId);
+warnStruct = warning('on',warnId);
 
 %% Ramdon seed option
 rng(0530)
 
-%% Write output to files
-Fid = fopen("result\sigmaTest.txt","a");
+%% Write opfiles
 %% Market parameters 
 marketStruct.S0 = 1;
 marketStruct.d = 2;
@@ -45,30 +44,28 @@ end
 
 
 for K = [0.9 0.95 1 1.05 1.1]
-    call_price = HCF(marketStruct,paramStruct,fourierStruct,K,1);
-    put_price = HCF(marketStruct,paramStruct,fourierStruct,K,-1);
+    call_price = GCF(marketStruct,paramStruct,fourierStruct,K,1);
+    put_price = GCF(marketStruct,paramStruct,fourierStruct,K,-1);
 
     parfor n = [4 5 6 7]
-        warnStruct = warning('off','all');
         [simulated_call, simulated_put,scMC,spMC, ~] = GGsimulation(marketStruct,paramStruct,fourierStruct,K,n);
         ts = tinv([0.025  0.975],paramStruct.nblocks-1);      % 95 T-Score
         CI_c = simulated_call+ ts*scMC;
         CI_p = simulated_put+ ts*spMC;
 
         % Call option validation
-        fprintf('nsteps = %3d, MC call price is %4.6f, std is %4.6f, abs err is %4.6f  ',n*25 ,simulated_call,scMC,abs(call_price-simulated_call));
+        fprintf('nsteps = %3d, MC call price is %4.6f, std is %4.6f, abs err is %4.6f  ',n*25 ,simulated_call,scMC,abs(call_price-simulated_call))
         if (call_price > CI_c(1) && call_price < CI_c(2))
-            fprintf('Call option is validated\n');
+            fprintf('Call option is validated\n')
         else
-            fprintf('Call option is not validated\n');
+            fprintf('Call option is not validated\n')
         end
         % Put option validation
-        fprintf('nsteps = %3d, MC put price is %4.6f, std is %4.6f, abs err is %4.6f  ',n*25 ,simulated_put,spMC,abs(put_price-simulated_put));
+        fprintf('nsteps = %3d, MC put price is %4.6f, std is %4.6f, abs err is %4.6f  ',n*25 ,simulated_put,spMC,abs(put_price-simulated_put))
         if (put_price > CI_p(1) && put_price < CI_p(2))
-            fprintf(' Put option is validated\n');
+            fprintf(' Put option is validated\n')
         else
-            fprintf('Put option is not validated\n');
+            fprintf('Put option is not validated\n')
         end
     end
 end
-fclose(Fid);
