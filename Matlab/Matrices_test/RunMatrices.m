@@ -17,10 +17,12 @@ paramStruct.Rm = [0.1841 0.0155;0.0155 0.4761];
 paramStruct.V_0 = [0.1688 0.1708;0.1708 0.3169];
 paramStruct.rho = [-0.5417 0.1899;-0.1170 -0.4834];
 paramStruct.kappa = [1.0426,0.6764;0.9880,0.8778]; 
-paramStruct.sigma = [0.4368,0.1914;0.4966,0.7362];
+%paramStruct.sigma = [0.4368,0.1914;0.4966,0.7362];
+paramStruct.sigma = [0.4368,0.1914;0.1914,0.7362];
+%paramStruct.sigma = [0.4368,0.4214;0.1914,0.7362];
 % Number of simulations
-paramStruct.nblocks = 10;
-paramStruct.npaths =  10;
+paramStruct.nblocks = 100;
+paramStruct.npaths =  100;
 %% Fourier parameters
 fourierStruct.xwidth = 20; % width of the support in real space
 fourierStruct.ngrid = 2^12; % number of grid points
@@ -36,9 +38,9 @@ if sum(eig(eye(marketStruct.d)-paramStruct.rho*paramStruct.rho.')>=0) == marketS
 else
     error("rho is not valid, please check rho first.\n");
 end
-
+ 
 %% Simulation without constant dispalcements in the interets rates
-[simulated_call, simulated_put,~,~,CF_E] = GGsimulation(marketStruct,paramStruct,fourierStruct,K,1);
+[simulated_call, simulated_put,~,~,CF_E] = GGsimulation(marketStruct,paramStruct,fourierStruct,K,3);
 
 %% CF
 fprintf("This is the result of CF in our format\n")
