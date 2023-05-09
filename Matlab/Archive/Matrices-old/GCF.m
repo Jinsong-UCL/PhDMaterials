@@ -30,12 +30,12 @@ CF = zeros(1,ngrid);
 for i = 1:ngrid
     x = xi_shifted(i);
     e1 = -kappa + sigma'*rho*a_minus *1i*x;
-    e2 = - e1.';
-    a = -Rn + R*1i*x + 0.5*a_plus*a_minus*1i*x - 0.5*a_minus*a_minus*x^2;
-    ret = expm([0.5*e1 -0.5*(sigma'*sigma);a 0.5*e2]*T);
+    e2 = kappa' - a_minus*rho'*sigma *1i*x;
+    G = a_minus*a_minus'*(x^2) - a_minus'*a_plus*1i*x - 2 * R*1i*x+2*Rn;
+    ret = expm([0.5*e1 -2*(sigma'*sigma);-0.5*G 0.5*e2]*T);
     B21 = ret(N+1:2*N,1:N);
     B22 = ret(N+1:2*N,N+1:2*N);
-    CF(i) = -2*beta*trace(logm(B22)+0.5*e1*T)+trace(B22^(-1)*B21*V_0);
+    CF(i) = -0.5*beta*trace(logm(B22)+0.5*e1*T)+trace(B22^(-1)*B21*V_0);
 end
 CF_E = exp(CF);
 factor_simple = S0;

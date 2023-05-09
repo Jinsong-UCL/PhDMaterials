@@ -29,13 +29,15 @@ a_plus = An + Am;
 CF = zeros(1,ngrid);
 for i = 1:ngrid
     x = xi_shifted(i);
-    E1 = kappa' - sigma'*rho*a_minus*1i*x;
-    Es = 0.5*(E1+E1.');
-    a = -Rn + R*1i*x + 0.5*a_plus*a_minus*1i*x - 0.5*a_minus*a_minus*x^2;
-    F = sqrtm(Es*Es - 2*sigma'*sigma* a);
-    G = (Es - F)/(Es + F);      
-    CF(i) = trace(beta*((Es-F)*T-2*logm((eye(N)-G*expm(-F*T))/(eye(N)-G)))) ...
-        + trace(V_0*eye(N)/(sigma'*sigma)*((Es-F)*(eye(N)-expm(-F*T))/(eye(N)-G*expm(-F*T))));
+    %E = kappa- a_minus*rho*sigma*1i*x;
+    e1 = kappa - sigma'*rho*a_minus*1i*x;
+    e2 = kappa'- a_minus*rho'*sigma*1i*x;
+    E = 0.5*(e1+e2);
+    F = a_minus*a_minus*x^2 - a_plus*a_minus*1i*x - 2 * R*1i*x+2*Rn;
+    D = sqrtm(E*E + 2*sigma'*sigma* F);
+    G = (E - D)/(E + D);    
+    CF(i) = trace(0.5*beta*((E-D)*T-2*logm((eye(N)-G*expm(-D*T))/(eye(N)-G)))) ...
+        + trace(V_0*eye(N)/(2*sigma'*sigma)*((E-D)*(eye(N)-expm(-D*T))/(eye(N)-G*expm(-D*T))));
 end
 CF_E = exp(CF);
 factor_simple = S0;

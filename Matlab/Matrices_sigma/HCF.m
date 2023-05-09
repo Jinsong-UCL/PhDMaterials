@@ -32,10 +32,10 @@ for i = 1:ngrid
     E1 = kappa - sigma*rho*a_minus*1i*x;
     Es = 0.5*(E1+E1.');
     a = -Rn + R*1i*x + 0.5*a_plus*a_minus*1i*x - 0.5*a_minus*a_minus*x^2;
-    F = sqrtm(Es*Es - sigma'*sigma* a);
-    G = (Es - F)/(Es + F);      
-    CF(i) = trace(2*beta*((Es-F)*T-2*logm((eye(N)-G*expm(-F*T))/(eye(N)-G)))) ...
-        + trace(2*V_0*eye(N)/(sigma'*sigma)*((Es-F)*(eye(N)-expm(-F*T))/(eye(N)-G*expm(-F*T))));
+    F = sqrtm(Es*Es - 2*sigma*sigma'* a);
+    G = (Es - F)*(Es + F)^(-1);
+    CF(i) = trace(beta*((Es-F)*T-2*logm((eye(N)-G*expm(-F*T))/(eye(N)-G)))) ...
+        + trace(V_0*eye(N)/(sigma*sigma')*((Es-F)*(eye(N)-expm(-F*T))/(eye(N)-G*expm(-F*T))));
 end
 CF_E = exp(CF);
 factor_simple = S0;

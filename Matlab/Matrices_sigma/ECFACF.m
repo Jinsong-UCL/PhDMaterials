@@ -25,26 +25,25 @@ a_plus = An + Am;
 HCF = zeros(1,ngrid);
 for i = 1:ngrid
     x = xi(i);
-    E1 = kappa' - sigma*rho*a_minus*1i*x;
+    E1 = kappa - sigma*rho*a_minus*1i*x;
     Es = 0.5*(E1+E1.');
     a = -Rn + R*1i*x + 0.5*a_plus*a_minus*1i*x - 0.5*a_minus*a_minus*x^2;
-    F = sqrtm(Es*Es - 2*sigma'*sigma* a);
+    F = sqrtm(Es*Es - 2*sigma*sigma'* a);
     G = (Es - F)/(Es + F);    
     HCF(i) = trace(beta*((Es-F)*T-2*logm((eye(N)-G*expm(-F*T))/(eye(N)-G)))) ...
-        + trace(V_0*eye(N)/(sigma'*sigma)*((Es-F)*(eye(N)-expm(-F*T))/(eye(N)-G*expm(-F*T))));
+        + trace(V_0*eye(N)/(sigma*sigma')*((Es-F)*(eye(N)-expm(-F*T))/(eye(N)-G*expm(-F*T))));
 end
 HCF_A = exp(HCF);
 
 GCF = zeros(1,ngrid);
 for i = 1:ngrid
     x = xi(i);
-    e1 = -kappa + sigma'*rho*a_minus *1i*x;
-    e2 = - e1.';
+    E1 = kappa - sigma*rho*a_minus *1i*x;
     a = -Rn + R*1i*x + 0.5*a_plus*a_minus*1i*x - 0.5*a_minus*a_minus*x^2;
-    ret = expm([0.5*e1 -0.5*(sigma'*sigma);a 0.5*e2]*T);
+    ret = expm([-0.5*E1 -0.5*(sigma*sigma');a 0.5*E1.']*T);
     B21 = ret(N+1:2*N,1:N);
     B22 = ret(N+1:2*N,N+1:2*N);
-    GCF(i) = -2*beta*trace(logm(B22)+0.5*e1*T)+trace(B22^(-1)*B21*V_0);
+    GCF(i) = -2*beta*trace(logm(B22)-0.5*E1*T)+trace(B22^(-1)*B21*V_0);
 end
 GCF_A = exp(GCF);
 

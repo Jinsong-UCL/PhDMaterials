@@ -67,8 +67,8 @@ for block = 1:nblocks
             x_latest = x_latest + mu*dt + sum2;
 
             % Update V
-            V_latest = V_latest + (beta*(sigma'*sigma) -0.5* kappa*V_latest-0.5* V_latest*kappa') * dt ...
-                +0.5*(sqrtm(V_latest)* dZ*sigma +sigma'*dZ'*sqrtm(V_latest));
+            V_latest = V_latest + (beta*(sigma*sigma') -0.5* kappa*V_latest-0.5* V_latest*kappa') * dt ...
+                +0.5*(sqrtm(V_latest)* dZ'*sigma +sigma'*dZ*sqrtm(V_latest));
         
         end
         S_end = S0*exp(x_latest);

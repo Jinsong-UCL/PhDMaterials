@@ -3,7 +3,7 @@
 warnStruct = warning('off',warnId);
 
 %% Ramdon seed option
-%rng(0530)
+rng(0530)
 
 %% Write output to files
 Fid = fopen("result\sigmaTest.txt","a");
@@ -21,10 +21,10 @@ paramStruct.Rm = [0.1841 0.0155;0.0155 0.4761];
 paramStruct.V_0 = [0.1688 0.1708;0.1708 0.3169];
 paramStruct.rho = [-0.5417 0.1899;-0.1170 -0.4834];
 paramStruct.kappa = [1.0426,0.6764;0.9880,0.8778]; 
-paramStruct.sigma = [0.4368,0.2014;0.5014,0.7362];
+paramStruct.sigma = [0.4368,0.2014;0.3514,0.7362];
 % Number of simulations
 paramStruct.nblocks = 100;
-paramStruct.npaths =  50;
+paramStruct.npaths =  300;
 
 %% Fourier parameters
 fourierStruct.xwidth = 20; % width of the support in real space

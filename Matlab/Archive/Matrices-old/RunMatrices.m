@@ -17,10 +17,7 @@ paramStruct.Rm = [0.1841 0.0155;0.0155 0.4761];
 paramStruct.V_0 = [0.1688 0.1708;0.1708 0.3169];
 paramStruct.rho = [-0.5417 0.1899;-0.1170 -0.4834];
 paramStruct.kappa = [1.0426,0.6764;0.9880,0.8778]; 
-%paramStruct.sigma = [0.4368,0.1914;0.4966,0.7362];
-paramStruct.sigma = [0.4368,0.1914;0.1914,0.7362];
-%paramStruct.sigma = [0.4368,0.4214;0.1914,0.7362];
-%paramStruct.sigma = [0.441736679745699,0.355320710364647;0.355320710364647,0.749833853077106];
+paramStruct.sigma = [0.4368,0.1914;0.4966,0.7362];
 % Number of simulations
 paramStruct.nblocks = 100;
 paramStruct.npaths =  100;
@@ -39,17 +36,17 @@ if sum(eig(eye(marketStruct.d)-paramStruct.rho*paramStruct.rho.')>=0) == marketS
 else
     error("rho is not valid, please check rho first.\n");
 end
- 
+
 %% Simulation without constant dispalcements in the interets rates
-%[simulated_call, simulated_put,~,~,CF_E] = GGsimulation(marketStruct,paramStruct,fourierStruct,K,3);
+[simulated_call, simulated_put,~,~,CF_E] = GGsimulation(marketStruct,paramStruct,fourierStruct,K,1);
 
 %% CF
-fprintf("This is the result of GHCF\n")
+fprintf("This is the result of CF in our format\n")
 call_price_H = HCF(marketStruct,paramStruct,fourierStruct,K,1);
 put_price_H = HCF(marketStruct,paramStruct,fourierStruct,K,-1);
 
 %% CFG
-fprintf("This is the result of GGCF\n")
+fprintf("This is the result of CF in Da Fonseca's format\n")
 call_price_G = GCF(marketStruct,paramStruct,fourierStruct,K,1);
 put_price_G = GCF(marketStruct,paramStruct,fourierStruct,K,-1);
 
