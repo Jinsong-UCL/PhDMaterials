@@ -1,4 +1,4 @@
-function [option_price] = HCF(market,param,fourier,K,theta)
+function [option_price] = GCF(market,param,fourier,K,theta)
 %% Retrieve parameters 
 S0 = market.S0;
 N = market.d;
@@ -29,22 +29,23 @@ a_plus = An + Am;
 CF = zeros(1,ngrid);
 for i = 1:ngrid
     x = xi_shifted(i);
-    E1 = kappa - sigma*rho*a_minus*1i*x;
-    Es = 0.5*(E1+E1.');
+    e1 = -kappa + sigma'*rho*a_minus *1i*x;
     a = -Rn + R*1i*x + 0.5*a_plus*a_minus*1i*x - 0.5*a_minus*a_minus*x^2;
-    F = sqrtm(Es*Es - 2*sigma*sigma'* a);
-    G = (Es - F)*(Es + F)^(-1);
-    CF(i) = trace(beta*((Es-F)*T-2*logm((eye(N)-G*expm(-F*T))/(eye(N)-G)))) ...
-        + trace(V_0*eye(N)/(sigma*sigma')*((Es-F)*(eye(N)-expm(-F*T))/(eye(N)-G*expm(-F*T))));
+    ret = expm([0.5*e1 -0.5*(sigma'*sigma);a -0.5* e1.']*T);
+    B21 = ret(N+1:2*N,1:N);
+    B22 = ret(N+1:2*N,N+1:2*N);
+    CF(i) = -2*beta*trace(logm(B22)+0.5*e1.'*T)+trace(B22^(-1)*B21*V_0);
 end
 CF_E = exp(CF);
 factor_simple = S0;
 payoff = (K/S0).^(alpha+1+1i*xi)./((1i*xi+alpha).*(1i*xi+alpha+1));
 integrand_new = conj(payoff).*CF_E;
 option_price = factor_simple*sum(integrand_new)*dxi/(2*pi);
+
 if theta ==1
     fprintf('The call price of %2.2f is %4.6f\n', K, option_price)
 else
     fprintf('The put price of %2.2f is %4.6f\n', K, option_price)
 end
-end
+
+

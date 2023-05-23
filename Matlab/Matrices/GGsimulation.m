@@ -24,7 +24,7 @@ xi = fourier.xi;
 nblocks = param.nblocks;
 npaths =  param.npaths;
 % Number of steps
-nsteps = n*25;
+nsteps = n*50;
 dt = T/nsteps;
 
 tic;
@@ -45,8 +45,8 @@ for block = 1:nblocks
         for step = 1:nsteps           
             NW = randn(N,N);
             NB = randn(N,N);
-            %NZ = NW*rho.' + NB*sqrtm(eye(N)-rho*rho.');
-            NZ = rho.'*NW + sqrtm(eye(N)-rho'*rho)*NB;
+            NZ = NW*rho.' + NB*sqrtm(eye(N)-rho*rho.');
+            %NZ = rho.'*NW + sqrtm(eye(N)-rho'*rho)*NB;
             dW = NW * sqrt(dt);
             dZ = NZ * sqrt(dt);
             
@@ -100,7 +100,7 @@ CF_e = mean(CF_e_block);
 %phi_e_s = sqrt(var(phi_e_block)/nblocks);
 
 cputime_MC = toc;
-fprintf('%20s%14.10f%14.10f\n','Monte Carlo',simulated_call,simulated_put)
-fprintf('%20s%14.10f%14.10f\n','Monte Carlo stdev',scMC,spMC)
+%fprintf('%20s%14.10f%14.10f\n','Monte Carlo',simulated_call,simulated_put)
+%fprintf('%20s%14.10f%14.10f\n','Monte Carlo stdev',scMC,spMC)
 
 end

@@ -37,10 +37,10 @@ parStruct.rho_v = [0.5231,-0.398];
 parStruct.rho_r = [-0.23,-0.81];
 
 for K = [0.9 0.95 1 1.05 1.1]
-    european.call_price = europeanPricing(parStruct,1,S0,T,K,r_0);
-    european.put_price = europeanPricing(parStruct,-1,S0,T,K,r_0);
+    european.call_price = europeanPricing(parStruct,1,S0,T,K);
+    european.put_price = europeanPricing(parStruct,-1,S0,T,K);
 
     parfor n = [4 5 6 7 8 9 10]
-        [simulated_call, simulated_put] = europeanSimulation(parStruct,european,n,S0,T,K,r_0);
+        [simulated_call, simulated_put] = europeanSimulation(parStruct,european,n,S0,T,K);
     end
 end

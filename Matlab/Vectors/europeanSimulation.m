@@ -1,4 +1,4 @@
-function [simulated_call, simulated_put] = europeanSimulation(params,european,n,S0,T,K,r_0)
+function [simulated_call, simulated_put] = europeanSimulation(params,european,n,S0,T,K)
 % Model parameters
 a_i = params.a_i;
 a_j = params.a_j;
@@ -13,7 +13,7 @@ h = hm-hn;
 d = 4;
 % Number of simulations 
 nblocks = 10;
-npaths = 100;
+npaths = 10;
 % Number of steps 
 nsteps = 50*n;
 dt = T/nsteps;
@@ -53,8 +53,8 @@ for block = 1:nblocks
         x = zeros(nsteps+1,1);
         % Valuation for dx
         for step = 1:nsteps
-            %sum_y_1(step) = y(step,:) * (a_i.^2' - a_j.^2'); % plus
-            sum_y_1(step) = y(step,:) * (a_i' - a_j').^2; % minus
+            sum_y_1(step) = y(step,:) * (a_i.^2' - a_j.^2'); % plus
+            %sum_y_1(step) = y(step,:) * (a_i' - a_j').^2; % minus
             mu(step) = sum(y(step,:).*h) + 0.5 * (sum_y_1(step));
             sum_y_2(step) = y(step,:).^0.5 .* dW(step,:) * (a_i'-a_j');
             x(step+1) = x(step) + mu(step)*dt + sum_y_2(step);
@@ -92,18 +92,39 @@ CI_c = simulated_call+ ts*scMC;
 CI_p = simulated_put+ ts*spMC;
 
 
-fprintf('nsteps = %3d, MCprice is %4.6f, std is %4.6f, abs err is %4.6f  ',nsteps,simulated_call,scMC,abs(european.call_price-simulated_call))
-if (european.call_price > CI_c(1) && european.call_price < CI_c(2))
-    fprintf('Validated\n')
-else
-    fprintf('Not Validated\n')
-end
+% %fprintf('nsteps = %3d, MCprice is %4.6f, std is %4.6f, abs err is %4.6f  ',nsteps,simulated_call,scMC,abs(european.call_price-simulated_call))
+% fprintf('&& %3d & %4.6f & %4.6f & %4.6f  ',nsteps,simulated_call,scMC,abs(european.call_price-simulated_call))
+% if (european.call_price > CI_c(1) && european.call_price < CI_c(2))
+%     %fprintf('Validated\n')
+%     fprintf('\\\\ \n')
+% else
+%     %fprintf('Not Validated\n')
+%     fprintf('*\\\\ \n')
+% end
 
-fprintf('nsteps = %3d, MCprice is %4.6f, std is %4.6f, abs err is %4.6f  ',nsteps,simulated_put,spMC,abs(european.put_price-simulated_put))
+%fprintf('nsteps = %3d, MCprice is %4.6f, std is %4.6f, abs err is %4.6f  ',nsteps,simulated_put,spMC,abs(european.put_price-simulated_put))
+fprintf('&& %3d & %4.6f & %4.6f & %4.6f  ',nsteps,simulated_put,spMC,abs(european.put_price-simulated_put))
 if (european.put_price > CI_p(1) && european.put_price < CI_p(2))
-    fprintf('Validated\n')
+    %fprintf('Validated\n')
+    fprintf('\\\\ \n')
 else
-    fprintf('Not Validated\n')
+    %fprintf('Not Validated\n')
+    fprintf('*\\\\ \n')
 end
+figure(1)
+plot(xi,real(CF_E),xi,real(GCF_A),"--")
+axis([-20 20 -0.1 0.7])
+title('Real part of the discounted characteristic function for the matrix Heston model')
+xlabel('\xi')
+legend('Empirical','Analytical')
+savefig("Real part of the discounted characteristic function for the matrix Heston model(asymmetric).fig")
+
+figure(2)
+plot(xi,imag(CF_E),xi,imag(GCF_A),"--")
+axis([-20 20 -0.3 0.3])
+title('Imaginary part of the discounted characteristic function for the matrix Heston model')
+xlabel('\xi')
+legend('Empirical','Analytical')
+savefig("Imaginary part of the discounted characteristic function for the matrix Heston model(asymmetric).fig")
 
 end

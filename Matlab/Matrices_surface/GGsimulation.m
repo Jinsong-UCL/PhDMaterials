@@ -1,8 +1,7 @@
-function [simulated_call, simulated_put,scMC,spMC, CF_e] = GGsimulation(market,param,fourier,K,n)
+function [simulated_call, simulated_put,scMC,spMC, CF_e] = GGsimulation(market,param,fourier,K,T,n)
 %% Retrieve parameters 
 S0 = market.S0;
 N = market.d;
-T = market.T;
 
 beta = param.beta;
 An = param.An;
@@ -24,7 +23,7 @@ xi = fourier.xi;
 nblocks = param.nblocks;
 npaths =  param.npaths;
 % Number of steps
-nsteps = n*25;
+nsteps = n*50;
 dt = T/nsteps;
 
 tic;
@@ -45,8 +44,8 @@ for block = 1:nblocks
         for step = 1:nsteps           
             NW = randn(N,N);
             NB = randn(N,N);
-            %NZ = NW*rho.' + NB*sqrtm(eye(N)-rho*rho.');
-            NZ = rho.'*NW + sqrtm(eye(N)-rho'*rho)*NB;
+            NZ = NW*rho.' + NB*sqrtm(eye(N)-rho*rho.');
+            %NZ = rho.'*NW + sqrtm(eye(N)-rho'*rho)*NB;
             dW = NW * sqrt(dt);
             dZ = NZ * sqrt(dt);
             
@@ -67,8 +66,8 @@ for block = 1:nblocks
             x_latest = x_latest + mu*dt + sum2;
 
             % Update V
-            V_latest = V_latest + (beta*(sigma*sigma') -0.5* kappa*V_latest-0.5* V_latest*kappa') * dt ...
-                +0.5*(sqrtm(V_latest)* dZ'*sigma +sigma'*dZ*sqrtm(V_latest));
+            V_latest = V_latest + (beta*(sigma'*sigma) -0.5* kappa*V_latest-0.5* V_latest*kappa') * dt ...
+                +0.5*(sqrtm(V_latest)* dZ*sigma +sigma'*dZ'*sqrtm(V_latest));
         
         end
         S_end = S0*exp(x_latest);
@@ -100,7 +99,7 @@ CF_e = mean(CF_e_block);
 %phi_e_s = sqrt(var(phi_e_block)/nblocks);
 
 cputime_MC = toc;
-fprintf('%20s%14.10f%14.10f\n','Monte Carlo',simulated_call,simulated_put)
-fprintf('%20s%14.10f%14.10f\n','Monte Carlo stdev',scMC,spMC)
+%fprintf('%20s%14.10f%14.10f\n','Monte Carlo',simulated_call,simulated_put)
+%fprintf('%20s%14.10f%14.10f\n','Monte Carlo stdev',scMC,spMC)
 
 end

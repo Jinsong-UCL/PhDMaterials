@@ -6,7 +6,7 @@ warnStruct = warning('off',warnId);
 %rng(0530)
 
 %% Write output to files
-Fid = fopen("result\sigmaTest.txt","a");
+Fid = fopen("resultTest.txt","a");
 %% Market parameters 
 marketStruct.S0 = 1;
 marketStruct.d = 2;
@@ -21,10 +21,10 @@ paramStruct.Rm = [0.1841 0.0155;0.0155 0.4761];
 paramStruct.V_0 = [0.1688 0.1708;0.1708 0.3169];
 paramStruct.rho = [-0.5417 0.1899;-0.1170 -0.4834];
 paramStruct.kappa = [1.0426,0.6764;0.9880,0.8778]; 
-paramStruct.sigma = [0.4368,0.2014;0.5014,0.7362];
+paramStruct.sigma = [0.4368,0.1914;0.1914,0.7362];
 % Number of simulations
 paramStruct.nblocks = 100;
-paramStruct.npaths =  50;
+paramStruct.npaths =  100;
 
 %% Fourier parameters
 fourierStruct.xwidth = 20; % width of the support in real space
@@ -48,7 +48,7 @@ for K = [0.9 0.95 1 1.05 1.1]
     call_price = GCF(marketStruct,paramStruct,fourierStruct,K,1);
     put_price = GCF(marketStruct,paramStruct,fourierStruct,K,-1);
 
-    parfor n = [4 5 6 7]
+    parfor n = [3 4 5 6 7 8]
         warnStruct = warning('off','all');
         [simulated_call, simulated_put,scMC,spMC, ~] = GGsimulation(marketStruct,paramStruct,fourierStruct,K,n);
         ts = tinv([0.025  0.975],paramStruct.nblocks-1);      % 95 T-Score

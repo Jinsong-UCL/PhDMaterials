@@ -1,4 +1,4 @@
-function option_price = europeanPricing(params,theta,S0,T,K,r_0)
+function option_price = europeanPricing(params,theta,S0,T,K)
 
 a_i = params.a_i;
 a_j = params.a_j;
