@@ -9,6 +9,8 @@ An = param.An;
 Am = param.Am;
 Rn = param.Rn;
 Rm = param.Rm;
+hn = param.hn;
+hm = param.hm;
 R = Rn - Rm;
 V_0 = param.V_0;
 
@@ -21,7 +23,7 @@ dxi = fourier.dxi;
 xi = fourier.xi; 
 
 % Auxiliary parameters
-alpha = -2*theta; % Damping parameter
+alpha = -3*theta; % Damping parameter
 xi_shifted = xi +1i*alpha;
 a_minus = An - Am;
 a_plus = An + Am; 
@@ -34,7 +36,7 @@ for i = 1:ngrid
     ret = expm([-0.5*e1 -0.5*(sigma'*sigma);a 0.5*e1.']*T);
     B21 = ret(N+1:2*N,1:N);
     B22 = ret(N+1:2*N,N+1:2*N);
-    CF(i) = -2*beta*trace(logm(B22)-0.5*e1.'*T)+trace(B22^(-1)*B21*V_0);
+    CF(i) = (1i*x*(hn-hm)-hn)*T-2*beta*trace(logm(B22)-0.5*e1.'*T)+trace(B22^(-1)*B21*V_0);
 end
 CF_E = exp(CF);
 factor_simple = S0;
@@ -43,11 +45,11 @@ integrand_new = conj(payoff).*CF_E;
 option_price = factor_simple*sum(integrand_new)*dxi/(2*pi);
 
 if theta ==1
-    %fprintf('The call price of %2.2f is %4.6f ', K, option_price)
-    fprintf('Call\n \\hline \n %2.2f & %4.6f ', K, option_price)
+    fprintf('The call price of %2.2f is %4.6f\n ', K, option_price)
+    %fprintf('Call\n \\hline \n %2.2f & %4.6f ', K, option_price)
 else
-    %fprintf('The put price of %2.2f is %4.6f ', K, option_price)
-    fprintf('Put\n \\hline \n %2.2f & %4.6f ', K, option_price)
+    fprintf('The put price of %2.2f is %4.6f \n', K, option_price)
+    %fprintf('Put\n \\hline \n %2.2f & %4.6f ', K, option_price)
 end
 
 

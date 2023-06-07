@@ -9,6 +9,8 @@ An = param.An;
 Am = param.Am;
 Rn = param.Rn;
 Rm = param.Rm;
+hn = param.hn;
+hm = param.hm;
 R = Rn - Rm;
 V_0 = param.V_0;
 
@@ -58,11 +60,11 @@ for block = 1:nblocks
                 V_latest = P*Q*P';
             end
             
-            interet_rate(step) = max(trace(Rn * V_latest),0);
+            interet_rate(step) = max(trace(Rn * V_latest)+hn,0);
             % Update X
             sum1 = trace((An - Am) * V_latest * (An + Am));
 %             sum1 = trace((An - Am) * (An + Am) * V_latest);
-            mu = trace(V_latest * R) +  0.5 * (sum1);
+            mu = trace(V_latest * R) +hn-hm+  0.5 * (sum1);
             sum2 = trace((An - Am) * sqrtm(V_latest) * dW); 
             x_latest = x_latest + mu*dt + sum2;
 
@@ -100,7 +102,7 @@ CF_e = mean(CF_e_block);
 %phi_e_s = sqrt(var(phi_e_block)/nblocks);
 
 cputime_MC = toc;
-%fprintf('%20s%14.10f%14.10f\n','Monte Carlo',simulated_call,simulated_put)
-%fprintf('%20s%14.10f%14.10f\n','Monte Carlo stdev',scMC,spMC)
+fprintf('%20s%14.10f%14.10f\n','Monte Carlo',simulated_call,simulated_put)
+fprintf('%20s%14.10f%14.10f\n','Monte Carlo stdev',scMC,spMC)
 
 end

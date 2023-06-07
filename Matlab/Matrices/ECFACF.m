@@ -8,6 +8,8 @@ An = param.An;
 Am = param.Am;
 Rn = param.Rn;
 Rm = param.Rm;
+hn = param.hn;
+hm = param.hm;
 R = Rn - Rm;
 V_0 = param.V_0;
 
@@ -44,11 +46,11 @@ for i = 1:ngrid
     ret = expm([0.5*e1 -0.5*(sigma'*sigma);a 0.5*e2]*T);
     B21 = ret(N+1:2*N,1:N);
     B22 = ret(N+1:2*N,N+1:2*N);
-    GCF(i) = -2*beta*trace(logm(B22)+0.5*e1*T)+trace(B22^(-1)*B21*V_0);
+    GCF(i) = (1i*x*(hn-hm)-hn)*T-2*beta*trace(logm(B22)+0.5*e1*T)+trace(B22^(-1)*B21*V_0);
 end
 GCF_A = exp(GCF);
 
-
+GCF_A
 figure(1)
 plot(xi,real(CF_E),xi,real(GCF_A),"--")
 axis([-20 20 -0.1 0.7])

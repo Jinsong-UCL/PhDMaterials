@@ -9,6 +9,8 @@ An = param.An;
 Am = param.Am;
 Rn = param.Rn;
 Rm = param.Rm;
+hn = param.hn;
+hm = param.hm;
 R = Rn - Rm;
 V_0 = param.V_0;
 
@@ -34,7 +36,7 @@ for i = 1:ngrid
     a = -Rn + R*1i*x + 0.5*a_plus*a_minus*1i*x - 0.5*a_minus*a_minus*x^2;
     F = sqrtm(Es*Es - 2*sigma'*sigma* a);
     G = (Es - F)/(Es + F);      
-    CF(i) = trace(beta*((Es-F)*T-2*logm((eye(N)-G*expm(-F*T))/(eye(N)-G)))) ...
+    CF(i) = (1i*x*(hn-hm)-hn)*T+trace(beta*((Es-F)*T-2*logm((eye(N)-G*expm(-F*T))/(eye(N)-G)))) ...
         + trace(V_0*eye(N)/(sigma'*sigma)*((Es-F)*(eye(N)-expm(-F*T))/(eye(N)-G*expm(-F*T))));
 end
 CF_E = exp(CF);

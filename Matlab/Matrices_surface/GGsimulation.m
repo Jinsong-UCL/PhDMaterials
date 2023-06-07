@@ -8,6 +8,8 @@ An = param.An;
 Am = param.Am;
 Rn = param.Rn;
 Rm = param.Rm;
+hn = param.hn;
+hm = param.hm;
 R = Rn - Rm;
 V_0 = param.V_0;
 
@@ -57,11 +59,12 @@ for block = 1:nblocks
                 V_latest = P*Q*P';
             end
             
-            interet_rate(step) = max(trace(Rn * V_latest),0);
+            interet_rate(step) = max(trace(Rn * V_latest)+hn,0);
             % Update X
             sum1 = trace((An - Am) * V_latest * (An + Am));
 %             sum1 = trace((An - Am) * (An + Am) * V_latest);
-            mu = trace(V_latest * R) +  0.5 * (sum1);
+            %mu = trace(V_latest * R) +  0.5 * (sum1);
+            mu = trace(V_latest * R) +hn-hm+  0.5 * (sum1);
             sum2 = trace((An - Am) * sqrtm(V_latest) * dW); 
             x_latest = x_latest + mu*dt + sum2;
 
@@ -83,8 +86,8 @@ for block = 1:nblocks
         end
         dfactor = exp(- r_sum*dt);
 
-        VcMCb(1,path) = dfactor*payoffs_call;
-        VpMCb(1,path) = dfactor*payoffs_put;
+        VcMCb(1,path) = real(dfactor*payoffs_call);
+        VpMCb(1,path) = real(dfactor*payoffs_put);
         phi_e_path(path,:) = dfactor*exp(1i*xi*x_latest);
     end
     VcMC(block) = mean(VcMCb);

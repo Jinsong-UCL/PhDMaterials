@@ -8,6 +8,8 @@ An = param.An;
 Am = param.Am;
 Rn = param.Rn;
 Rm = param.Rm;
+hn = param.hn;
+hm = param.hm;
 R = Rn - Rm;
 V_0 = param.V_0;
 
@@ -33,13 +35,13 @@ for i = 1:ngrid
     ret = expm([-0.5*e1 -0.5*(sigma'*sigma);a 0.5*e1.']*T);
     B21 = ret(N+1:2*N,1:N);
     B22 = ret(N+1:2*N,N+1:2*N);
-    CF(i) = -2*beta*trace(logm(B22)-0.5*e1.'*T)+trace(B22^(-1)*B21*V_0);
+    CF(i) = (1i*x*(hn-hm)-hn)*T-2*beta*trace(logm(B22)-0.5*e1.'*T)+trace(B22^(-1)*B21*V_0);
 end
 CF_E = exp(CF);
 factor_simple = S0;
 payoff = (K/S0).^(alpha+1+1i*xi)./((1i*xi+alpha).*(1i*xi+alpha+1));
 integrand_new = conj(payoff).*CF_E;
-option_price = factor_simple*sum(integrand_new)*dxi/(2*pi);
+option_price = real(factor_simple*sum(integrand_new)*dxi/(2*pi));
 
 % if theta ==1
 %     %fprintf('The call price of %2.2f is %4.6f ', K, option_price)
