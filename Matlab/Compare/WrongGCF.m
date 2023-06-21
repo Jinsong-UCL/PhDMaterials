@@ -1,4 +1,4 @@
-function [option_price] = HCF(market,param,fourier,K,theta)
+function [option_price] = WrongGCF(market,param,fourier,K,theta)
 %% Retrieve parameters 
 S0 = market.S0;
 N = market.d;
@@ -29,13 +29,14 @@ a_plus = An + Am;
 CF = zeros(1,ngrid);
 for i = 1:ngrid
     x = xi_shifted(i);
-    E1 = kappa - rho*sigma*a_minus*1i*x;
-    Es = 0.5*(E1+E1.');
-    a = -Rn + R*1i*x + 0.5*a_plus*a_minus*1i*x - 0.5*a_minus*a_minus*x^2;
-    F = sqrtm(Es*Es - 2*sigma'*sigma* a);
-    G = (Es - F)/(Es + F);      
-    CF(i) = trace(beta*((Es-F)*T-2*logm((eye(N)-G*expm(-F*T))/(eye(N)-G)))) ...
-        + trace(V_0*eye(N)/(sigma'*sigma)*((Es-F)*(eye(N)-expm(-F*T))/(eye(N)-G*expm(-F*T))));
+    e1 = kappa - sigma'*rho*a_minus *1i*x;
+    %a = -Rn + R*1i*x + 0.5*a_plus*a_minus*1i*x - 0.5*a_minus*a_minus*x^2;
+    %a = -Rn + R*1i*x + 0.5*a_minus*a_minus*1i*x - 0.5*a_minus*a_minus*x^2;
+    a = 0.5*(1i*x*1i*x-1i*x)*a_minus*a_minus + (1i*x-1)*Rn - 1i*x*Rm;
+    ret = expm(T*[-0.5*e1 -0.5*(sigma'*sigma);a 0.5*e1.']);
+    B21 = ret(N+1:2*N,1:N);
+    B22 = ret(N+1:2*N,N+1:2*N);
+    CF(i) = -2*beta*trace(logm(B22)-0.5*e1.'*T)+trace(B22^(-1)*B21*V_0);
 end
 CF_E = exp(CF);
 factor_simple = S0;

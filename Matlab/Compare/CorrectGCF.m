@@ -1,4 +1,4 @@
-function [option_price] = GCF(market,param,fourier,K,theta)
+function [option_price] = CorrectGCF(market,param,fourier,K,theta)
 %% Retrieve parameters 
 S0 = market.S0;
 N = market.d;
@@ -30,7 +30,8 @@ CF = zeros(1,ngrid);
 for i = 1:ngrid
     x = xi_shifted(i);
     e1 = kappa - sigma'*rho*a_minus *1i*x;
-    a = -Rn + R*1i*x + 0.5*a_plus*a_minus*1i*x - 0.5*a_minus*a_minus*x^2;
+    %a = -Rn + R*1i*x + 0.5*a_plus*a_minus*1i*x - 0.5*a_minus*a_minus*x^2;
+    a = -Rn + R*1i*x + 0.5*a_minus*a_minus*1i*x - 0.5*a_minus*a_minus*x^2;
     ret = expm(T*[-0.5*e1 -0.5*(sigma'*sigma);a 0.5*e1.']);
     B21 = ret(N+1:2*N,1:N);
     B22 = ret(N+1:2*N,N+1:2*N);

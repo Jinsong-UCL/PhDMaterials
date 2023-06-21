@@ -36,7 +36,7 @@ for i = 1:ngrid
     ret = expm([-0.5*e1 -0.5*(sigma'*sigma);a 0.5*e1.']*T);
     B21 = ret(N+1:2*N,1:N);
     B22 = ret(N+1:2*N,N+1:2*N);
-    CF(i) = (1i*x*(hn-hm)-hn)*T-2*beta*trace(logm(B22)-0.5*e1.'*T)+trace(B22^(-1)*B21*V_0);
+    CF(i) = -2*beta*trace(logm(B22)-0.5*e1.'*T)+trace(B22^(-1)*B21*V_0);
 end
 CF_E = exp(CF);
 factor_simple = S0;

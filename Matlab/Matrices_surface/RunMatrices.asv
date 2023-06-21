@@ -26,7 +26,7 @@ paramStruct.kappa = [1.0426,0.6764;0.9880,0.8778];
 paramStruct.sigma = [0.4368,0.1914;0.4966,0.7362]; %asymmetric
 % Number of simulations
 paramStruct.nblocks = 100;
-paramStruct.npaths =  100;
+paramStruct.npaths =  10;
 %% Fourier parameters
 fourierStruct.xwidth = 20; % width of the support in real space
 fourierStruct.ngrid = 2^7; % number of grid points
@@ -59,11 +59,11 @@ for t = 1:length(T_g)
         warnStruct = warning('off',warnId);
         % Fourier Transform
         Call_price_grid_FT(t,k) = GCF(marketStruct,paramStruct,fourierStruct,K(k),T(t),1);
-%         Impvol_FT(t,k) = blsimpv(marketStruct.S0,K(k),rate,T(t),Call_price_grid_FT(t,k), 'Limit', 0.5,'Class', {'Call'},'Method','jackel2016');
+        Impvol_FT(t,k) = blsimpv(marketStruct.S0,K(k),rate,T(t),Call_price_grid_FT(t,k), 'Limit', 0.5,'Class', {'Call'},'Method','jackel2016');
         Put_price_grid_FT(t,k) = GCF(marketStruct,paramStruct,fourierStruct,K(k),T(t),-1);
         % Monte Carlo
         [Call_price_grid_MC(t,k), Put_price_grid_MC(t,k),~,~,~] = GGsimulation(marketStruct,paramStruct,fourierStruct,K(k),T(t),2);
-%         Impvol_MC(t,k) = blsimpv(marketStruct.S0,K(k),rate,T(t),Call_price_grid_MC(t,k), 'Limit', 0.5,'Class', {'Call'},'Method','jackel2016');
+        Impvol_MC(t,k) = blsimpv(marketStruct.S0,K(k),rate,T(t),Call_price_grid_MC(t,k), 'Limit', 0.5,'Class', {'Call'},'Method','jackel2016');
     end 
 end
 figure(1)

@@ -4,7 +4,7 @@ warnStruct = warning('off',warnId);
 
 %% Market parameters 
 marketStruct.S0 = 100;
-K = 120;
+K = 100;
 marketStruct.d = 2;
 marketStruct.T = 2;
 % The following numbers are from Gnoatto and Grasselli 2014
@@ -17,14 +17,14 @@ paramStruct.Rm = [0.1841 0.0155;0.0155 0.4761];
 paramStruct.V_0 = [0.1688 0.1708;0.1708 0.3169];
 paramStruct.rho = [-0.5417 0.1899;-0.1170 -0.4834];
 paramStruct.kappa = [1.0426,0.6764;0.9880,0.8778]; 
-paramStruct.sigma = [0.4368,0.1914;0.1914,0.7362]; %symmetric
-%paramStruct.sigma = [0.4368,0.1914;0.4966,0.7362]; %asymmetric
+%paramStruct.sigma = [0.4368,0.1914;0.1914,0.7362]; %symmetric
+paramStruct.sigma = [0.4368,0.1914;0.4966,0.7362]; %asymmetric
 % Number of simulations
-paramStruct.nblocks = 10;
-paramStruct.npaths =  10;
+paramStruct.nblocks = 100;
+paramStruct.npaths =  100;
 %% Fourier parameters
 fourierStruct.xwidth = 20; % width of the support in real space
-fourierStruct.ngrid = 2^12; % number of grid points
+fourierStruct.ngrid = 2^7; % number of grid points
 
 % Grids in real and Fourier space
 fourierStruct.B = fourierStruct.xwidth/2; % upper bound of the support in real space
@@ -42,14 +42,14 @@ end
 [simulated_call, simulated_put,~,~,CF_E] = GGsimulation(marketStruct,paramStruct,fourierStruct,K,3);
 
 %% CF
-fprintf("This is the result of GHCF\n")
-call_price_H = HCF(marketStruct,paramStruct,fourierStruct,K,1);
-put_price_H = HCF(marketStruct,paramStruct,fourierStruct,K,-1);
+fprintf("This is the result of GG's original wrong CF\n")
+call_price_H = WrongGCF(marketStruct,paramStruct,fourierStruct,K,1);
+put_price_H = WrongGCF(marketStruct,paramStruct,fourierStruct,K,-1);
 
 %% CFG
-fprintf("This is the result of GGCF\n")
-call_price_G = GCF(marketStruct,paramStruct,fourierStruct,K,1);
-put_price_G = GCF(marketStruct,paramStruct,fourierStruct,K,-1);
+fprintf("This is the result of modified correct CF\n")
+call_price_G = CorrectGCF(marketStruct,paramStruct,fourierStruct,K,1);
+put_price_G = CorrectGCF(marketStruct,paramStruct,fourierStruct,K,-1);
 
 %% ECF and ACF
 [statement] = ECFACF(marketStruct,paramStruct,fourierStruct,CF_E);

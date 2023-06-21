@@ -50,7 +50,7 @@ for i = 1:ngrid
 end
 GCF_A = exp(GCF);
 
-GCF_A
+% GCF_A
 figure(1)
 plot(xi,real(CF_E),xi,real(GCF_A),"--")
 axis([-20 20 -0.1 0.7])

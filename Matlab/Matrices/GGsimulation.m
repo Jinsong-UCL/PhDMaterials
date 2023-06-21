@@ -56,15 +56,14 @@ for block = 1:nblocks
             if sum(eig(V_latest)>=0)<N 
                 [P, Q] = eig(V_latest);
                 Q = max(Q,0);
-%                 V_latest = real(P*Q*P');
                 V_latest = P*Q*P';
             end
             
-            interet_rate(step) = max(trace(Rn * V_latest)+hn,0);
+            interet_rate(step) = max(trace(Rn * V_latest),0);
             % Update X
             sum1 = trace((An - Am) * V_latest * (An + Am));
 %             sum1 = trace((An - Am) * (An + Am) * V_latest);
-            mu = trace(V_latest * R) +hn-hm+  0.5 * (sum1);
+            mu = trace(V_latest * R) + 0.5 * (sum1);
             sum2 = trace((An - Am) * sqrtm(V_latest) * dW); 
             x_latest = x_latest + mu*dt + sum2;
 

@@ -1,14 +1,15 @@
-function [simulated_call, simulated_put,scMC,spMC, CF_e] = GGsimulation(market,param,fourier,K,n)
+function [simulated_call, simulated_put,scMC,spMC, CF_e] = GGsimulation(market,param,fourier,K,T,n)
 %% Retrieve parameters 
 S0 = market.S0;
 N = market.d;
-T = market.T;
 
 beta = param.beta;
 An = param.An;
 Am = param.Am;
 Rn = param.Rn;
 Rm = param.Rm;
+hn = param.hn;
+hm = param.hm;
 R = Rn - Rm;
 V_0 = param.V_0;
 
@@ -58,11 +59,12 @@ for block = 1:nblocks
                 V_latest = P*Q*P';
             end
             
-            interet_rate(step) = max(trace(Rn * V_latest),0);
+            interet_rate(step) = max(trace(Rn * V_latest)+hn,0);
             % Update X
-            sum1 = trace((An - Am) * V_latest * (An + Am));
-%             sum1 = trace((An - Am) * (An + Am) * V_latest);
-            mu = trace(V_latest * R) +  0.5 * (sum1);
+            sum1 = trace((An - Am) * (An + Am) * V_latest);%plus
+            %sum1 = trace((An - Am) * V_latest * (An - Am));%minus
+            mu = trace(V_latest * R)+hn-hm + 0.5 * (sum1); %plus
+            %mu = trace(V_latest * R)+hn-hm -  0.5 * (sum1);%minus
             sum2 = trace((An - Am) * sqrtm(V_latest) * dW); 
             x_latest = x_latest + mu*dt + sum2;
 
@@ -84,8 +86,8 @@ for block = 1:nblocks
         end
         dfactor = exp(- r_sum*dt);
 
-        VcMCb(1,path) = dfactor*payoffs_call;
-        VpMCb(1,path) = dfactor*payoffs_put;
+        VcMCb(1,path) = real(dfactor*payoffs_call);
+        VpMCb(1,path) = real(dfactor*payoffs_put);
         phi_e_path(path,:) = dfactor*exp(1i*xi*x_latest);
     end
     VcMC(block) = mean(VcMCb);
@@ -100,7 +102,7 @@ CF_e = mean(CF_e_block);
 %phi_e_s = sqrt(var(phi_e_block)/nblocks);
 
 cputime_MC = toc;
-fprintf('%20s%14.10f%14.10f\n','Monte Carlo',simulated_call,simulated_put)
-fprintf('%20s%14.10f%14.10f\n','Monte Carlo stdev',scMC,spMC)
+%fprintf('%20s%14.10f%14.10f\n','Monte Carlo',simulated_call,simulated_put)
+%fprintf('%20s%14.10f%14.10f\n','Monte Carlo stdev',scMC,spMC)
 
 end

@@ -25,44 +25,45 @@ a_plus = An + Am;
 HCF = zeros(1,ngrid);
 for i = 1:ngrid
     x = xi(i);
-    E1 = kappa' - sigma*rho*a_minus*1i*x;
-    Es = 0.5*(E1+E1.');
-    a = -Rn + R*1i*x + 0.5*a_plus*a_minus*1i*x - 0.5*a_minus*a_minus*x^2;
-    F = sqrtm(Es*Es - 2*sigma'*sigma* a);
-    G = (Es - F)/(Es + F);    
-    HCF(i) = trace(beta*((Es-F)*T-2*logm((eye(N)-G*expm(-F*T))/(eye(N)-G)))) ...
-        + trace(V_0*eye(N)/(sigma'*sigma)*((Es-F)*(eye(N)-expm(-F*T))/(eye(N)-G*expm(-F*T))));
+    e1 = kappa - sigma'*rho*a_minus *1i*x;
+    %a = -Rn + R*1i*x + 0.5*a_plus*a_minus*1i*x - 0.5*a_minus*a_minus*x^2;
+    %a = -Rn + R*1i*x + 0.5*a_minus*a_minus*1i*x - 0.5*a_minus*a_minus*x^2;
+    a = 0.5*(1i*x*1i*x-1i*x)*a_minus*a_minus + (1i*x-1)*Rn - 1i*x*Rm;
+    ret = expm(T*[-0.5*e1 -0.5*(sigma'*sigma);a 0.5*e1.']);
+    B21 = ret(N+1:2*N,1:N);
+    B22 = ret(N+1:2*N,N+1:2*N);
+    HCF(i) = -2*beta*trace(logm(B22)-0.5*e1.'*T)+trace(B22^(-1)*B21*V_0);
 end
 HCF_A = exp(HCF);
 
 GCF = zeros(1,ngrid);
 for i = 1:ngrid
     x = xi(i);
-    e1 = -kappa + sigma'*rho*a_minus *1i*x;
-    e2 = - e1.';
-    a = -Rn + R*1i*x + 0.5*a_plus*a_minus*1i*x - 0.5*a_minus*a_minus*x^2;
-    ret = expm([0.5*e1 -0.5*(sigma'*sigma);a 0.5*e2]*T);
+    e1 = kappa - sigma'*rho*a_minus *1i*x;
+    %a = -Rn + R*1i*x + 0.5*a_plus*a_minus*1i*x - 0.5*a_minus*a_minus*x^2;
+    a = -Rn + R*1i*x + 0.5*a_minus*a_minus*1i*x - 0.5*a_minus*a_minus*x^2;
+    ret = expm(T*[-0.5*e1 -0.5*(sigma'*sigma);a 0.5*e1.']);
     B21 = ret(N+1:2*N,1:N);
     B22 = ret(N+1:2*N,N+1:2*N);
-    GCF(i) = -2*beta*trace(logm(B22)+0.5*e1*T)+trace(B22^(-1)*B21*V_0);
+    GCF(i) = -2*beta*trace(logm(B22)-0.5*e1.'*T)+trace(B22^(-1)*B21*V_0);
 end
 GCF_A = exp(GCF);
 
 
 figure(1)
-plot(xi,real(CF_E),xi,real(GCF_A),"--")
+plot(xi,real(CF_E),xi,real(GCF_A),"--",xi,real(HCF_A),"--")
 axis([-20 20 -0.1 0.7])
 title('Real part of the discounted characteristic function for the matrix Heston model')
 xlabel('\xi')
-legend('Empirical','Analytical')
+legend('Empirical','Analytical\_Corrected','Analytical\_Original')
 savefig("Real part of the discounted characteristic function for the matrix Heston model(asymmetric).fig")
 
 figure(2)
-plot(xi,imag(CF_E),xi,imag(GCF_A),"--")
+plot(xi,imag(CF_E),xi,imag(GCF_A),"--",xi,imag(HCF_A),"--")
 axis([-20 20 -0.3 0.3])
 title('Imaginary part of the discounted characteristic function for the matrix Heston model')
 xlabel('\xi')
-legend('Empirical','Analytical')
+legend('Empirical','Analytical\_Corrected','Analytical\_Original')
 savefig("Imaginary part of the discounted characteristic function for the matrix Heston model(asymmetric).fig")
 statement = 1;
 end
