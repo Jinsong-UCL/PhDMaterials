@@ -3,7 +3,7 @@ S0 = 1; % spot exchange rate
 r_0 = [0.05,0.06]; % spot interest rates r_{i0},r_{j0}
 
 % Contract parameters
-T = 1; % maturity
+T = 4; % maturity
 K = 1; % strike price
 
 % Interest rate coefficients or weights
@@ -56,8 +56,8 @@ fprintf("The Euripean option prices are: \n")
 european.call_price = europeanPricing(parStruct,1,S0,T,K);
 european.put_price = europeanPricing(parStruct,-1,S0,T,K);
 
-european_1.put_price = DCF(parStruct,-1,S0,T,K);
-%european_1.call_price = DCF(parStruct,1,S0,T,K);
+% european_1.put_price = DCF(parStruct,-1,S0,T,K);
+% %european_1.call_price = DCF(parStruct,1,S0,T,K);
 %%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 % Barrier Options
 %%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -70,7 +70,7 @@ european_1.put_price = DCF(parStruct,-1,S0,T,K);
 %%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 % Simulations
 %%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-%[simulated_call, simulated_put] = europeanSimulation(parStruct,european,4,S0,T,K);
+[simulated_call, simulated_put] = europeanSimulation(parStruct,european,4,S0,T,K);
 
 % Number of steps 2^n
 %parfor n = [4 5 6 7]

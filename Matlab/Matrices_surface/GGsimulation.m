@@ -51,20 +51,20 @@ for block = 1:nblocks
             dW = NW * sqrt(dt);
             dZ = NZ * sqrt(dt);
             
+            
             % positive semi-definitness
             if sum(eig(V_latest)>=0)<N 
                 [P, Q] = eig(V_latest);
                 Q = max(Q,0);
-%                 V_latest = real(P*Q*P');
                 V_latest = P*Q*P';
             end
             
             interet_rate(step) = max(trace(Rn * V_latest)+hn,0);
             % Update X
-            sum1 = trace((An - Am) * (An + Am) * V_latest);%plus
-            %sum1 = trace((An - Am) * V_latest * (An - Am));%minus
-            mu = trace(V_latest * R)+hn-hm + 0.5 * (sum1); %plus
-            %mu = trace(V_latest * R)+hn-hm -  0.5 * (sum1);%minus
+            %sum1 = trace((An - Am) * (An + Am) * V_latest);%plus
+            sum1 = trace((An - Am) * V_latest * (An - Am));%minus
+            %mu = trace(V_latest * R)+hn-hm + 0.5 * (sum1); %plus
+            mu = trace(V_latest * R)+hn-hm -  0.5 * (sum1);%minus
             sum2 = trace((An - Am) * sqrtm(V_latest) * dW); 
             x_latest = x_latest + mu*dt + sum2;
 
@@ -73,7 +73,9 @@ for block = 1:nblocks
                 +0.5*(sqrtm(V_latest)* dZ*sigma +sigma'*dZ'*sqrtm(V_latest));
         
         end
+       % fprintf("%f\n",x_latest);
         S_end = S0*exp(x_latest);
+%         fprintf("%f\n",S_end);
 
         payoffs_call = max(S_end - K,0);
         payoffs_put = max(K - S_end,0);

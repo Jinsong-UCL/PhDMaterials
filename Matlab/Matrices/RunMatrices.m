@@ -4,9 +4,9 @@ warnStruct = warning('off',warnId);
 
 %% Market parameters 
 marketStruct.S0 = 1;
-K = 1;
+K = 1.5;
 marketStruct.d = 2;
-marketStruct.T =2;
+marketStruct.T =1;
 % The following numbers are from Gnoatto and Grasselli 2014
 %% Symmetric parameters
 paramStruct.beta = 3.144;
@@ -26,7 +26,7 @@ paramStruct.nblocks = 100;
 paramStruct.npaths =  100;
 %% Fourier parameters
 fourierStruct.xwidth = 20; % width of the support in real space
-fourierStruct.ngrid = 2^7; % number of grid points
+fourierStruct.ngrid = 2^10; % number of grid points
 
 % Grids in real and Fourier space
 fourierStruct.B = fourierStruct.xwidth/2; % upper bound of the support in real space
